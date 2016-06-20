@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "197707831381",
+    "firebase_url": "https://inv-base.firebaseio.com",
+    "project_id": "inv-base",
+    "storage_bucket": "inv-base.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:197707831381:android:e25743e87a6d8181",
+        "android_client_info": {
+          "package_name": "com.dontpanicbase.inv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "197707831381-8lfiinmmjf15si96io3o8qqthdsl3b1r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dontpanicbase.inv",
+            "certificate_hash": "A6289E009FAB557AD7FB70DA649C53CAF5A7EE7B"
+          }
+        },
+        {
+          "client_id": "197707831381-89lo0jlp6vankg52bkqbj6a4kobmafju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB04GvMNfiiZ7JXrA8JktauT9TRdwBrM5c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "197707831381-89lo0jlp6vankg52bkqbj6a4kobmafju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
