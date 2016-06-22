@@ -20,10 +20,11 @@ public abstract class SelectableItemModel extends ItemModel implements Selectabl
         this.itemSelectedListener = itemSelectedListener;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onItemSelected(View view) {
 
-        if(itemSelectedListener != null){
+        if (itemSelectedListener != null) {
             itemSelectedListener.onItemSelected(view, this);
         }
     }
