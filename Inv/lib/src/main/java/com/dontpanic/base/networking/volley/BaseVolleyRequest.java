@@ -3,30 +3,51 @@ package com.dontpanic.base.networking.volley;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.dontpanic.base.common.statics.StringHelper;
 
 import java.util.Map;
-
-import com.dontpanic.base.common.statics.StringHelper;
 
 public abstract class BaseVolleyRequest<T> extends Request<T> {
 
     private final Response.Listener<T> listener;
     private final String contentType;
     private final Map<String, String> header;
+    private final Map<String, String> params;
     private final byte[] body;
 
-    public BaseVolleyRequest(int method, String url, String contentType, Map<String, String> header, byte[] body, Response.Listener<T> listener, Response.ErrorListener errorListener) {
+    public BaseVolleyRequest(int method, String url, String contentType, Map<String, String> header, Map<String, String> params, byte[] body, Response.Listener<T> listener, Response.ErrorListener errorListener) {
         super(method, url, errorListener);
 
         this.contentType = contentType;
         this.header = header;
+        this.params = params;
         this.body = body;
         this.listener = listener;
     }
 
     @Override
+    public String getPostBodyContentType() {
+        return getBodyContentType();
+    }
+
+    @Override
+    public byte[] getPostBody() throws AuthFailureError {
+        return getBody();
+    }
+
+    @Override
+    protected Map<String, String> getPostParams() throws AuthFailureError {
+        return getParams();
+    }
+
+    @Override
     public String getBodyContentType() {
         return !StringHelper.isEmpty(contentType) ? contentType : super.getBodyContentType();
+    }
+
+    @Override
+    public Map<String, String> getParams() throws AuthFailureError {
+        return params;
     }
 
     @Override
@@ -41,6 +62,9 @@ public abstract class BaseVolleyRequest<T> extends Request<T> {
 
     @Override
     protected void deliverResponse(T response) {
-        listener.onResponse(response);
+
+        if (listener != null) {
+            listener.onResponse(response);
+        }
     }
 }

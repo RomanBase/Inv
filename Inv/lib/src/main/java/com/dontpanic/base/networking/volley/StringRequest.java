@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class StringRequest extends BaseVolleyRequest<String> {
 
-    public StringRequest(int method, String url, String contentType, Map<String, String> header, byte[] body, Response.Listener<String> listener, Response.ErrorListener errorListener) {
-        super(method, url, contentType, header, body, listener, errorListener);
+    public StringRequest(int method, String url, String contentType, Map<String, String> header, Map<String, String> params, byte[] body, Response.Listener<String> listener, Response.ErrorListener errorListener) {
+        super(method, url, contentType, header, params, body, listener, errorListener);
     }
 
     @Override

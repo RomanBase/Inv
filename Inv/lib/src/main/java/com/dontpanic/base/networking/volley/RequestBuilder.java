@@ -17,8 +17,17 @@ public class RequestBuilder {
     private byte[] body;
     private String contentType;
     private Map<String, String> header;
+    private Map<String, String> params;
     private Response.Listener listener;
     private Response.ErrorListener errorListener;
+
+    public RequestBuilder() {
+
+        contentType = "application/json; charset=utf-8";
+
+        header = new LinkedHashMap<>();
+        header.put("accept", "*/*");
+    }
 
     public RequestBuilder get(String url) {
 
@@ -67,11 +76,18 @@ public class RequestBuilder {
 
     public RequestBuilder header(String key, String value) {
 
-        if (header == null) {
-            header = new LinkedHashMap<>();
+        header.put(key, value);
+        return this;
+    }
+
+    public RequestBuilder param(String key, String value) {
+
+        if (params == null) {
+            params = new LinkedHashMap<>();
         }
 
-        header.put(key, value);
+        params.put(key, value);
+
         return this;
     }
 
@@ -90,18 +106,18 @@ public class RequestBuilder {
     @SuppressWarnings("unchecked")
     public <T> BaseVolleyRequest<T> asGson(@NonNull Type type) {
 
-        return new GsonRequest<T>(type, method, url, contentType, header, body, listener, errorListener);
+        return new GsonRequest<T>(type, method, url, contentType, header, params, body, listener, errorListener);
     }
 
     @SuppressWarnings("unchecked")
     public BaseVolleyRequest<String> asString() {
 
-        return new StringRequest(method, url, contentType, header, body, listener, errorListener);
+        return new StringRequest(method, url, contentType, header, params, body, listener, errorListener);
     }
 
     @SuppressWarnings("unchecked")
     public BaseVolleyRequest<byte[]> asBytes() {
 
-        return new ByteRequest(method, url, contentType, header, body, listener, errorListener);
+        return new ByteRequest(method, url, contentType, header, params, body, listener, errorListener);
     }
 }

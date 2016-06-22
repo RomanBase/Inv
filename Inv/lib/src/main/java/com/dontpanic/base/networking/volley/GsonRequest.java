@@ -15,8 +15,8 @@ public class GsonRequest<T> extends BaseVolleyRequest<T> {
 
     private final Type type;
 
-    public GsonRequest(Type type, int method, String url, String contentType, Map<String, String> header, byte[] body, Response.Listener<T> listener, Response.ErrorListener errorListener) {
-        super(method, url, contentType, header, body, listener, errorListener);
+    public GsonRequest(Type type, int method, String url, String contentType, Map<String, String> header, Map<String, String> params, byte[] body, Response.Listener<T> listener, Response.ErrorListener errorListener) {
+        super(method, url, contentType, header, params, body, listener, errorListener);
 
         this.type = type;
     }
