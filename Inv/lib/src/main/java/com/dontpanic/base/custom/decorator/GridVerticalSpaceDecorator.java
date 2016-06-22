@@ -19,6 +19,13 @@ public class GridVerticalSpaceDecorator extends RecyclerView.ItemDecoration {
         this.count = count;
     }
 
+    public GridVerticalSpaceDecorator count(int count) {
+
+        this.count = count;
+
+        return this;
+    }
+
     public GridVerticalSpaceDecorator spacing(int spacing) {
 
         this.rowSpacing = spacing;

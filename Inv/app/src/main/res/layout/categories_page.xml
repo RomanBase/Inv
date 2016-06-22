@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="VM"
+                  type="com.dontpanic.inv.viewmodel.categories.CategoriesViewModel"/>
+    </data>
+
+    <com.dontpanic.base.custom.view.BaseGridView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:adapter="@{VM.adapter}"
+        app:spacing="@dimen/base_half_pading"
+        app:spanCount="2"/>
+</layout>

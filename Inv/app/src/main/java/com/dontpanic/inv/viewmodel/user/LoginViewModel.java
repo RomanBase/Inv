@@ -11,7 +11,7 @@ import com.dontpanic.fire.GoogleSignIn;
 import com.dontpanic.inv.FireFactory;
 import com.dontpanic.inv.fire.FireArgCode;
 import com.dontpanic.inv.viewmodel.InvViewModel;
-import com.dontpanic.inv.viewmodel.dashboard.DashboardViewModel;
+import com.dontpanic.inv.viewmodel.categories.CategoriesViewModel;
 import com.dontpanicbase.inv.R;
 import com.dontpanicbase.inv.databinding.LoginPageBinding;
 
@@ -71,7 +71,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, Model> {
         if (requestCode == FireArgCode.USER_SIGNED_IN) {
 
             BaseViewModelObserver observer = getObserver();
-            ViewModel vm = getFactory().getViewModel(DashboardViewModel.class);
+            ViewModel vm = getFactory().getViewModel(CategoriesViewModel.class);
 
             if (vm != null) {
                 observer.setDefaultViewModel(vm);

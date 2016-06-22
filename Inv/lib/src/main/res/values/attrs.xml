@@ -41,4 +41,12 @@
         <attr name="fontSize" format="reference"/>
         <attr name="js_enabled" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="BaseGridView">
+        <attr name="spanCount" format="integer"/>
+        <attr name="spacing" format="dimension"/>
+        <attr name="includeEdge" format="boolean"/>
+        <attr name="includeTopEdge" format="boolean"/>
+    </declare-styleable>
+
 </resources>
