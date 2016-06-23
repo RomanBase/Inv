@@ -3,7 +3,9 @@ package com.dontpanic.inv.viewmodel.categories;
 
 import android.databinding.ObservableField;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.dontpanic.base.interfaces.OnItemSelectedListener;
 import com.dontpanic.base.interfaces.viewmodel.MenuItemableViewModel;
 import com.dontpanic.base.model.Model;
 import com.dontpanic.base.model.ToolbarItemModel;
@@ -13,7 +15,7 @@ import com.dontpanic.inv.viewmodel.InvViewModel;
 import com.dontpanicbase.inv.R;
 import com.dontpanicbase.inv.databinding.CategoriesPageBinding;
 
-public class CategoriesViewModel extends InvViewModel<CategoriesPageBinding, Model> implements MenuItemableViewModel {
+public class CategoriesViewModel extends InvViewModel<CategoriesPageBinding, Model> implements MenuItemableViewModel, OnItemSelectedListener<CategoryItemModel> {
 
     public final ObservableField<AdapterRecycleBinder<CategoryItemModel>> adapter = new ObservableField<>();
 
@@ -23,15 +25,18 @@ public class CategoriesViewModel extends InvViewModel<CategoriesPageBinding, Mod
 
         AdapterRecycleBinder<CategoryItemModel> binder = new AdapterRecycleBinder<CategoryItemModel>(getContext());
         for (int i = 0; i < 10; i++) {
-            binder.add(new CategoryItemModel());
+            CategoryItemModel item = new CategoryItemModel();
+            item.setOnItemSelectedListener(this);
+            binder.add(item);
         }
 
         adapter.set(binder);
     }
 
     @Override
-    public int getLayoutResource() {
-        return R.layout.categories_page;
+    public void onItemSelected(View view, CategoryItemModel model) {
+
+        getNavigation().addViewModel(getFactory().getViewModel(CategoryViewModel.class, view));
     }
 
     int count = 2;
@@ -46,5 +51,10 @@ public class CategoriesViewModel extends InvViewModel<CategoriesPageBinding, Mod
                     }
                 }.setShowAsAction(true).setImageResourceId(R.drawable.placeholder)
         };
+    }
+
+    @Override
+    public int getLayoutResource() {
+        return R.layout.categories_page;
     }
 }

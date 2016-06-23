@@ -18,8 +18,7 @@ public class BaseAnim {
 
     public static Animation scale(View view, float from, float to) {
 
-        Animation animation = new ScaleAnimation(from, to, from, to,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        Animation animation = new ScaleAnimation(from, to, from, to, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setInterpolator(new AccelerateDecelerateInterpolator());
         animation.setDuration(SCALE_DURATION);
         animation.setFillAfter(true);
@@ -95,7 +94,7 @@ public class BaseAnim {
             }
         };
 
-        animation.setDuration(DURATION);
+        animation.setDuration(1000);
         animation.start();
 
         return animation;

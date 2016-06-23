@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable name="VM"
+                  type="com.dontpanic.inv.viewmodel.categories.CategoryViewModel"/>
+
+        <variable name="M"
+                  type="com.dontpanic.inv.model.category.CategoryModel"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/category_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/category_item_active_background"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:padding="@dimen/base_padding"
+            android:src="@drawable/placeholder"/>
+
+        <android.support.v4.widget.Space
+            android:id="@+id/category_image_area"
+            android:layout_width="96dp"
+            android:layout_height="96dp"/>
+
+    </FrameLayout>
+</layout>

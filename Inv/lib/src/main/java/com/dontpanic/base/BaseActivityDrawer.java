@@ -113,7 +113,7 @@ public abstract class BaseActivityDrawer extends BaseActivity {
         drawerLayout.closeDrawers();
 
         if (viewModel instanceof CloseableViewModel) {
-            toggleToolbarNavigation(((CloseableViewModel) viewModel).isCloseable(), true);
+            toggleToolbarNavigation(!((CloseableViewModel) viewModel).isCloseable(), true);
         } else {
             toggleToolbarNavigation(true);
         }
