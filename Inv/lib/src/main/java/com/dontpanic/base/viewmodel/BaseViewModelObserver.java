@@ -94,8 +94,8 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
         }
     }
 
-    public void setRootContainerId(int rootContainerId) {
-        this.rootContainerId = rootContainerId;
+    public void setRootContainerId(@IdRes int viewId) {
+        this.rootContainerId = viewId;
     }
 
     public void setBaseChangedListener(OnBaseChangedListener modelChangeListener) {
@@ -150,19 +150,9 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
 
         initViewModel(viewModel, true);
 
-        int rootId;
-        if (rootView != null) {
-            rootId = rootView.getId();
-            if (rootId < 0) {
-                rootId = rootContainerId;
-            }
-        } else {
-            rootId = rootContainerId;
-        }
-
         FragmentTransactioner.FragmentCommitAnim fragment = FragmentTransactioner.with(context)
                 .addPage(currentViewModel.getFragment())
-                .into(rootId);
+                .into(rootContainerId);
 
         commitViewModel(fragment, viewModel);
     }

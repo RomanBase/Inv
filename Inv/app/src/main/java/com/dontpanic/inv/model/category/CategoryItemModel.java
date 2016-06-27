@@ -1,5 +1,6 @@
 package com.dontpanic.inv.model.category;
 
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,12 +19,20 @@ public class CategoryItemModel extends InvSelectableItemModel {
         public void onTouchActionDown(View view) {
 
             BaseAnim.scale(((ViewGroup) view).getChildAt(0), 1.0f, ACTION_SCALE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                view.setElevation(24.0f);
+            }
         }
 
         @Override
         public void onTouchActionUp(View view) {
 
             BaseAnim.scale(((ViewGroup) view).getChildAt(0), ACTION_SCALE, 1.0f);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                view.setElevation(0.0f);
+            }
         }
     };
 

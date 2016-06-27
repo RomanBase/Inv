@@ -11,6 +11,7 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background_color"
         app:adapter="@{VM.adapter}"
         app:spacing="@dimen/base_half_pading"
         app:spanCount="2"/>
