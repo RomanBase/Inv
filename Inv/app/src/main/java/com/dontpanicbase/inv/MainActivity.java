@@ -35,7 +35,7 @@ public class MainActivity extends BaseActivityDrawer {
     @Override
     protected ViewModelObserver init() {
 
-        return new BaseViewModelObserver.Builder(this, R.id.root_container)
+        return BaseViewModelObserver.with(this, R.id.root_container)
                 .setScreenRootContainerId(R.id.screen_root_container)
                 .setFactory(factory)
                 .setViewModel(factory.getViewModel(LoginViewModel.class))
