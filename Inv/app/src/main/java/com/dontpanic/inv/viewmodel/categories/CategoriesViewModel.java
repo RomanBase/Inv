@@ -36,7 +36,7 @@ public class CategoriesViewModel extends InvViewModel<CategoriesPageBinding, Mod
     @Override
     public void onItemSelected(View view, CategoryItemModel model) {
 
-        getNavigation().addViewModel(getFactory().getViewModel(CategoryViewModel.class, view));
+        getNavigation().addViewModel(getFactory().getViewModel(CategoryViewModel.class, view), true);
     }
 
     int count = 2;

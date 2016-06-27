@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.RequestQueue;
@@ -34,10 +33,10 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
     private RequestQueue requestQueue;
 
     private Context context;
-    private ViewGroup rootView;
     private ViewModel defaultViewModel;
 
     private int rootContainerId;
+    private int screenRootContainerId;
 
     private OnBaseChangedListener baseChangeListener;
 
@@ -87,15 +86,17 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
 
     public void setRootViewContainer(ViewGroup rootView) {
 
-        this.rootView = rootView;
-
         if (popupAdapter != null) {
-            popupAdapter.init(context, rootView);
+            popupAdapter.init(context, (ViewGroup) rootView.getRootView().findViewById(screenRootContainerId));
         }
     }
 
     public void setRootContainerId(@IdRes int viewId) {
         this.rootContainerId = viewId;
+    }
+
+    public void setScreenRootContainerId(@IdRes int viewId) {
+        this.screenRootContainerId = viewId;
     }
 
     public void setBaseChangedListener(OnBaseChangedListener modelChangeListener) {
@@ -134,7 +135,7 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
     }
 
     @Override
-    public void setViewModel(@NonNull ViewModel viewModel, Boolean clearBackStack) {
+    public void setViewModel(@NonNull ViewModel viewModel, boolean clearBackStack) {
 
         initViewModel(viewModel, false);
 
@@ -146,13 +147,13 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
     }
 
     @Override
-    public void addViewModel(@NonNull ViewModel viewModel) {
+    public void addViewModel(@NonNull ViewModel viewModel, boolean asRootContent) {
 
         initViewModel(viewModel, true);
 
         FragmentTransactioner.FragmentCommitAnim fragment = FragmentTransactioner.with(context)
                 .addPage(currentViewModel.getFragment())
-                .into(rootContainerId);
+                .into(asRootContent ? rootContainerId : screenRootContainerId);
 
         commitViewModel(fragment, viewModel);
     }
@@ -318,21 +319,8 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
         return currentViewModel;
     }
 
-    public ViewGroup getRootLayout() {
-        return rootView;
-    }
-
     public ViewModel getDefaultViewModel() {
         return defaultViewModel;
-    }
-
-    public View getCurrentView() {
-
-        if (rootView == null || rootView.getChildCount() == 0) {
-            return null;
-        }
-
-        return rootView.getChildAt(0);
     }
 
     public int getRootContainerId() {
@@ -348,6 +336,7 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
 
         private final Context bContext;
         private final int bRootContainerId;
+        private int bScreenRootContainerId;
         private ViewModel bViewModel;
         private MenuViewModel bMenuModel;
         private ObjectFactory bFactory;
@@ -357,6 +346,12 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
         public Builder(@NonNull Context context, @IdRes int rootContainerId) {
             this.bContext = context;
             this.bRootContainerId = rootContainerId;
+        }
+
+        public Builder setScreenRootContainerId(@IdRes int screenRootContainerId) {
+
+            this.bScreenRootContainerId = screenRootContainerId;
+            return this;
         }
 
         public Builder setViewModel(ViewModel viewModel) {
@@ -405,6 +400,7 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
             BaseViewModelObserver mvm = new BaseViewModelObserver();
             mvm.setContext(bContext);
             mvm.setRootContainerId(bRootContainerId);
+            mvm.setScreenRootContainerId(bScreenRootContainerId > 0 ? bScreenRootContainerId : bRootContainerId);
             mvm.setFactory(bFactory);
             mvm.setPopupAdapter(bPopupAdapter);
             mvm.setRequestQueue(bRequestQueue);

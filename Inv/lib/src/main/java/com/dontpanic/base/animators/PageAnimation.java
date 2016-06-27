@@ -182,7 +182,7 @@ public class PageAnimation extends AnimatorListenerAdapter {
             this.toColor = to;
         }
 
-        static RectF getRect(View view) {
+        static RectF getRect(View view) { // TODO: 27/06/16 parent offset
 
             RectF r = new RectF();
 
@@ -190,18 +190,6 @@ public class PageAnimation extends AnimatorListenerAdapter {
             r.top = (float) view.getTop();
             r.right = (float) view.getRight();
             r.bottom = (float) view.getBottom();
-
-            return r;
-        }
-
-        static RectF getRect(View view, float padding) {
-
-            RectF r = new RectF();
-
-            r.left = (float) view.getLeft() - padding;
-            r.top = (float) view.getTop() - padding;
-            r.right = (float) view.getRight() + padding;
-            r.bottom = (float) view.getBottom() + padding;
 
             return r;
         }

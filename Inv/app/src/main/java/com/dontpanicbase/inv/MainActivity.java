@@ -36,6 +36,7 @@ public class MainActivity extends BaseActivityDrawer {
     protected ViewModelObserver init() {
 
         return new BaseViewModelObserver.Builder(this, R.id.root_container)
+                .setScreenRootContainerId(R.id.screen_root_container)
                 .setFactory(factory)
                 .setViewModel(factory.getViewModel(LoginViewModel.class))
                 .setMenuModel(new MenuModel(this, R.id.root_menu_container))
