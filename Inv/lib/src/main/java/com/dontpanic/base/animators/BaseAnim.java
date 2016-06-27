@@ -1,6 +1,5 @@
 package com.dontpanic.base.animators;
 
-import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -8,8 +7,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.Transformation;
-
-import com.dontpanic.base.common.statics.MathHelper;
 
 public class BaseAnim {
 
@@ -45,57 +42,6 @@ public class BaseAnim {
         animation.setDuration(DURATION);
         animation.setFillAfter(true);
         view.startAnimation(animation);
-
-        return animation;
-    }
-
-    public static Animation transit(View view, final Rect from, final Rect to) {
-
-        if (view.getLayoutParams() == null) {
-            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        }
-
-        final float sx = (float) from.width() / (float) to.width();
-        final float sy = (float) from.height() / (float) to.height();
-
-        Animation animation = new ViewAnimation(view) {
-            @Override
-            protected void onInit(View view) {
-
-                view.setScaleX(sx);
-                view.setScaleY(sy);
-                view.setPivotX(0);
-                view.setPivotY(0);
-
-                view.setX(from.left);
-                view.setY(from.top);
-            }
-
-            @Override
-            protected void onTransformationStep(View view, float delta) {
-
-                view.setScaleX(MathHelper.interpolate(sx, 1.0f, delta));
-                view.setScaleY(MathHelper.interpolate(sy, 1.0f, delta));
-
-                view.setX(MathHelper.interpolate(from.left, to.left, delta));
-                view.setY(MathHelper.interpolate(from.top, to.top, delta));
-            }
-
-            @Override
-            protected void onTransformationDone(View view) {
-
-                view.setX(to.left);
-                view.setY(to.top);
-
-                view.setScaleX(1.0f);
-                view.setScaleY(1.0f);
-                view.setPivotX((float) view.getWidth() * 0.5f);
-                view.setPivotY((float) view.getHeight() * 0.5f);
-            }
-        };
-
-        animation.setDuration(1000);
-        animation.start();
 
         return animation;
     }
