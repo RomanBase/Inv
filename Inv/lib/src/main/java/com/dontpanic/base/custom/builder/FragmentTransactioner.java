@@ -171,8 +171,7 @@ public class FragmentTransactioner {
                 trans.addToBackStack(backStackIdentifier);
             }
 
-            trans.commit();
-            manager.executePendingTransactions();
+            trans.commitNow();
         }
     }
 }
