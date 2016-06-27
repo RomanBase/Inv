@@ -93,7 +93,7 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
     public void setRootViewContainer(ViewGroup rootView) {
 
         if (popupAdapter != null) {
-            popupAdapter.init(context, (ViewGroup) rootView.getRootView().findViewById(screenRootContainerId));
+            popupAdapter.init(context, (ViewGroup) rootView.findViewById(screenRootContainerId));
         }
     }
 
@@ -105,7 +105,7 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
         this.screenRootContainerId = viewId;
     }
 
-    public void setBaseChangedListener(OnBaseChangedListener modelChangeListener) {
+    public void setOnBaseChangedListener(OnBaseChangedListener modelChangeListener) {
         this.baseChangeListener = modelChangeListener;
     }
 

@@ -82,8 +82,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnBaseCh
         }
 
         if (mvm instanceof BaseViewModelObserver) {
-            ((BaseViewModelObserver) mvm).setRootViewContainer(getRootView(binding.getRoot()));
-            ((BaseViewModelObserver) mvm).setBaseChangedListener(this);
+            ((BaseViewModelObserver) mvm).setRootViewContainer((ViewGroup) binding.getRoot().getRootView());
+            ((BaseViewModelObserver) mvm).setOnBaseChangedListener(this);
         }
 
         toolbar = getToolbar();
@@ -113,11 +113,6 @@ public abstract class BaseActivity extends AppCompatActivity implements OnBaseCh
     protected abstract int getMainLayout();
 
     protected abstract Toolbar getToolbar();
-
-    protected ViewGroup getRootView(View bindingRoot) {
-
-        return (ViewGroup) bindingRoot.getRootView();
-    }
 
     protected void onToolbarSetup(Toolbar toolbar, ActionBar bar) {
 
