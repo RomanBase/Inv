@@ -10,30 +10,38 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <FrameLayout
-            android:id="@+id/screen_root_container"
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/root_coordinator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
 
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/screen_root_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                android:orientation="vertical">
+                android:fitsSystemWindows="true">
 
-                <include layout="@layout/activity_toolbar"/>
-
-                <FrameLayout
-                    android:id="@+id/root_container"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clipToPadding="true"
-                    android:fitsSystemWindows="true"/>
+                    android:fitsSystemWindows="true"
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <include layout="@layout/activity_toolbar"/>
 
-        </FrameLayout>
+                    <FrameLayout
+                        android:id="@+id/root_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="true"
+                        android:fitsSystemWindows="true"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </android.support.design.widget.CoordinatorLayout>
 
         <android.support.design.widget.NavigationView
             android:layout_width="288dp"

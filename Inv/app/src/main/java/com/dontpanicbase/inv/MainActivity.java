@@ -1,5 +1,8 @@
 package com.dontpanicbase.inv;
 
+import android.databinding.ViewDataBinding;
+import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v7.widget.Toolbar;
 
 import com.dontpanic.base.Base;
@@ -12,6 +15,8 @@ import com.dontpanic.inv.fire.FireUserStateListener;
 import com.dontpanic.inv.viewmodel.sidemenu.MenuModel;
 import com.dontpanic.inv.viewmodel.user.LoginViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnMenuTabClickListener;
 
 public class MainActivity extends BaseActivityDrawer {
 
@@ -41,6 +46,45 @@ public class MainActivity extends BaseActivityDrawer {
                 .setViewModel(factory.getViewModel(LoginViewModel.class))
                 .setMenuModel(new MenuModel(this, R.id.root_menu_container))
                 .build();
+    }
+
+    BottomBar bar;
+
+    @Override
+    protected void onPostInit(Bundle state, ViewDataBinding binding) {
+        super.onPostInit(state, binding);
+
+        bar = BottomBar.attach(findViewById(R.id.root_coordinator), state);
+        bar.noTopOffset();
+        bar.noNavBarGoodness();
+
+        bar.setItems(R.menu.menu_bottom);
+        bar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
+            @Override
+            public void onMenuTabSelected(@IdRes int menuItemId) {
+
+            }
+
+            @Override
+            public void onMenuTabReSelected(@IdRes int menuItemId) {
+
+            }
+        });
+
+        bar.mapColorForTab(0, "#AAFF0000");
+        bar.mapColorForTab(1, "#AAFFFF00");
+        bar.mapColorForTab(2, "#AAFF00FF");
+        bar.mapColorForTab(3, "#AA00FF00");
+        bar.mapColorForTab(4, "#AA00FFFF");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if(bar != null){
+            bar.onSaveInstanceState(outState);
+        }
     }
 
     @Override
