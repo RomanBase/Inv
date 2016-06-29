@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable name="Activity" type="com.dontpanicbase.inv.MainActivity"/>
@@ -10,38 +11,31 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/root_coordinator"
+        <FrameLayout
+            android:id="@+id/screen_root_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
 
-            <FrameLayout
-                android:id="@+id/screen_root_container"
+            <android.support.design.widget.CoordinatorLayout
+                android:id="@+id/root_coordinator"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true">
 
-                <LinearLayout
+                <include layout="@layout/activity_toolbar"/>
+
+                <FrameLayout
+                    android:id="@+id/root_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:clipToPadding="true"
                     android:fitsSystemWindows="true"
-                    android:orientation="vertical">
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-                    <include layout="@layout/activity_toolbar"/>
+            </android.support.design.widget.CoordinatorLayout>
 
-                    <FrameLayout
-                        android:id="@+id/root_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clipToPadding="true"
-                        android:fitsSystemWindows="true"/>
-
-                </LinearLayout>
-
-            </FrameLayout>
-
-        </android.support.design.widget.CoordinatorLayout>
+        </FrameLayout>
 
         <android.support.design.widget.NavigationView
             android:layout_width="288dp"

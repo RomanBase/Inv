@@ -3,6 +3,7 @@ package com.dontpanicbase.inv;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
 
 import com.dontpanic.base.Base;
@@ -54,7 +55,7 @@ public class MainActivity extends BaseActivityDrawer {
     protected void onPostInit(Bundle state, ViewDataBinding binding) {
         super.onPostInit(state, binding);
 
-        bar = BottomBar.attach(findViewById(R.id.root_coordinator), state);
+        bar = BottomBar.attach((CoordinatorLayout) findViewById(R.id.root_coordinator), state);
         bar.noTopOffset();
         bar.noNavBarGoodness();
 
@@ -82,7 +83,7 @@ public class MainActivity extends BaseActivityDrawer {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if(bar != null){
+        if (bar != null) {
             bar.onSaveInstanceState(outState);
         }
     }
