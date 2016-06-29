@@ -1,5 +1,8 @@
 package com.dontpanic.base.animators;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -7,6 +10,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.Transformation;
+
+import com.dontpanic.base.common.statics.MathHelper;
 
 public class BaseAnim {
 
@@ -52,6 +57,33 @@ public class BaseAnim {
         animation.setDuration(SCALE_DURATION);
         animation.setFillAfter(true);
         view.startAnimation(animation);
+
+        return animation;
+    }
+
+    @Nullable
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static Animation elevate(View view, final float from, final float to) {
+
+        ViewAnimation animation = new ViewAnimation(view) {
+            @Override
+            protected void onInit(View view) {
+                view.setElevation(from);
+            }
+
+            @Override
+            protected void onTransformationStep(View view, float delta) {
+                view.setElevation(MathHelper.interpolate(from, to, delta));
+            }
+
+            @Override
+            protected void onTransformationDone(View view) {
+                view.setElevation(to);
+            }
+        };
+
+        animation.setDuration(SCALE_DURATION);
+        animation.start();
 
         return animation;
     }

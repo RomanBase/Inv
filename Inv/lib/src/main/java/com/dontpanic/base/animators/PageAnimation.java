@@ -18,15 +18,22 @@ import java.util.List;
 
 public class PageAnimation extends AnimatorListenerAdapter {
 
-    final static long DURATION = 500;
+    private final static long DURATION = 350;
 
     public boolean inProgress;
 
     final List<Item> items;
 
+    private long duration = DURATION;
+
     public PageAnimation() {
 
         items = new ArrayList<>();
+    }
+
+    public void setDuration(long duration) {
+
+        this.duration = duration;
     }
 
     public void addItem(PageAnimation.Item item) {
@@ -39,7 +46,7 @@ public class PageAnimation extends AnimatorListenerAdapter {
         setInitialState();
 
         final ValueAnimator animator = new ValueAnimator();
-        animator.setDuration(DURATION);
+        animator.setDuration(duration);
         animator.setFloatValues(0.0f, 1.0f);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -59,7 +66,7 @@ public class PageAnimation extends AnimatorListenerAdapter {
     public void startHideAnimation(@Nullable Animator.AnimatorListener listener) {
 
         ValueAnimator animator = new ValueAnimator();
-        animator.setDuration(DURATION);
+        animator.setDuration(duration);
         animator.setFloatValues(1.0f, 0.0f);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override

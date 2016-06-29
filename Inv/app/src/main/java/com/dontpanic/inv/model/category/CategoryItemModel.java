@@ -19,11 +19,10 @@ public class CategoryItemModel extends InvSelectableItemModel {
         public void onTouchActionDown(View view) {
 
             View image = ((ViewGroup) view).getChildAt(0);
-
             BaseAnim.scale(image, view, image.getPaddingTop());
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                view.setElevation(24.0f);
+                view.setElevation(view.getResources().getDimension(R.dimen.base_padding));
             }
         }
 
@@ -31,7 +30,6 @@ public class CategoryItemModel extends InvSelectableItemModel {
         public void onTouchActionUp(View view) {
 
             View image = ((ViewGroup) view).getChildAt(0);
-
             BaseAnim.scaleReverse(image, view, image.getPaddingTop());
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
