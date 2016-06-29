@@ -24,6 +24,38 @@ public class BaseAnim {
         return animation;
     }
 
+    public static Animation scale(View view, View to, float padding) {
+
+        float fromX = 1.0f;
+        float fromY = 1.0f;
+        float toX = (float) to.getWidth() / ((float) view.getWidth() - padding * 2.0f);
+        float toY = (float) to.getHeight() / ((float) view.getHeight() - padding * 2.0f);
+
+        Animation animation = new ScaleAnimation(fromX, toX, fromY, toY, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setInterpolator(new AccelerateDecelerateInterpolator());
+        animation.setDuration(SCALE_DURATION);
+        animation.setFillAfter(true);
+        view.startAnimation(animation);
+
+        return animation;
+    }
+
+    public static Animation scaleReverse(View view, View to, float padding) {
+
+        float fromX = (float) to.getWidth() / ((float) view.getWidth() - padding * 2.0f);
+        float fromY = (float) to.getHeight() / ((float) view.getHeight() - padding * 2.0f);
+        float toX = 1.0f;
+        float toY = 1.0f;
+
+        Animation animation = new ScaleAnimation(fromX, toX, fromY, toY, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setInterpolator(new AccelerateDecelerateInterpolator());
+        animation.setDuration(SCALE_DURATION);
+        animation.setFillAfter(true);
+        view.startAnimation(animation);
+
+        return animation;
+    }
+
     public static Animation fade(View view) {
 
         Animation animation = new AlphaAnimation(1.0f, 0.0f);

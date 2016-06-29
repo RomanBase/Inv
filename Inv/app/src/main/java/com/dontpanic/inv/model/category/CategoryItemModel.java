@@ -18,7 +18,9 @@ public class CategoryItemModel extends InvSelectableItemModel {
         @Override
         public void onTouchActionDown(View view) {
 
-            BaseAnim.scale(((ViewGroup) view).getChildAt(0), 1.0f, ACTION_SCALE);
+            View image = ((ViewGroup) view).getChildAt(0);
+
+            BaseAnim.scale(image, view, image.getPaddingTop());
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 view.setElevation(24.0f);
@@ -28,7 +30,9 @@ public class CategoryItemModel extends InvSelectableItemModel {
         @Override
         public void onTouchActionUp(View view) {
 
-            BaseAnim.scale(((ViewGroup) view).getChildAt(0), ACTION_SCALE, 1.0f);
+            View image = ((ViewGroup) view).getChildAt(0);
+
+            BaseAnim.scaleReverse(image, view, image.getPaddingTop());
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 view.setElevation(0.0f);
