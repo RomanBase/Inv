@@ -12,8 +12,9 @@ public class FireFactory extends BaseFactory {
     public final FirebaseAuth auth;
     public final FireSignIn signIn;
 
-    public GoogleSignIn googleSignIn;
-    public FacebookSignIn facebookSignIn;
+    public GoogleSignIn googleSignIn; // TODO: 21/07/16
+    public FacebookSignIn facebookSignIn; // TODO: 21/07/16  
+
     public FireUser user;
 
     public FireFactory(FirebaseAuth auth, FireSignIn signIn) {

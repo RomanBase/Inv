@@ -43,6 +43,11 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, Model> {
         }
     }
 
+    public void onAccountPressed(View view) {
+
+        getNavigation().setViewModel(getFactory().getViewModel(LoginFireViewModel.class), false);
+    }
+
     public void onLogoutPressed(View view) {
 
         getFireFactory().auth.signOut();

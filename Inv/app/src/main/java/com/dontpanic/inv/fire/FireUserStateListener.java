@@ -38,6 +38,18 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
         notifyViewModel(FireArgCode.USER_SIGNED_OUT, user);
     }
 
+    @Override
+    public void onFireUserError(FireSignIn.FireSignInVariant variant, Exception ex) {
+
+        Base.logE("user log error - " + variant);
+
+        ViewModelObserver observer = activity.getViewModelObserver();
+
+        if (observer != null) {
+            observer.postArgsToViewModel(FireArgCode.USER_SIGNIN_ERROR, variant, ex);
+        }
+    }
+
     private void notifyViewModel(int state, FireUser user) {
 
         ViewModelObserver observer = activity.getViewModelObserver();

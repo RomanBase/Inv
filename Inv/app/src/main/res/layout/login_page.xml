@@ -9,7 +9,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffa0"
+        android:gravity="center"
         android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="192dp"
+            android:src="@drawable/placeholder"/>
+
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"/>
 
         <android.support.v7.widget.AppCompatButton
             android:layout_width="match_parent"
@@ -23,14 +33,11 @@
             android:onClick="@{VM.onGooglePressed}"
             android:text="gplus"/>
 
-        <Space android:layout_width="wrap_content"
-               android:layout_height="120dp"/>
-
         <android.support.v7.widget.AppCompatButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{VM.onLogoutPressed}"
-            android:text="log out"/>
+            android:onClick="@{VM.onAccountPressed}"
+            android:text="account"/>
 
     </LinearLayout>
 </layout>

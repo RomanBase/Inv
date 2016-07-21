@@ -56,6 +56,7 @@ public class FacebookSignIn {
             public void onError(FacebookException error) {
 
                 Log.v("Fire", "facebook log error");
+                fireSignIn.notifyErrorStatusListener(FireSignIn.FireSignInVariant.facebook, error);
             }
         });
 

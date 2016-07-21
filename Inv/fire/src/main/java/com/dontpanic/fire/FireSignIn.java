@@ -95,7 +95,7 @@ public class FireSignIn {
         onGoogleSignIn(Auth.GoogleSignInApi.getSignInResultFromIntent(data));
     }
 
-    public void onGoogleSignIn(GoogleSignInResult result) {
+    public void onGoogleSignIn(@NonNull GoogleSignInResult result) {
 
         GoogleSignInAccount account = result.getSignInAccount();
 
@@ -111,11 +111,14 @@ public class FireSignIn {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         Log.v("Fire", "on log complete " + task.isSuccessful());
+                        if (!task.isSuccessful()) {
+                            notifyErrorStatusListener(FireSignInVariant.gplus, task.getException());
+                        }
                     }
                 });
     }
 
-    public void onFacebookSignIn(AccessToken access) {
+    public void onFacebookSignIn(@NonNull AccessToken access) {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(access.getToken());
 
@@ -125,8 +128,50 @@ public class FireSignIn {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         Log.v("Fire", "on log complete " + task.isSuccessful());
+                        if (!task.isSuccessful()) {
+                            notifyErrorStatusListener(FireSignInVariant.facebook, task.getException());
+                        }
                     }
                 });
+    }
+
+    public void withFirebase(@NonNull String email, @NonNull String password) {
+
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        Log.v("Fire", "on log complete " + task.isSuccessful());
+                        if (!task.isSuccessful()) {
+                            notifyErrorStatusListener(FireSignInVariant.firebase_login, task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void withFirebaseRegistration(@NonNull String email, @NonNull String password) {
+
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        Log.v("Fire", "on register complete " + task.isSuccessful());
+                        if (!task.isSuccessful()) {
+                            notifyErrorStatusListener(FireSignInVariant.firebase_registration, task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void notifyErrorStatusListener(FireSignInVariant variant, Exception ex) {
+
+        if (userStatusListener == null) {
+            return;
+        }
+
+        userStatusListener.onFireUserError(variant, ex);
     }
 
     public interface OnUserStateChangedListener {
@@ -134,5 +179,17 @@ public class FireSignIn {
         void onFireUserSignedIn(FirebaseUser user);
 
         void onFireUserSignedOut();
+
+        void onFireUserError(FireSignInVariant variant, Exception ex);
+    }
+
+    public static enum FireSignInVariant {
+        facebook,
+        gplus,
+        twitter,
+        github,
+        firebase_login,
+        firebase_registration,
+        custom
     }
 }
