@@ -124,12 +124,20 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
             Exception ex = argsHelper.getArg(Exception.class);
 
             if (variant != null) {
-                switch (variant) {
-                    case firebase_login:
-                        registerWithFirebase();
-                        break;
-                }
+                variant = FireSignIn.FireSignInVariant.unknown;
             }
+
+            handleLoginError(variant, ex);
+        }
+    }
+
+    // TODO: 21/07/16 handle errors
+    private void handleLoginError(FireSignIn.FireSignInVariant variant, Exception ex) {
+
+        switch (variant) {
+            case firebase_login:
+                registerWithFirebase();
+                break;
         }
     }
 

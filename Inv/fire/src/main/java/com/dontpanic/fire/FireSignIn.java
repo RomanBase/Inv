@@ -30,7 +30,8 @@ public class FireSignIn {
         github,
         firebase_login,
         firebase_registration,
-        custom
+        custom,
+        unknown
     }
 
     final FirebaseAuth auth;
