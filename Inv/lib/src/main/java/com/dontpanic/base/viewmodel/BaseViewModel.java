@@ -16,12 +16,11 @@ import android.view.ViewGroup;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-
 import com.dontpanic.base.Base;
 import com.dontpanic.base.custom.args.InitArgs;
 import com.dontpanic.base.interfaces.Initializable;
-import com.dontpanic.base.interfaces.viewmodel.NetworkingViewModel;
 import com.dontpanic.base.interfaces.ObjectFactory;
+import com.dontpanic.base.interfaces.viewmodel.NetworkingViewModel;
 import com.dontpanic.base.interfaces.viewmodel.ViewModel;
 import com.dontpanic.base.interfaces.viewmodel.ViewModelNavigation;
 import com.dontpanic.base.interfaces.viewmodel.ViewModelObserver;
@@ -75,6 +74,10 @@ public abstract class BaseViewModel<S extends ViewDataBinding, T extends Model> 
         int variable = getBindingResource();
         if (variable > 0) {
             binding.setVariable(variable, this);
+        }
+
+        if (model != null) {
+            bindModel();
         }
 
         onCreateViewBinding(binding);
@@ -184,7 +187,7 @@ public abstract class BaseViewModel<S extends ViewDataBinding, T extends Model> 
 
     public void bindModel(Model model) {
 
-        if (model != null) {
+        if (model != null && binding != null) {
             int variable = model.getVariableBindingResource();
             if (variable > 0) {
                 binding.setVariable(variable, model);
@@ -194,7 +197,7 @@ public abstract class BaseViewModel<S extends ViewDataBinding, T extends Model> 
 
     private void bindModel() {
 
-        if (model != null) {
+        if (model != null && binding != null) {
             isModelBinded = true;
             bindModel(model);
         }

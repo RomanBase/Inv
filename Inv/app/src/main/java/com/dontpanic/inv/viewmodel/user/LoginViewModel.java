@@ -3,25 +3,29 @@ package com.dontpanic.inv.viewmodel.user;
 import android.content.Intent;
 import android.view.View;
 
+import com.dontpanic.base.common.statics.StringHelper;
+import com.dontpanic.base.custom.args.InitArgs;
 import com.dontpanic.base.interfaces.viewmodel.ViewModel;
-import com.dontpanic.base.model.Model;
 import com.dontpanic.base.viewmodel.BaseViewModelObserver;
 import com.dontpanic.fire.FacebookSignIn;
+import com.dontpanic.fire.FireSignIn;
 import com.dontpanic.fire.GoogleSignIn;
 import com.dontpanic.inv.FireFactory;
 import com.dontpanic.inv.fire.FireArgCode;
+import com.dontpanic.inv.model.user.LoginModel;
 import com.dontpanic.inv.viewmodel.InvViewModel;
 import com.dontpanic.inv.viewmodel.categories.CategoriesViewModel;
 import com.dontpanicbase.inv.R;
 import com.dontpanicbase.inv.databinding.LoginPageBinding;
 
-public class LoginViewModel extends InvViewModel<LoginPageBinding, Model> {
+public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
 
     @Override
     public void onInit() {
         super.onInit();
 
         setTitle("login");
+        setModel(new LoginModel());
     }
 
     public void onFacebookPressed(View view) {
@@ -45,12 +49,41 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, Model> {
 
     public void onAccountPressed(View view) {
 
-        getNavigation().setViewModel(getFactory().getViewModel(LoginFireViewModel.class), false);
+        boolean isFireLoginActive = model.showLoginFields.get();
+
+        if (isFireLoginActive) {
+
+            boolean isValid = true;
+            if (StringHelper.isEmpty(model.email.get())) {
+                isValid = false;
+            }
+
+            if (StringHelper.isEmpty(model.password.get())) {
+                isValid = false;
+            }
+
+            if (isValid) {
+                logInWithFirebase();
+            }
+
+        } else {
+            model.showLoginFields.set(true);
+        }
     }
 
-    public void onLogoutPressed(View view) {
+    public void onCloseFireLoginPressed(View view) {
 
-        getFireFactory().auth.signOut();
+        model.showLoginFields.set(false);
+    }
+
+    private void logInWithFirebase() {
+
+        getFireFactory().signIn.withFirebase(model.email.get(), model.password.get());
+    }
+
+    private void registerWithFirebase() {
+
+        getFireFactory().signIn.withFirebaseRegistration(model.email.get(), model.password.get());
     }
 
     @Override
@@ -81,6 +114,21 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, Model> {
             if (vm != null) {
                 observer.setDefaultViewModel(vm);
                 observer.notifyViewModelChanged();
+            }
+        }
+
+        if (requestCode == FireArgCode.USER_SIGNIN_ERROR) {
+
+            InitArgs argsHelper = new InitArgs(this, args);
+            FireSignIn.FireSignInVariant variant = argsHelper.getArg(FireSignIn.FireSignInVariant.class);
+            Exception ex = argsHelper.getArg(Exception.class);
+
+            if (variant != null) {
+                switch (variant) {
+                    case firebase_login:
+                        registerWithFirebase();
+                        break;
+                }
             }
         }
     }
