@@ -2,8 +2,6 @@ package com.dontpanicbase.inv;
 
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
 
 import com.dontpanic.base.Base;
@@ -17,7 +15,6 @@ import com.dontpanic.inv.viewmodel.sidemenu.MenuModel;
 import com.dontpanic.inv.viewmodel.user.LoginViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabClickListener;
 
 public class MainActivity extends BaseActivityDrawer {
 
@@ -55,7 +52,7 @@ public class MainActivity extends BaseActivityDrawer {
     protected void onPostInit(Bundle state, ViewDataBinding binding) {
         super.onPostInit(state, binding);
 
-        bar = BottomBar.attach((CoordinatorLayout) findViewById(R.id.root_coordinator), state);
+        /*bar = BottomBar.attach((CoordinatorLayout) findViewById(R.id.root_coordinator), state);
         bar.noTopOffset();
         bar.noNavBarGoodness();
 
@@ -76,7 +73,7 @@ public class MainActivity extends BaseActivityDrawer {
         bar.mapColorForTab(1, "#AAFFFF00");
         bar.mapColorForTab(2, "#AAFF00FF");
         bar.mapColorForTab(3, "#AA00FF00");
-        bar.mapColorForTab(4, "#AA00FFFF");
+        bar.mapColorForTab(4, "#AA00FFFF");*/
     }
 
     @Override

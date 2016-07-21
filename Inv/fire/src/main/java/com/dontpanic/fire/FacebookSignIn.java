@@ -42,20 +42,20 @@ public class FacebookSignIn {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                Log.v("Fire", "facebook log in");
+                Log.v(FireSignIn.TAG, "facebook log in");
                 fireSignIn.onFacebookSignIn(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
 
-                Log.v("Fire", "facebook log cancel");
+                Log.v(FireSignIn.TAG, "facebook log cancel");
             }
 
             @Override
             public void onError(FacebookException error) {
 
-                Log.v("Fire", "facebook log error");
+                Log.v(FireSignIn.TAG, "facebook log error");
                 fireSignIn.notifyErrorStatusListener(FireSignIn.FireSignInVariant.facebook, error);
             }
         });

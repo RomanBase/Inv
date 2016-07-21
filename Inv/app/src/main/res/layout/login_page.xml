@@ -14,30 +14,38 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:layout_width="match_parent"
-            android:layout_height="192dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="@dimen/extended_padding"
             android:src="@drawable/placeholder"/>
 
-        <android.support.v4.widget.Space
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"/>
-
-        <android.support.v7.widget.AppCompatButton
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{VM.onFacebookPressed}"
-            android:text="facebook"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/extended_padding"
+            android:paddingRight="@dimen/extended_padding">
 
-        <android.support.v7.widget.AppCompatButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{VM.onGooglePressed}"
-            android:text="gplus"/>
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{VM.onFacebookPressed}"
+                android:text="facebook"/>
 
-        <android.support.v7.widget.AppCompatButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{VM.onAccountPressed}"
-            android:text="account"/>
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{VM.onGooglePressed}"
+                android:text="gplus"/>
+
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{VM.onAccountPressed}"
+                android:text="account" android:id="@+id/appCompatButton"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 </layout>

@@ -2,4 +2,6 @@
 
     <dimen name="corner_radius">6dp</dimen>
 
+    <dimen name="base_item_size">32dp</dimen>
+
 </resources>

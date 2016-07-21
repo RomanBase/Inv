@@ -3,7 +3,7 @@ package com.dontpanic.fire;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -52,6 +52,11 @@ public class GoogleSignIn {
             this.signIn = signIn;
         }
 
+        public GoogleSignInRequest client(int resId) {
+
+            return client(signIn.activity.getResources().getString(resId));
+        }
+
         public GoogleSignInRequest client(String id) {
 
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -62,11 +67,6 @@ public class GoogleSignIn {
             return log(gso);
         }
 
-        public GoogleSignInRequest client(int resId) {
-
-            return client(signIn.activity.getResources().getString(resId));
-        }
-
         private GoogleSignInRequest log(GoogleSignInOptions gso) {
 
             if (signIn.apiClient == null) {
@@ -75,9 +75,9 @@ public class GoogleSignIn {
                         .enableAutoManage(signIn.activity, new GoogleApiClient.OnConnectionFailedListener() {
                             @Override
                             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                                Toast.makeText(signIn.activity, "Sign in failed", Toast.LENGTH_SHORT).show();
+                                Log.e(FireSignIn.TAG, "Google plus connection error");
                             }
-                        }) // TODO: 20/06/16 on connection failed action
+                        })
                         .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                         .build();
             }

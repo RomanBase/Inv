@@ -21,6 +21,18 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class FireSignIn {
 
+    public static final String TAG = "Fire";
+
+    public static enum FireSignInVariant {
+        facebook,
+        gplus,
+        twitter,
+        github,
+        firebase_login,
+        firebase_registration,
+        custom
+    }
+
     final FirebaseAuth auth;
 
     private boolean isRegistered;
@@ -72,15 +84,11 @@ public class FireSignIn {
     public void checkGoogleSignIn(@NonNull GoogleSignIn googleSignIn) {
 
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleSignIn.getGoogleApiClient());
+
         if (opr.isDone()) {
-            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-            // and the GoogleSignInResult will be available instantly.
             GoogleSignInResult result = opr.get();
             onGoogleSignIn(result);
         } else {
-            // If the user has not previously signed in on this device or the sign-in has expired,
-            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
-            // single sign-on will occur in this branch.
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
@@ -110,7 +118,7 @@ public class FireSignIn {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        Log.v("Fire", "on log complete " + task.isSuccessful());
+                        Log.v(TAG, "on google log complete " + task.isSuccessful());
                         if (!task.isSuccessful()) {
                             notifyErrorStatusListener(FireSignInVariant.gplus, task.getException());
                         }
@@ -127,7 +135,7 @@ public class FireSignIn {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        Log.v("Fire", "on log complete " + task.isSuccessful());
+                        Log.v(TAG, "on facebook log complete " + task.isSuccessful());
                         if (!task.isSuccessful()) {
                             notifyErrorStatusListener(FireSignInVariant.facebook, task.getException());
                         }
@@ -142,7 +150,7 @@ public class FireSignIn {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        Log.v("Fire", "on log complete " + task.isSuccessful());
+                        Log.v(TAG, "on firebase log complete " + task.isSuccessful());
                         if (!task.isSuccessful()) {
                             notifyErrorStatusListener(FireSignInVariant.firebase_login, task.getException());
                         }
@@ -157,7 +165,7 @@ public class FireSignIn {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        Log.v("Fire", "on register complete " + task.isSuccessful());
+                        Log.v(TAG, "on register complete " + task.isSuccessful());
                         if (!task.isSuccessful()) {
                             notifyErrorStatusListener(FireSignInVariant.firebase_registration, task.getException());
                         }
@@ -181,15 +189,5 @@ public class FireSignIn {
         void onFireUserSignedOut();
 
         void onFireUserError(FireSignInVariant variant, Exception ex);
-    }
-
-    public static enum FireSignInVariant {
-        facebook,
-        gplus,
-        twitter,
-        github,
-        firebase_login,
-        firebase_registration,
-        custom
     }
 }
