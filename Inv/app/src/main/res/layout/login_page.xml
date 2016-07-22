@@ -98,6 +98,13 @@
                 android:onClick="@{VM.onCloseFireLoginPressed}"
                 android:text="x"
                 android:visibility="@{M.showLoginFields ? View.VISIBLE : View.GONE}"/>
+
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{VM.onMagicButtonPressed}"
+                android:text="magic"/>
+
         </LinearLayout>
 
     </LinearLayout>

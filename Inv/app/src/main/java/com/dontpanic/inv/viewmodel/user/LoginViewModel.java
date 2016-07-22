@@ -3,11 +3,14 @@ package com.dontpanic.inv.viewmodel.user;
 import android.content.Intent;
 import android.view.View;
 
+import com.dontpanic.base.Base;
 import com.dontpanic.base.common.statics.StringHelper;
 import com.dontpanic.base.custom.args.InitArgs;
+import com.dontpanic.base.custom.builder.ToastBuilder;
 import com.dontpanic.base.interfaces.viewmodel.ViewModel;
 import com.dontpanic.base.viewmodel.BaseViewModelObserver;
 import com.dontpanic.fire.FacebookSignIn;
+import com.dontpanic.fire.FireData;
 import com.dontpanic.fire.FireSignIn;
 import com.dontpanic.fire.GoogleSignIn;
 import com.dontpanic.inv.FireFactory;
@@ -17,6 +20,11 @@ import com.dontpanic.inv.viewmodel.InvViewModel;
 import com.dontpanic.inv.viewmodel.categories.CategoriesViewModel;
 import com.dontpanicbase.inv.R;
 import com.dontpanicbase.inv.databinding.LoginPageBinding;
+import com.firebase.geofire.GeoLocation;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
 
@@ -106,6 +114,11 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
     @Override
     public void onReceiveArgs(int requestCode, Object[] args) {
 
+        if (Base.debug) {
+            new ToastBuilder(getContext()).text("log").buildAndShow();
+            return;
+        }
+
         if (requestCode == FireArgCode.USER_SIGNED_IN) {
 
             BaseViewModelObserver observer = getObserver();
@@ -146,4 +159,37 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
         return R.layout.login_page;
     }
 
+
+    public void onMagicButtonPressed(View view) {
+
+        FireData data = FireData.init();
+
+        data.listener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Base.log(dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                Base.logE(databaseError.getMessage());
+            }
+        });
+
+        DatabaseReference ref = data.root("base").get("kuk");
+        ref.setValue(new Ahoj());
+
+        ref.push();
+
+        data.geo(ref).set("loc", new GeoLocation(10.0, 10.0));
+    }
+
+    public static class Ahoj {
+
+        public String a1 = "1";
+        public String a2 = "2";
+        public int i3 = 3;
+    }
 }
