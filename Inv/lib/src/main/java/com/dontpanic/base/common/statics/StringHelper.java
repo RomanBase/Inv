@@ -65,6 +65,11 @@ public final class StringHelper {
         return o == null || o.isEmpty();
     }
 
+    public static boolean isEmpty(@Nullable Object o) {
+
+        return o == null || isEmpty(o.toString());
+    }
+
     public static int toInteger(@Nullable String o) {
 
         if (isEmpty(o)) {

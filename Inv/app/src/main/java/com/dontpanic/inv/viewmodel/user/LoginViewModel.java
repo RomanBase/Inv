@@ -1,25 +1,33 @@
 package com.dontpanic.inv.viewmodel.user;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.dontpanic.base.Base;
 import com.dontpanic.base.common.statics.StringHelper;
 import com.dontpanic.base.custom.args.InitArgs;
-import com.dontpanic.base.custom.builder.ToastBuilder;
 import com.dontpanic.base.interfaces.viewmodel.ViewModel;
 import com.dontpanic.base.viewmodel.BaseViewModelObserver;
 import com.dontpanic.fire.FacebookSignIn;
+import com.dontpanic.fire.FireData;
 import com.dontpanic.fire.FireSignIn;
 import com.dontpanic.fire.GoogleSignIn;
 import com.dontpanic.inv.FireFactory;
+import com.dontpanic.inv.entity.User;
 import com.dontpanic.inv.fire.FireArgCode;
+import com.dontpanic.inv.fire.FireUser;
+import com.dontpanic.inv.fire.FireValueListener;
 import com.dontpanic.inv.model.user.LoginModel;
 import com.dontpanic.inv.viewmodel.InvViewModel;
 import com.dontpanic.inv.viewmodel.categories.CategoriesViewModel;
 import com.dontpanicbase.inv.R;
 import com.dontpanicbase.inv.databinding.LoginPageBinding;
+import com.google.firebase.database.DatabaseError;
 
 public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
+
+    private FireUser fireUser;
 
     @Override
     public void onInit() {
@@ -87,6 +95,48 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
         getFireFactory().signIn.withFirebaseRegistration(model.email.get(), model.password.get());
     }
 
+    private void checkCredinals(String uid) {
+
+        if (fireUser == null || isLoading.get()) {
+            return;
+        }
+
+        isLoading.set(true);
+
+        FireData.init()
+                .root(User.KEY)
+                .listener(new FireValueListener<User>(User.class) {
+
+                    @Override
+                    public void onDataChanged(@Nullable User data) {
+
+                        if (data == null || StringHelper.isEmpty(data.nickname)) {
+                            Base.log("user not set");
+                            ViewModel vm = getFactory().getViewModel(LoginCredinalsViewModel.class, fireUser);
+                            getNavigation().setViewModel(vm, false);
+                        } else {
+                            Base.log("user logged as", data.nickname);
+                            BaseViewModelObserver observer = getObserver();
+                            ViewModel vm = getFactory().getViewModel(CategoriesViewModel.class);
+
+                            if (vm != null) {
+                                observer.setDefaultViewModel(vm);
+                                observer.notifyViewModelChanged();
+                            }
+                        }
+
+                        isLoading.set(false);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                        isLoading.set(false);
+                    }
+                })
+                .get(fireUser.data.getUid());
+    }
+
     @Override
     public boolean onBaseActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -108,25 +158,21 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
     public void onReceiveArgs(int requestCode, Object[] args) {
 
         //magic button test
-        if (requestCode == FireArgCode.USER_SIGNED_IN) {
+        /*if (requestCode == FireArgCode.USER_SIGNED_IN) {
             new ToastBuilder(getContext()).text("log in").buildAndShow();
             return;
-        }
+        }*/
+
+        InitArgs argsHelper = new InitArgs(this, args);
 
         if (requestCode == FireArgCode.USER_SIGNED_IN) {
 
-            BaseViewModelObserver observer = getObserver();
-            ViewModel vm = getFactory().getViewModel(CategoriesViewModel.class);
-
-            if (vm != null) {
-                observer.setDefaultViewModel(vm);
-                observer.notifyViewModelChanged();
-            }
+            fireUser = argsHelper.getArg(FireUser.class);
+            checkCredinals(fireUser.data.getUid());
         }
 
         if (requestCode == FireArgCode.USER_SIGNIN_ERROR) {
 
-            InitArgs argsHelper = new InitArgs(this, args);
             FireSignIn.FireSignInVariant variant = argsHelper.getArg(FireSignIn.FireSignInVariant.class);
             Exception ex = argsHelper.getArg(Exception.class);
 
@@ -157,12 +203,5 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
     public void onMagicButtonPressed(View view) {
 
 
-    }
-
-    public static class Ahoj {
-
-        public String a1 = "1";
-        public String a2 = "2";
-        public int i3 = 3;
     }
 }

@@ -4,10 +4,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class FireUser {
 
-    private final FirebaseUser firebase;
+    public final FirebaseUser data;
 
-    public FireUser(FirebaseUser firebase) {
-        this.firebase = firebase;
+    public FireUser(FirebaseUser data) {
+        this.data = data;
     }
 
 }

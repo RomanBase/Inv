@@ -49,14 +49,14 @@
                     android:layout_height="wrap_content"
                     android:onClick="@{VM.onGooglePressed}"
                     android:text="@string/gplus"
-                    android:visibility="@{M.showLoginFields ? View.GONE : View.VISIBLE}"/>
+                    android:visibility="@{M.showLoginFields ? View.INVISIBLE : View.VISIBLE}"/>
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/email_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:visibility="@{M.showLoginFields ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{M.showLoginFields ? View.VISIBLE : View.INVISIBLE}"
                     app:text="@{M.email}"/>
 
             </FrameLayout>
@@ -72,14 +72,14 @@
                     android:layout_height="wrap_content"
                     android:onClick="@{VM.onFacebookPressed}"
                     android:text="@string/facebook"
-                    android:visibility="@{M.showLoginFields ? View.GONE : View.VISIBLE}"/>
+                    android:visibility="@{M.showLoginFields ? View.INVISIBLE : View.VISIBLE}"/>
 
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/password_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:visibility="@{M.showLoginFields ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{M.showLoginFields ? View.VISIBLE : View.INVISIBLE}"
                     app:text="@{M.password}"/>
 
             </FrameLayout>
