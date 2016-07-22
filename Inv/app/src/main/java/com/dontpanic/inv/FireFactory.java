@@ -17,8 +17,8 @@ public class FireFactory extends BaseFactory {
 
     public FireUser user;
 
-    public FireFactory(FirebaseAuth auth, FireSignIn signIn) {
-        this.auth = auth;
+    public FireFactory(FireSignIn signIn) {
         this.signIn = signIn;
+        this.auth = signIn.auth;
     }
 }

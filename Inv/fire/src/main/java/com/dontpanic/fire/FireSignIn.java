@@ -34,7 +34,7 @@ public class FireSignIn {
         unknown
     }
 
-    final FirebaseAuth auth;
+    public final FirebaseAuth auth;
 
     private boolean isRegistered;
 
@@ -42,6 +42,11 @@ public class FireSignIn {
 
     public FireSignIn(FirebaseAuth auth) {
         this.auth = auth;
+    }
+
+    public static FireSignIn init() {
+
+        return new FireSignIn(FirebaseAuth.getInstance());
     }
 
     private final FirebaseAuth.AuthStateListener fireAuthListener = new FirebaseAuth.AuthStateListener() {

@@ -13,7 +13,6 @@ import com.dontpanic.inv.FireFactory;
 import com.dontpanic.inv.fire.FireUserStateListener;
 import com.dontpanic.inv.viewmodel.sidemenu.MenuModel;
 import com.dontpanic.inv.viewmodel.user.LoginViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 import com.roughike.bottombar.BottomBar;
 
 public class MainActivity extends BaseActivityDrawer {
@@ -25,10 +24,7 @@ public class MainActivity extends BaseActivityDrawer {
 
         Base.debug = true;
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FireSignIn fireSignIn = new FireSignIn(auth);
-
-        factory = new FireFactory(auth, fireSignIn);
+        factory = new FireFactory(FireSignIn.init());
         factory.signIn.setOnUserStateChangedListener(new FireUserStateListener(this, factory));
         factory.signIn.register();
 
