@@ -26,8 +26,13 @@ public class SnackbarBuilder {
     private ColorStateList actionColors;
     private View.OnClickListener listener;
 
-    public SnackbarBuilder(@NonNull View root) {
+    private SnackbarBuilder(View root) {
         this.root = root;
+    }
+
+    public static SnackbarBuilder with(@NonNull View root) {
+
+        return new SnackbarBuilder(root);
     }
 
     public SnackbarBuilder lengthShort() {

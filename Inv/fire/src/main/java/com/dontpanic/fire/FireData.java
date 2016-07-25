@@ -2,6 +2,7 @@ package com.dontpanic.fire;
 
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,7 +30,7 @@ public class FireData {
         return new FireData(database);
     }
 
-    public static FireData with(DatabaseReference reference) {
+    public static FireData with(@Nullable DatabaseReference reference) {
 
         FireData data = new FireData(reference == null ? FirebaseDatabase.getInstance() : reference.getDatabase());
         data.root = reference;

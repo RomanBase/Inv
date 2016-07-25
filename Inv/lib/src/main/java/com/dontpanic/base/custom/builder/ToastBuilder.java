@@ -21,8 +21,13 @@ public class ToastBuilder {
     private int backgroundResource = 0;
     private int backgroundColor = 0;
 
-    public ToastBuilder(@NonNull Context context) {
+    private ToastBuilder(Context context) {
         this.context = context;
+    }
+
+    public static ToastBuilder with(@NonNull Context context) {
+
+        return new ToastBuilder(context);
     }
 
     public ToastBuilder lengthShort() {

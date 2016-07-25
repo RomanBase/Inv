@@ -6,10 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import java.io.File;
-
 import com.dontpanic.base.Base;
 import com.dontpanic.base.custom.builder.ToastBuilder;
+
+import java.io.File;
 
 public final class AppsHelper {
 
@@ -28,7 +28,7 @@ public final class AppsHelper {
         try {
             context.startActivity(context.getPackageManager().getLaunchIntentForPackage(packageName));
         } catch (ActivityNotFoundException e) {
-            new ToastBuilder(context).text("Application " + packageName + " not found !").build();
+            ToastBuilder.with(context).text("Application " + packageName + " not found !").build();
             e.printStackTrace();
         }
     }

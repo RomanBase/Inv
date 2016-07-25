@@ -17,14 +17,14 @@ import com.roughike.bottombar.BottomBar;
 
 public class MainActivity extends BaseActivityDrawer {
 
-    private FireFactory factory;
+    private final FireFactory factory = new FireFactory(FireSignIn.init());
+    private final MainLayoutObserver layoutObserver = new MainLayoutObserver();
 
     @Override
     protected boolean onPreInit() {
 
         Base.debug = true;
 
-        factory = new FireFactory(FireSignIn.init());
         factory.signIn.setOnUserStateChangedListener(new FireUserStateListener(this, factory));
         factory.signIn.register();
 
@@ -47,6 +47,8 @@ public class MainActivity extends BaseActivityDrawer {
     @Override
     protected void onPostInit(Bundle state, ViewDataBinding binding) {
         super.onPostInit(state, binding);
+
+        binding.setVariable(com.dontpanicbase.inv.BR.Main, layoutObserver);
 
         /*bar = BottomBar.attach((CoordinatorLayout) findViewById(R.id.root_coordinator), state);
         bar.noTopOffset();
@@ -95,10 +97,6 @@ public class MainActivity extends BaseActivityDrawer {
     protected void onStart() {
         super.onStart();
 
-        if (factory == null) {
-            return;
-        }
-
         factory.signIn.register();
         if (factory.googleSignIn != null) {
             factory.signIn.checkGoogleSignIn(factory.googleSignIn);
@@ -108,10 +106,6 @@ public class MainActivity extends BaseActivityDrawer {
     @Override
     protected void onStop() {
         super.onStop();
-
-        if (factory == null) {
-            return;
-        }
 
         factory.signIn.unregister();
     }
