@@ -1,14 +1,13 @@
 package com.dontpanic.inv.viewmodel.user;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.dontpanic.base.Base;
 import com.dontpanic.base.common.statics.StringHelper;
 import com.dontpanic.base.custom.args.InitArgs;
 import com.dontpanic.base.interfaces.viewmodel.ViewModel;
-import com.dontpanic.base.viewmodel.BaseViewModelObserver;
 import com.dontpanic.fire.FacebookSignIn;
 import com.dontpanic.fire.FireData;
 import com.dontpanic.fire.FireSignIn;
@@ -110,27 +109,14 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
                     @Override
                     public void onDataChanged(@Nullable User data) {
 
-                        if (data == null || StringHelper.isEmpty(data.nickname)) {
-                            Base.log("user not set");
-                            ViewModel vm = getFactory().getViewModel(LoginCredinalsViewModel.class, fireUser);
-                            getNavigation().setViewModel(vm, false);
-                        } else {
-                            Base.log("user logged as", data.nickname);
-                            BaseViewModelObserver observer = getObserver();
-                            ViewModel vm = getFactory().getViewModel(CategoriesViewModel.class);
-
-                            if (vm != null) {
-                                observer.setDefaultViewModel(vm);
-                                observer.notifyViewModelChanged();
-                            }
-                        }
-
+                        onUserCredinals(data, fireUser);
                         isLoading.set(false);
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
+                        handleLoginError(FireSignIn.FireSignInVariant.unknown, null);
                         isLoading.set(false);
                     }
                 })
@@ -152,6 +138,16 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
         }
 
         return false;
+    }
+
+    protected void onUserCredinals(@Nullable User data, @NonNull FireUser fireUser) {
+
+        if (data == null || StringHelper.isEmpty(data.nickname)) {
+            ViewModel vm = getFactory().getViewModel(LoginCredinalsViewModel.class, fireUser);
+            getNavigation().setViewModel(vm, false);
+        } else {
+            setDefaultViewModel(CategoriesViewModel.class);
+        }
     }
 
     @Override
@@ -185,7 +181,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
     }
 
     // TODO: 21/07/16 handle errors
-    private void handleLoginError(FireSignIn.FireSignInVariant variant, Exception ex) {
+    protected void handleLoginError(FireSignIn.FireSignInVariant variant, Exception ex) {
 
         switch (variant) {
             case firebase_login:
