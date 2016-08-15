@@ -4,7 +4,7 @@
 
     <data>
         <variable name="VM"
-                  type="com.dontpanic.inv.viewmodel.categories.CategoriesViewModel"/>
+                  type="com.ankhrom.wimb.viewmodel.categories.CategoriesViewModel"/>
     </data>
 
     <com.dontpanic.base.custom.view.BaseGridView

@@ -39,8 +39,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
 
-import com.dontpanic.base.Base;
-import com.dontpanic.base.observable.PinAdapterBinder;
+import com.ankhrom.base.Base;
+import com.ankhrom.base.observable.PinAdapterBinder;
 
 /**
  * ListView, which is capable to pin section views at its top while the rest is still scrolled.

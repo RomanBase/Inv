@@ -3,7 +3,7 @@
 
     <data>
         <variable name="Menu"
-                  type="com.dontpanic.inv.viewmodel.sidemenu.MenuModel"/>
+                  type="com.ankhrom.wimb.viewmodel.sidemenu.MenuModel"/>
     </data>
 
     <LinearLayout

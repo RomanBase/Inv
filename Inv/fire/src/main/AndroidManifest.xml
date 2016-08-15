@@ -1,4 +1,4 @@
-<manifest package="com.dontpanic.fire"
+<manifest package="com.ankhrom.fire"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application android:allowBackup="true"

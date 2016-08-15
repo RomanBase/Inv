@@ -4,15 +4,15 @@
 
     <data>
         <variable name="M"
-                  type="com.dontpanic.inv.model.category.CategoryItemModel"/>
+                  type="com.ankhrom.wimb.model.category.CategoryItemModel"/>
     </data>
 
     <com.dontpanic.base.custom.view.SquareFrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/category_item_selector"
-        android:onClick="@{M.onItemSelected}"
-        app:onTouchListener="@{M.onItemTouch}">
+        android:onClick="@{M::onItemSelected}"
+        app:onTouchListener="@{M::onItemTouch}">
 
         <android.support.v7.widget.AppCompatImageView
             android:layout_width="match_parent"

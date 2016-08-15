@@ -5,11 +5,11 @@
     <data>
         <variable
             name="VM"
-            type="com.dontpanic.inv.viewmodel.user.LoginViewModel"/>
+            type="com.ankhrom.wimb.viewmodel.user.LoginViewModel"/>
 
         <variable
             name="M"
-            type="com.dontpanic.inv.model.user.LoginModel"/>
+            type="com.ankhrom.wimb.model.user.LoginModel"/>
 
         <import type="android.view.View"/>
     </data>

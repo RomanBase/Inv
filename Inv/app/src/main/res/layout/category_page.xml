@@ -3,10 +3,10 @@
 
     <data>
         <variable name="VM"
-                  type="com.dontpanic.inv.viewmodel.categories.CategoryViewModel"/>
+                  type="com.ankhrom.wimb.viewmodel.categories.CategoryViewModel"/>
 
         <variable name="M"
-                  type="com.dontpanic.inv.model.category.CategoryModel"/>
+                  type="com.ankhrom.wimb.model.category.CategoryModel"/>
     </data>
 
     <android.support.v4.widget.NestedScrollView

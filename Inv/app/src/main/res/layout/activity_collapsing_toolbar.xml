@@ -6,7 +6,7 @@
     <data>
         <variable
             name="Toolbar"
-            type="com.dontpanicbase.inv.MainLayoutObserver"/>
+            type="com.ankhrom.wimb.MainLayoutObserver"/>
     </data>
 
     <android.support.design.widget.AppBarLayout
@@ -29,7 +29,7 @@
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
             app:title="@{Toolbar.title}">
 
-            <com.dontpanic.base.custom.view.ImageGlideView
+            <com.ankhrom.base.custom.view.ImageGlideView
                 android:id="@+id/toolbar_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

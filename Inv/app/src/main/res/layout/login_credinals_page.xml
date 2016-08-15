@@ -4,7 +4,7 @@
 
     <data>
         <variable name="VM"
-                  type="com.dontpanic.inv.viewmodel.user.LoginCredinalsViewModel"/>
+                  type="com.ankhrom.wimb.viewmodel.user.LoginCredinalsViewModel"/>
     </data>
 
     <LinearLayout

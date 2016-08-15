@@ -6,7 +6,7 @@
     <data>
         <variable
             name="Main"
-            type="com.dontpanicbase.inv.MainLayoutObserver"/>
+            type="com.ankhrom.wimb.MainLayoutObserver"/>
     </data>
 
     <android.support.v4.widget.DrawerLayout

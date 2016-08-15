@@ -3,7 +3,7 @@
 
     <data>
         <variable name="VM"
-                  type="com.dontpanic.inv.viewmodel.user.LoginSplashViewModel"/>
+                  type="com.ankhrom.wimb.viewmodel.user.LoginSplashViewModel"/>
     </data>
 
     <LinearLayout

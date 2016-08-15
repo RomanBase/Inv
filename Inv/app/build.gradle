@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0"
 
     defaultConfig {
-        applicationId "com.dontpanicbase.inv"
+        applicationId "com.ankhrom.wimb"
         minSdkVersion 19
         targetSdkVersion 24
         versionCode 1
