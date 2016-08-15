@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="M"
+                  type="com.ankhrom.wimb.model.category.CategoryItemModel"/>
+    </data>
+
+    <com.dontpanic.base.custom.view.SquareFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/category_item_selector"
+        android:onClick="@{M::onItemSelected}"
+        app:onTouchListener="@{M::onItemTouch}">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/base_padding"
+            android:src="@drawable/placeholder"/>
+
+    </com.dontpanic.base.custom.view.SquareFrameLayout>
+
+</layout>

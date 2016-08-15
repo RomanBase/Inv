@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "509047145402",
+    "firebase_url": "https://wimb-ba5bd.firebaseio.com",
+    "project_id": "wimb-ba5bd",
+    "storage_bucket": "wimb-ba5bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509047145402:android:ce269fb6466236de",
+        "android_client_info": {
+          "package_name": "com.ankhrom.wimb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "509047145402-uf5c3nvdul97e4a2i58a9baugkagpnbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdkAH91YlNEBD1u3TRC6UQi-iVJoujRBs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
