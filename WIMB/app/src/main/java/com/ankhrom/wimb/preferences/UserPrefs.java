@@ -23,9 +23,13 @@ public class UserPrefs {
         prefs = context.getSharedPreferences(KEY, 0);
     }
 
-    public void set(User user) {
+    public void set(@Nullable User user) {
 
-        prefs.edit().putString(KEY, new Gson().toJson(user)).apply();
+        if (user == null) {
+            prefs.edit().putString(KEY, null).apply();
+        } else {
+            prefs.edit().putString(KEY, new Gson().toJson(user)).apply();
+        }
     }
 
     @Nullable

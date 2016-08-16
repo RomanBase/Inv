@@ -47,7 +47,7 @@
                     android:id="@+id/gplus_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="@{VM.onGooglePressed}"
+                    android:onClick="@{VM::onGooglePressed}"
                     android:text="@string/gplus"
                     android:visibility="@{M.showLoginFields ? View.INVISIBLE : View.VISIBLE}"/>
 
@@ -70,7 +70,7 @@
                     android:id="@+id/fb_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="@{VM.onFacebookPressed}"
+                    android:onClick="@{VM::onFacebookPressed}"
                     android:text="@string/facebook"
                     android:visibility="@{M.showLoginFields ? View.INVISIBLE : View.VISIBLE}"/>
 
@@ -88,21 +88,21 @@
                 android:id="@+id/appCompatButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{VM.onAccountPressed}"
+                android:onClick="@{VM::onAccountPressed}"
                 android:text="@{M.showLoginFields ? @string/button_getin : @string/button_account}"/>
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/close_login_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{VM.onCloseFireLoginPressed}"
+                android:onClick="@{VM::onCloseFireLoginPressed}"
                 android:text="x"
                 android:visibility="@{M.showLoginFields ? View.VISIBLE : View.GONE}"/>
 
             <android.support.v7.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{VM.onMagicButtonPressed}"
+                android:onClick="@{VM::onMagicButtonPressed}"
                 android:text="magic"/>
 
         </LinearLayout>
