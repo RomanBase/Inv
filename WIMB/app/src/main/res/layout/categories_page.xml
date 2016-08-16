@@ -7,7 +7,7 @@
                   type="com.ankhrom.wimb.viewmodel.categories.CategoriesViewModel"/>
     </data>
 
-    <com.dontpanic.base.custom.view.BaseGridView
+    <com.ankhrom.base.custom.view.BaseGridView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

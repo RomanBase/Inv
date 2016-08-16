@@ -14,7 +14,7 @@ public class CategoryItemModel extends InvSelectableItemModel {
 
     private static final float ACTION_SCALE = 1.35f;
 
-    public static final View.OnTouchListener onItemTouch = new OnTouchActionListener() {
+    public final View.OnTouchListener onItemTouch = new OnTouchActionListener() {
         @Override
         public void onTouchActionDown(View view) {
 

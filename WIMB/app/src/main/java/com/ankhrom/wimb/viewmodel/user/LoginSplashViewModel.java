@@ -7,13 +7,23 @@ import android.support.annotation.Nullable;
 import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.base.interfaces.viewmodel.ViewModel;
 import com.ankhrom.fire.FireSignIn;
+import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.entity.User;
 import com.ankhrom.wimb.fire.FireUser;
 import com.ankhrom.wimb.interfaces.ToolbarToggler;
+import com.ankhrom.wimb.preferences.UserPrefs;
 import com.ankhrom.wimb.viewmodel.categories.CategoriesViewModel;
-import com.ankhrom.wimb.R;
 
 public class LoginSplashViewModel extends LoginViewModel implements ToolbarToggler {
+
+    @Override
+    public void onInit() {
+        super.onInit();
+
+        if (new UserPrefs(getContext()).get() == null) {
+            handleLoginError(FireSignIn.FireSignInVariant.unknown, new ClassNotFoundException("no user"));
+        }
+    }
 
     @Override
     protected void handleLoginError(FireSignIn.FireSignInVariant variant, Exception ex) {
