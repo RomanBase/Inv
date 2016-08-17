@@ -10,14 +10,14 @@ public class User {
 
     public static final String KEY = "users";
 
-    public String uid;
+    public String sid;
     public String nickname;
     public String avatar;
+    public boolean isLocationEnabled;
 
-    public static User init(@NonNull String uid, @NonNull String nickname) {
+    public static User init(@NonNull String nickname) {
 
         User user = new User();
-        user.uid = uid;
         user.nickname = nickname;
 
         return user;

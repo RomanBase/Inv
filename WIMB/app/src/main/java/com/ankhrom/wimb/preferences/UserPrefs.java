@@ -48,12 +48,6 @@ public class UserPrefs {
             e.printStackTrace();
         }
 
-        if (user != null) {
-            if (StringHelper.isEmpty(user.uid)) {
-                return null;
-            }
-        }
-
         return user;
     }
 }

@@ -8,8 +8,9 @@ import com.ankhrom.base.interfaces.viewmodel.ViewModel;
 import com.ankhrom.base.model.Model;
 import com.ankhrom.base.viewmodel.BaseViewModel;
 import com.ankhrom.base.viewmodel.BaseViewModelObserver;
-import com.ankhrom.wimb.FireFactory;
+import com.ankhrom.fire.FireData;
 import com.ankhrom.wimb.BR;
+import com.ankhrom.wimb.FireFactory;
 import com.ankhrom.wimb.MainActivity;
 
 public abstract class InvViewModel<S extends ViewDataBinding, T extends Model> extends BaseViewModel<S, T> {
@@ -24,6 +25,16 @@ public abstract class InvViewModel<S extends ViewDataBinding, T extends Model> e
         }
 
         return null;
+    }
+
+    protected String getUid() {
+
+        return getFireFactory().user.data.getUid();
+    }
+
+    protected FireData getFireData() {
+
+        return FireData.init();
     }
 
     public FireFactory getFireFactory() {

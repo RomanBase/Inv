@@ -2,6 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <variable name="M"
+                  type="com.ankhrom.wimb.model.user.UserDetailModel"/>
+
         <variable name="VM"
                   type="com.ankhrom.wimb.viewmodel.user.UserDetailViewModel"/>
     </data>
@@ -10,6 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/base_padding"
+            android:text="@{M.sid}"
+            android:textIsSelectable="true"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{VM.onResetSidPressed}"
+            android:text="reset"/>
 
     </LinearLayout>
 </layout>

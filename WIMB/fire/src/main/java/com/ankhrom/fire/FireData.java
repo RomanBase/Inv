@@ -4,6 +4,8 @@ package com.ankhrom.fire;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -14,10 +16,22 @@ public class FireData {
     public DatabaseReference root;
 
     private ValueEventListener listener;
+    private FireDataListener fireDataListener;
 
     private FireData(FirebaseDatabase database) {
 
         this.database = database;
+    }
+
+    public static String uid() {
+
+        DatabaseReference uidRef = init().database.getReference().push();
+
+        String uid = uidRef.getKey();
+
+        uidRef.removeValue();
+
+        return uid;
     }
 
     public static FireData init() {
@@ -61,14 +75,16 @@ public class FireData {
         DatabaseReference ref;
 
         if (root == null) {
-            ref = database.getReference();
+            ref = database.getReference(key);
         } else {
             ref = root.child(key);
         }
 
         if (listener != null) {
-            ref.removeEventListener(listener);
-            ref.addValueEventListener(listener);
+            if (fireDataListener != null) {
+                ref.removeEventListener(fireDataListener);
+            }
+            ref.addValueEventListener(fireDataListener = new FireDataListener(ref, listener));
         }
 
         return ref;
@@ -103,5 +119,30 @@ public class FireData {
     public FireGeo geo(DatabaseReference ref) {
 
         return FireGeo.with(ref);
+    }
+
+    class FireDataListener implements ValueEventListener {
+
+        final DatabaseReference ref;
+        final ValueEventListener listener;
+
+        FireDataListener(DatabaseReference ref, ValueEventListener listener) {
+            this.ref = ref;
+            this.listener = listener;
+        }
+
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+
+            ref.removeEventListener(this);
+            listener.onDataChange(dataSnapshot);
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+            ref.removeEventListener(this);
+            listener.onCancelled(databaseError);
+        }
     }
 }

@@ -1,10 +1,10 @@
 package com.ankhrom.wimb.viewmodel.user;
 
 
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.ankhrom.base.Base;
-import com.ankhrom.base.common.statics.ObjectHelper;
 import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.base.custom.args.InitArgs;
 import com.ankhrom.base.interfaces.viewmodel.ViewModel;
@@ -16,14 +16,12 @@ import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.LoginCredinalsPageBinding;
 import com.ankhrom.wimb.entity.User;
 import com.ankhrom.wimb.fire.FireUser;
+import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.ankhrom.wimb.viewmodel.categories.CategoriesViewModel;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 
-public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBinding, Model> implements ValueEventListener {
+public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBinding, Model> {
 
     public final EditTextObservable nickname = new EditTextObservable();
     private FireUser fireUser;
@@ -44,30 +42,31 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
             return;
         }
 
-        createFireUser(User.init(fireUser.data.getUid(), nick));
+        createFireUser(User.init(nick), getUid());
     }
 
-    private void createFireUser(User user) {
+    private void createFireUser(User user, String uid) {
 
         isLoading.set(true);
 
         activeUser = user;
+        activeUser.sid = FireData.uid();
+        activeUser.isLocationEnabled = true;
 
-        DatabaseReference ref = FireData.init()
-                .listener(this)
+        getFireData()
+                .listener(fireUserListener)
                 .root(User.KEY)
-                .get(user.uid);
-
-        ref.setValue(user);
-        // TODO: 16/08/16 generate SID
-
-        ref.push().setValue("sid", user.uid);
+                .get(uid)
+                .setValue(activeUser);
     }
 
-    @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
+    private final FireValueListener<User> fireUserListener = new FireValueListener<User>(User.class) {
+        @Override
+        public void onDataChanged(@Nullable User data) {
 
-        if (activeUser != null && ObjectHelper.equals(activeUser.uid, dataSnapshot.getKey())) {
+            if (data == null) {
+                return;
+            }
 
             Base.logV("user created");
             User.prefs(getContext()).set(activeUser);
@@ -79,18 +78,18 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
                 observer.setDefaultViewModel(vm);
                 observer.notifyViewModelChanged();
             }
+
+            isLoading.set(false);
         }
 
-        isLoading.set(false);
-    }
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
 
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
-        activeUser = null;
-        isLoading.set(false);
-        Base.logE("user creating error");
-    }
+            activeUser = null;
+            isLoading.set(false);
+            Base.logE("user creating error");
+        }
+    };
 
     @Override
     public int getLayoutResource() {

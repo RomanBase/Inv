@@ -9,10 +9,11 @@ import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.base.custom.args.InitArgs;
 import com.ankhrom.base.interfaces.viewmodel.ViewModel;
 import com.ankhrom.fire.FacebookSignIn;
-import com.ankhrom.fire.FireData;
 import com.ankhrom.fire.FireSignIn;
 import com.ankhrom.fire.GoogleSignIn;
 import com.ankhrom.wimb.FireFactory;
+import com.ankhrom.wimb.R;
+import com.ankhrom.wimb.databinding.LoginPageBinding;
 import com.ankhrom.wimb.entity.User;
 import com.ankhrom.wimb.fire.FireArgCode;
 import com.ankhrom.wimb.fire.FireUser;
@@ -20,8 +21,6 @@ import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.model.user.LoginModel;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.ankhrom.wimb.viewmodel.categories.CategoriesViewModel;
-import com.ankhrom.wimb.R;
-import com.ankhrom.wimb.databinding.LoginPageBinding;
 import com.google.firebase.database.DatabaseError;
 
 public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
@@ -102,7 +101,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
 
         isLoading.set(true);
 
-        FireData.init()
+        getFireData()
                 .root(User.KEY)
                 .listener(new FireValueListener<User>(User.class) {
 
@@ -197,7 +196,6 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
 
 
     public void onMagicButtonPressed(View view) {
-
 
     }
 }
