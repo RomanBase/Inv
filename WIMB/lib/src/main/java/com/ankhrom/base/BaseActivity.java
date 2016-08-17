@@ -89,7 +89,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnBaseCh
         toolbar = getToolbar();
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            setTitle(getInitialPageTitle());
+            setToolbarTitle(getInitialPageTitle());
 
             ActionBar bar = getSupportActionBar();
             if (bar != null) {
@@ -339,10 +339,10 @@ public abstract class BaseActivity extends AppCompatActivity implements OnBaseCh
         }
 
         title = viewModel.getTitle();
-        setTitle(title);
+        setToolbarTitle(title);
     }
 
-    protected void setTitle(String title) {
+    protected void setToolbarTitle(String title) {
 
         if (StringHelper.isEmpty(title)) {
             title = getString(R.string.empty);

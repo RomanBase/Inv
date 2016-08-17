@@ -172,7 +172,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
             FireSignIn.FireSignInVariant variant = argsHelper.getArg(FireSignIn.FireSignInVariant.class);
             Exception ex = argsHelper.getArg(Exception.class);
 
-            if (variant != null) {
+            if (variant == null) {
                 variant = FireSignIn.FireSignInVariant.unknown;
             }
 

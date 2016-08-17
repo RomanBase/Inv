@@ -119,7 +119,7 @@ public abstract class BaseActivityDrawer extends BaseActivity {
         }
 
         title = viewModel.getTitle();
-        setTitle(title);
+        super.setToolbarTitle(title);
     }
 
     @Override
@@ -128,7 +128,7 @@ public abstract class BaseActivityDrawer extends BaseActivity {
         toggleToolbarNavigation(enable, true);
     }
 
-    public void toggleToolbarNavigation(boolean enable, boolean animate) {
+    protected void toggleToolbarNavigation(boolean enable, boolean animate) {
 
         if (enable == drawerToggle.isDrawerIndicatorEnabled()) {
             return;

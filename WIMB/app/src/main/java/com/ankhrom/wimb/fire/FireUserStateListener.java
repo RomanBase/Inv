@@ -9,8 +9,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class FireUserStateListener implements FireSignIn.OnUserStateChangedListener {
 
-    final MainActivity activity;
-    final FireFactory factory;
+    private final MainActivity activity;
+    private final FireFactory factory;
 
     public FireUserStateListener(MainActivity activity, FireFactory factory) {
         this.activity = activity;

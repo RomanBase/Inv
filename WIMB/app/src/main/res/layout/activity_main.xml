@@ -20,13 +20,12 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
 
-            <android.support.design.widget.CoordinatorLayout
-                android:id="@+id/root_coordinator"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fitsSystemWindows="true">
+                android:orientation="vertical">
 
-                <include layout="@layout/activity_collapsing_toolbar"
+                <include layout="@layout/activity_toolbar"
                          bind:Toolbar="@{Main}"/>
 
                 <FrameLayout
@@ -34,10 +33,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="true"
-                    android:fitsSystemWindows="true"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+                    android:fitsSystemWindows="true"/>
 
-            </android.support.design.widget.CoordinatorLayout>
+            </LinearLayout>
 
         </FrameLayout>
 

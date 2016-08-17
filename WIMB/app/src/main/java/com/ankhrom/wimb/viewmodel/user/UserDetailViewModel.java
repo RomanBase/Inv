@@ -28,6 +28,7 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Mod
 
     @Override
     public ToolbarItemModel[] getMenuItems() {
+
         return new ToolbarItemModel[]{
                 new ToolbarItemModel("logout") {
                     @Override

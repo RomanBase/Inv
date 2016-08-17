@@ -12,14 +12,15 @@ import com.ankhrom.base.model.Model;
 import com.ankhrom.base.observable.EditTextObservable;
 import com.ankhrom.base.viewmodel.BaseViewModelObserver;
 import com.ankhrom.fire.FireData;
+import com.ankhrom.wimb.R;
+import com.ankhrom.wimb.databinding.LoginCredinalsPageBinding;
 import com.ankhrom.wimb.entity.User;
 import com.ankhrom.wimb.fire.FireUser;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.ankhrom.wimb.viewmodel.categories.CategoriesViewModel;
-import com.ankhrom.wimb.R;
-import com.ankhrom.wimb.databinding.LoginCredinalsPageBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBinding, Model> implements ValueEventListener {
@@ -49,19 +50,22 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
     private void createFireUser(User user) {
 
         isLoading.set(true);
+
         activeUser = user;
 
-        FireData.init()
+        DatabaseReference ref = FireData.init()
                 .listener(this)
                 .root(User.KEY)
-                .get(user.uid)
-                .setValue(user);
+                .get(user.uid);
+
+        ref.setValue(user);
+        // TODO: 16/08/16 generate SID
+
+        ref.push().setValue("sid", user.uid);
     }
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-
-        isLoading.set(false);
 
         if (activeUser != null && ObjectHelper.equals(activeUser.uid, dataSnapshot.getKey())) {
 
@@ -76,6 +80,8 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
                 observer.notifyViewModelChanged();
             }
         }
+
+        isLoading.set(false);
     }
 
     @Override
