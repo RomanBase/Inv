@@ -4,8 +4,6 @@ package com.ankhrom.fire;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -16,7 +14,7 @@ public class FireData {
     public DatabaseReference root;
 
     private ValueEventListener listener;
-    private FireDataListener fireDataListener;
+    private ValueEventListener subscribeListener;
 
     private FireData(FirebaseDatabase database) {
 
@@ -59,6 +57,13 @@ public class FireData {
         return this;
     }
 
+    public FireData subscribe(ValueEventListener listener) {
+
+        this.subscribeListener = listener;
+
+        return this;
+    }
+
     public FireData root(String key) {
 
         if (root == null) {
@@ -81,10 +86,13 @@ public class FireData {
         }
 
         if (listener != null) {
-            if (fireDataListener != null) {
-                ref.removeEventListener(fireDataListener);
-            }
-            ref.addValueEventListener(fireDataListener = new FireDataListener(ref, listener));
+            ref.addListenerForSingleValueEvent(listener);
+            listener = null;
+        }
+
+        if (subscribeListener != null) {
+            ref.addValueEventListener(subscribeListener);
+            subscribeListener = null;
         }
 
         return ref;
@@ -121,28 +129,24 @@ public class FireData {
         return FireGeo.with(ref);
     }
 
-    class FireDataListener implements ValueEventListener {
+    public FireQuery search(String field) {
 
-        final DatabaseReference ref;
-        final ValueEventListener listener;
+        DatabaseReference ref;
 
-        FireDataListener(DatabaseReference ref, ValueEventListener listener) {
-            this.ref = ref;
-            this.listener = listener;
+        if (root == null) {
+            ref = database.getReference();
+        } else {
+            ref = root;
         }
 
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
+        return search(field, ref);
+    }
 
-            ref.removeEventListener(this);
-            listener.onDataChange(dataSnapshot);
-        }
+    public FireQuery search(String field, DatabaseReference ref) {
 
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
+        FireQuery query = FireQuery.with(ref.orderByChild(field));
+        query.listener(listener);
 
-            ref.removeEventListener(this);
-            listener.onCancelled(databaseError);
-        }
+        return query;
     }
 }

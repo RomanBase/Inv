@@ -49,4 +49,9 @@
         <attr name="includeTopEdge" format="boolean"/>
     </declare-styleable>
 
+    <declare-styleable name="BaseListView">
+        <attr name="spacing" format="dimension"/>
+        <attr name="includeEdge" format="boolean"/>
+    </declare-styleable>
+
 </resources>
