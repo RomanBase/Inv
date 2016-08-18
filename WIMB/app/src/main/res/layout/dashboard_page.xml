@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable name="M"
+                  type="com.ankhrom.wimb.model.dashboard.DashboardModel"/>
 
+        <variable name="VM"
+                  type="com.ankhrom.wimb.viewmodel.dashboard.DashboardViewModel"/>
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#f0aa">
+        android:background="#f077">
+
+        <com.ankhrom.base.custom.view.BaseListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/base_padding"
+            android:paddingRight="@dimen/base_padding"
+            app:adapter="@{M.adapter}"
+            app:includeEdge="true"
+            app:spacing="@dimen/base_padding">
+
+        </com.ankhrom.base.custom.view.BaseListView>
 
     </LinearLayout>
 </layout>

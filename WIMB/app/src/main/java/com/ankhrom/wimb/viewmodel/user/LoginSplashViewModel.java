@@ -12,7 +12,7 @@ import com.ankhrom.wimb.entity.User;
 import com.ankhrom.wimb.fire.FireUser;
 import com.ankhrom.wimb.interfaces.ToolbarToggler;
 import com.ankhrom.wimb.preferences.UserPrefs;
-import com.ankhrom.wimb.viewmodel.categories.CategoriesViewModel;
+import com.ankhrom.wimb.viewmodel.dashboard.DashboardViewModel;
 
 public class LoginSplashViewModel extends LoginViewModel implements ToolbarToggler {
 
@@ -38,7 +38,7 @@ public class LoginSplashViewModel extends LoginViewModel implements ToolbarToggl
             ViewModel vm = getFactory().getViewModel(LoginViewModel.class, fireUser);
             getNavigation().setViewModel(vm, false);
         } else {
-            setDefaultViewModel(CategoriesViewModel.class);
+            setDefaultViewModel(DashboardViewModel.class);
         }
     }
 

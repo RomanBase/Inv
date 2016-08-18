@@ -18,7 +18,7 @@ import com.ankhrom.wimb.entity.User;
 import com.ankhrom.wimb.fire.FireUser;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
-import com.ankhrom.wimb.viewmodel.categories.CategoriesViewModel;
+import com.ankhrom.wimb.viewmodel.dashboard.DashboardViewModel;
 import com.google.firebase.database.DatabaseError;
 
 public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBinding, Model> {
@@ -72,7 +72,7 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
             User.prefs(getContext()).set(activeUser);
 
             BaseViewModelObserver observer = getObserver();
-            ViewModel vm = getFactory().getViewModel(CategoriesViewModel.class);
+            ViewModel vm = getFactory().getViewModel(DashboardViewModel.class);
 
             if (vm != null) {
                 observer.setDefaultViewModel(vm);

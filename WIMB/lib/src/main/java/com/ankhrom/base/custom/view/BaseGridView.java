@@ -42,7 +42,7 @@ public class BaseGridView extends RecyclerView {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.BaseGridView, 0, 0);
         try {
             spanCount = ta.getInteger(R.styleable.BaseGridView_spanCount, 2);
-            spacing = ta.getDimensionPixelSize(R.styleable.BaseGridView_spacing, context.getResources().getDimensionPixelSize(R.dimen.base_half_pading));
+            spacing = ta.getDimensionPixelSize(R.styleable.BaseGridView_spacing, 0);
             includeEdge = ta.getBoolean(R.styleable.BaseGridView_includeEdge, true);
             includeTopEdge = ta.getBoolean(R.styleable.BaseGridView_includeTopEdge, true);
         } finally {

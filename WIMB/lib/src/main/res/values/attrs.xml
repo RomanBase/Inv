@@ -42,16 +42,16 @@
         <attr name="js_enabled" format="boolean"/>
     </declare-styleable>
 
-    <declare-styleable name="BaseGridView">
-        <attr name="spanCount" format="integer"/>
-        <attr name="spacing" format="dimension"/>
-        <attr name="includeEdge" format="boolean"/>
-        <attr name="includeTopEdge" format="boolean"/>
-    </declare-styleable>
-
     <declare-styleable name="BaseListView">
         <attr name="spacing" format="dimension"/>
         <attr name="includeEdge" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="BaseGridView" parent="BaseListView">
+        <attr name="spacing"/>
+        <attr name="includeEdge"/>
+        <attr name="spanCount" format="integer"/>
+        <attr name="includeTopEdge" format="boolean"/>
     </declare-styleable>
 
 </resources>

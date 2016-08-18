@@ -12,6 +12,7 @@ import com.ankhrom.base.R;
 import com.ankhrom.base.custom.decorator.ListSpaceDecorator;
 
 public class BaseListView extends RecyclerView {
+
     public BaseListView(Context context) {
         super(context);
         init(context, null);
@@ -29,19 +30,24 @@ public class BaseListView extends RecyclerView {
 
     private void init(Context context, AttributeSet attrs) {
 
-        int spacing;
-        boolean includeEdges;
+        int spacing = 0;
+        boolean includeEdges = false;
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.BaseListView, 0, 0);
 
-        spacing = ta.getInteger(R.styleable.BaseListView_spacing, 0);
-        includeEdges = ta.getBoolean(R.styleable.BaseListView_includeEdge, true);
-        ta.recycle();
+        try {
+            spacing = (int) ta.getDimension(R.styleable.BaseListView_spacing, 0);
+            includeEdges = ta.getBoolean(R.styleable.BaseListView_includeEdge, true);
+        } finally {
+            ta.recycle();
+        }
 
         setLayoutManager(new LinearLayoutManager(context));
 
         if (spacing > 0) {
             addItemDecoration(new ListSpaceDecorator(spacing, includeEdges));
         }
+
+
     }
 }

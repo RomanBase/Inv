@@ -20,7 +20,7 @@ import com.ankhrom.wimb.fire.FireUser;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.model.user.LoginModel;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
-import com.ankhrom.wimb.viewmodel.categories.CategoriesViewModel;
+import com.ankhrom.wimb.viewmodel.dashboard.DashboardViewModel;
 import com.google.firebase.database.DatabaseError;
 
 public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
@@ -145,7 +145,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
             ViewModel vm = getFactory().getViewModel(LoginCredinalsViewModel.class, fireUser);
             getNavigation().setViewModel(vm, false);
         } else {
-            setDefaultViewModel(CategoriesViewModel.class);
+            setDefaultViewModel(DashboardViewModel.class);
         }
     }
 
