@@ -114,6 +114,7 @@ public class FireSignIn {
         GoogleSignInAccount account = result.getSignInAccount();
 
         if (account == null) {
+            Log.e(TAG, "on google account fail");
             return;
         }
 

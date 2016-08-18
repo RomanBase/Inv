@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="gplus_client_id">197707831381-89lo0jlp6vankg52bkqbj6a4kobmafju.apps.googleusercontent.com</string>
-    <string name="gplus_client_secret">Q0_oAPd9LcDXGHsT_7a5CGXH</string>
+    <string name="gplus_client_id">509047145402-o7j00juspkdpvs51sajg6fqhdv2gk253.apps.googleusercontent.com</string>
+
+    <string name="facebook_app_id">277718372610108</string>
 </resources>

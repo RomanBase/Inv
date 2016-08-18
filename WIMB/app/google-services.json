@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "509047145402-o7j00juspkdpvs51sajg6fqhdv2gk253.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ankhrom.wimb",
+            "certificate_hash": "A6289E009FAB557AD7FB70DA649C53CAF5A7EE7B"
+          }
+        },
+        {
           "client_id": "509047145402-uf5c3nvdul97e4a2i58a9baugkagpnbj.apps.googleusercontent.com",
           "client_type": 3
         }
