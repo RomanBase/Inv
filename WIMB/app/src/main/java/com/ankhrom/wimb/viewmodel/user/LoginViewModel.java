@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.ankhrom.base.Base;
+import com.ankhrom.base.common.statics.SHA1;
 import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.base.custom.args.InitArgs;
 import com.ankhrom.base.interfaces.viewmodel.ViewModel;
@@ -197,5 +199,6 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
 
     public void onMagicButtonPressed(View view) {
 
+        Base.logV(SHA1.getCertFingerprint(getContext()));
     }
 }

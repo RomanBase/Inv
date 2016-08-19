@@ -1,6 +1,7 @@
 package com.ankhrom.fire;
 
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -111,10 +112,17 @@ public class FireSignIn {
 
     public void onGoogleSignIn(@NonNull GoogleSignInResult result) {
 
+        if (!result.isSuccess()) {
+            Log.e(TAG, "on google login fail");
+            notifyErrorStatusListener(FireSignInVariant.gplus, new Settings.SettingNotFoundException("null account"));
+            return;
+        }
+
         GoogleSignInAccount account = result.getSignInAccount();
 
         if (account == null) {
             Log.e(TAG, "on google account fail");
+            notifyErrorStatusListener(FireSignInVariant.gplus, new Settings.SettingNotFoundException("null account"));
             return;
         }
 
