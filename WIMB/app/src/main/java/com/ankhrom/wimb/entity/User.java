@@ -1,12 +1,10 @@
 package com.ankhrom.wimb.entity;
 
 
-import android.content.Context;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 
-import com.ankhrom.wimb.preferences.UserPrefs;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Keep
@@ -14,12 +12,13 @@ public class User {
 
     public static final String KEY = "users";
     public static final String SID = "sid";
+    public static final String BOO = "boo";
 
     public String sid;
     public String nickname;
     public String avatar;
     public boolean isLocationEnabled;
-    public List<String> boo;
+    public List<BooUser> boo;
 
     public static User init(@NonNull String nickname) {
 
@@ -29,8 +28,25 @@ public class User {
         return user;
     }
 
-    public static UserPrefs prefs(@NonNull Context context) {
+    public void addBoo(User user, String request) {
 
-        return new UserPrefs(context);
+        if (boo == null) {
+            boo = new ArrayList<>();
+        }
+
+        BooUser bu = new BooUser();
+        bu.sid = user.sid;
+        bu.nickname = user.nickname;
+        bu.request = request;
+
+        boo.add(bu);
+    }
+
+    public static class BooUser {
+
+        public String sid;
+        public String nickname;
+        public String request;
     }
 }
+

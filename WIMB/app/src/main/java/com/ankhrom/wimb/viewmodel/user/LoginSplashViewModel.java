@@ -11,8 +11,8 @@ import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.entity.User;
 import com.ankhrom.wimb.fire.FireUser;
 import com.ankhrom.wimb.interfaces.ToolbarToggler;
-import com.ankhrom.wimb.preferences.UserPrefs;
 import com.ankhrom.wimb.viewmodel.dashboard.DashboardViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginSplashViewModel extends LoginViewModel implements ToolbarToggler {
 
@@ -20,7 +20,7 @@ public class LoginSplashViewModel extends LoginViewModel implements ToolbarToggl
     public void onInit() {
         super.onInit();
 
-        if (new UserPrefs(getContext()).get() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             handleLoginError(FireSignIn.FireSignInVariant.unknown, new ClassNotFoundException("no user"));
         }
     }

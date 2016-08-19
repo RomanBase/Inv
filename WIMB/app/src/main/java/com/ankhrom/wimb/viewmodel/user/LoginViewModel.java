@@ -27,8 +27,6 @@ import com.google.firebase.database.DatabaseError;
 
 public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
 
-    private FireUser fireUser;
-
     @Override
     public void onInit() {
         super.onInit();
@@ -97,6 +95,8 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
 
     private void checkCredinals(String uid) {
 
+        final FireUser fireUser = getFireFactory().user;
+
         if (fireUser == null || isLoading.get()) {
             return;
         }
@@ -117,7 +117,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
-                        handleLoginError(FireSignIn.FireSignInVariant.unknown, null);
+                        handleLoginError(FireSignIn.FireSignInVariant.unknown, databaseError.toException());
                         isLoading.set(false);
                     }
                 })
@@ -154,18 +154,14 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
     @Override
     public void onReceiveArgs(int requestCode, Object[] args) {
 
-        //magic button test
-        /*if (requestCode == FireArgCode.USER_SIGNED_IN) {
-            new ToastBuilder(getContext()).text("log in").buildAndShow();
-            return;
-        }*/
-
         InitArgs argsHelper = new InitArgs(this, args);
 
         if (requestCode == FireArgCode.USER_SIGNED_IN) {
 
-            fireUser = argsHelper.getArg(FireUser.class);
-            checkCredinals(fireUser.data.getUid());
+            FireUser fireUser = argsHelper.getArg(FireUser.class);
+            if (fireUser != null) {
+                checkCredinals(fireUser.data.getUid());
+            }
         }
 
         if (requestCode == FireArgCode.USER_SIGNIN_ERROR) {

@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.ankhrom.base.Base;
 import com.ankhrom.base.common.statics.StringHelper;
-import com.ankhrom.base.custom.args.InitArgs;
 import com.ankhrom.base.interfaces.viewmodel.ViewModel;
 import com.ankhrom.base.model.Model;
 import com.ankhrom.base.observable.EditTextObservable;
@@ -15,7 +14,6 @@ import com.ankhrom.fire.FireData;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.LoginCredinalsPageBinding;
 import com.ankhrom.wimb.entity.User;
-import com.ankhrom.wimb.fire.FireUser;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.ankhrom.wimb.viewmodel.dashboard.DashboardViewModel;
@@ -24,15 +22,7 @@ import com.google.firebase.database.DatabaseError;
 public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBinding, Model> {
 
     public final EditTextObservable nickname = new EditTextObservable();
-    private FireUser fireUser;
     private User activeUser;
-
-    @Override
-    public void init(InitArgs args) {
-        super.init(args);
-
-        fireUser = args.getArg(FireUser.class);
-    }
 
     public void onSendPressed(View view) {
 
@@ -69,7 +59,6 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
             }
 
             Base.logV("user created");
-            User.prefs(getContext()).set(activeUser);
 
             BaseViewModelObserver observer = getObserver();
             ViewModel vm = getFactory().getViewModel(DashboardViewModel.class);
