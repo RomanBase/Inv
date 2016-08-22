@@ -3,10 +3,9 @@ package com.ankhrom.wimb.entity;
 import android.support.annotation.Keep;
 
 @Keep
-public class BooRequest {
+public class BooUser {
 
-    public static final String KEY = "req";
-
+    public String sid;
     public String nickname;
-    public boolean status;
+    public String avatar;
 }

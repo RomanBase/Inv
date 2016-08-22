@@ -8,7 +8,7 @@ import com.ankhrom.fire.FireData;
 import com.ankhrom.fire.FireSignIn;
 import com.ankhrom.wimb.FireFactory;
 import com.ankhrom.wimb.MainActivity;
-import com.ankhrom.wimb.entity.User;
+import com.ankhrom.wimb.entity.AppUser;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
@@ -24,9 +24,9 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
         this.factory = factory;
     }
 
-    private final FireValueListener<User> userDataListener = new FireValueListener<User>(User.class) {
+    private final FireValueListener<AppUser> userDataListener = new FireValueListener<AppUser>(AppUser.class) {
         @Override
-        public void onDataChanged(@Nullable User data) {
+        public void onDataChanged(@Nullable AppUser data) {
             factory.activeUser = data;
             notifyViewModelUser(data);
         }
@@ -42,7 +42,7 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
             userReference = null;
         }
 
-        userReference = FireData.init().root(User.KEY).get(user.getUid());
+        userReference = FireData.init().root(AppUser.KEY).get(user.getUid());
         userReference.addValueEventListener(userDataListener);
 
         Base.logV("user log in");
@@ -88,7 +88,7 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
         }
     }
 
-    private void notifyViewModelUser(User user) {
+    private void notifyViewModelUser(AppUser user) {
 
         ViewModelObserver observer = activity.getViewModelObserver();
 

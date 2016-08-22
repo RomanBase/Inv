@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Keep
-public class User {
+public class AppUser {
 
     public static final String KEY = "users";
     public static final String SID = "sid";
@@ -20,15 +20,15 @@ public class User {
     public boolean isLocationEnabled;
     public List<BooUser> boo;
 
-    public static User init(@NonNull String nickname) {
+    public static AppUser init(@NonNull String nickname) {
 
-        User user = new User();
+        AppUser user = new AppUser();
         user.nickname = nickname;
 
         return user;
     }
 
-    public void addBoo(User user, String request) {
+    public void addBoo(AppUser user) {
 
         if (boo == null) {
             boo = new ArrayList<>();
@@ -37,16 +37,8 @@ public class User {
         BooUser bu = new BooUser();
         bu.sid = user.sid;
         bu.nickname = user.nickname;
-        bu.request = request;
 
         boo.add(bu);
-    }
-
-    public static class BooUser {
-
-        public String sid;
-        public String nickname;
-        public String request;
     }
 }
 

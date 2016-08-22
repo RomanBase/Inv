@@ -13,7 +13,7 @@ import com.ankhrom.base.viewmodel.BaseViewModelObserver;
 import com.ankhrom.fire.FireData;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.LoginCredinalsPageBinding;
-import com.ankhrom.wimb.entity.User;
+import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.ankhrom.wimb.viewmodel.dashboard.DashboardViewModel;
@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseError;
 public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBinding, Model> {
 
     public final EditTextObservable nickname = new EditTextObservable();
-    private User activeUser;
+    private AppUser activeUser;
 
     public void onSendPressed(View view) {
 
@@ -32,10 +32,10 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
             return;
         }
 
-        createFireUser(User.init(nick), getUid());
+        createFireUser(AppUser.init(nick), getUid());
     }
 
-    private void createFireUser(User user, String uid) {
+    private void createFireUser(AppUser user, String uid) {
 
         isLoading.set(true);
 
@@ -45,14 +45,14 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
 
         getFireData()
                 .listener(fireUserListener)
-                .root(User.KEY)
+                .root(AppUser.KEY)
                 .get(uid)
                 .setValue(activeUser);
     }
 
-    private final FireValueListener<User> fireUserListener = new FireValueListener<User>(User.class) {
+    private final FireValueListener<AppUser> fireUserListener = new FireValueListener<AppUser>(AppUser.class) {
         @Override
-        public void onDataChanged(@Nullable User data) {
+        public void onDataChanged(@Nullable AppUser data) {
 
             if (data == null) {
                 return;

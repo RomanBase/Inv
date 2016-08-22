@@ -16,7 +16,7 @@ import com.ankhrom.fire.GoogleSignIn;
 import com.ankhrom.wimb.FireFactory;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.LoginPageBinding;
-import com.ankhrom.wimb.entity.User;
+import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.fire.FireArgCode;
 import com.ankhrom.wimb.fire.FireUser;
 import com.ankhrom.wimb.fire.FireValueListener;
@@ -104,11 +104,11 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
         isLoading.set(true);
 
         getFireData()
-                .root(User.KEY)
-                .listener(new FireValueListener<User>(User.class) {
+                .root(AppUser.KEY)
+                .listener(new FireValueListener<AppUser>(AppUser.class) {
 
                     @Override
-                    public void onDataChanged(@Nullable User data) {
+                    public void onDataChanged(@Nullable AppUser data) {
 
                         onUserCredinals(data, fireUser);
                         isLoading.set(false);
@@ -141,7 +141,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
         return false;
     }
 
-    protected void onUserCredinals(@Nullable User data, @NonNull FireUser fireUser) {
+    protected void onUserCredinals(@Nullable AppUser data, @NonNull FireUser fireUser) {
 
         if (data == null || StringHelper.isEmpty(data.nickname)) {
             ViewModel vm = getFactory().getViewModel(LoginCredinalsViewModel.class, fireUser);

@@ -14,8 +14,8 @@ import com.ankhrom.base.viewmodel.BaseViewModelObserver;
 import com.ankhrom.fire.FireData;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.UserDetailPageBinding;
+import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.Geo;
-import com.ankhrom.wimb.entity.User;
 import com.ankhrom.wimb.fire.FireQuerySingleListener;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.model.user.UserDetailModel;
@@ -26,20 +26,20 @@ import com.google.firebase.database.DatabaseError;
 
 public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, UserDetailModel> implements MenuItemableViewModel, CloseableViewModel {
 
-    private User activeUser;
+    private AppUser activeUser;
 
     @Override
     public void onInit() {
         super.onInit();
 
-        setTitle("User");
+        setTitle("AppUser");
         setModel(new UserDetailModel());
         loadUserData();
     }
 
-    private final FireValueListener<User> userFireListener = new FireValueListener<User>(User.class) {
+    private final FireValueListener<AppUser> userFireListener = new FireValueListener<AppUser>(AppUser.class) {
         @Override
-        public void onDataChanged(@Nullable User data) {
+        public void onDataChanged(@Nullable AppUser data) {
 
             activeUser = data;
 
@@ -62,9 +62,9 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
     private void loadUserData() {
 
         getFireData()
-                .listener(new FireQuerySingleListener<User>(User.class) {
+                .listener(new FireQuerySingleListener<AppUser>(AppUser.class) {
                     @Override
-                    public void onDataChanged(@Nullable User data) {
+                    public void onDataChanged(@Nullable AppUser data) {
                         if (data == null) {
                             Base.logE("fire no entry");
                         } else {
@@ -72,14 +72,14 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
                         }
                     }
                 })
-                .root(User.KEY)
+                .root(AppUser.KEY)
                 .search("sid")
                 .find("-KPRpY60oAUHjH_KaPxb");
 
         isLoading.set(true);
         getFireData()
                 .listener(userFireListener)
-                .root(User.KEY)
+                .root(AppUser.KEY)
                 .get(getUid());
     }
 
@@ -106,7 +106,7 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
 
         getFireData()
                 .listener(userFireListener)
-                .root(User.KEY)
+                .root(AppUser.KEY)
                 .get(getUid())
                 .setValue(activeUser);
     }

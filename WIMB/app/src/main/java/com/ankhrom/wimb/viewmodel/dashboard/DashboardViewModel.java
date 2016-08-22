@@ -10,8 +10,9 @@ import com.ankhrom.base.interfaces.viewmodel.MenuItemableViewModel;
 import com.ankhrom.base.model.ToolbarItemModel;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.DashboardPageBinding;
+import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.BooRequest;
-import com.ankhrom.wimb.entity.User;
+import com.ankhrom.wimb.entity.BooUser;
 import com.ankhrom.wimb.fire.FireArgCode;
 import com.ankhrom.wimb.fire.FireQuerySingleListener;
 import com.ankhrom.wimb.model.dashboard.AddBooPopupModel;
@@ -19,11 +20,10 @@ import com.ankhrom.wimb.model.dashboard.DashboardModel;
 import com.ankhrom.wimb.model.user.BooItemModel;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 
 public class DashboardViewModel extends InvViewModel<DashboardPageBinding, DashboardModel> implements MenuItemableViewModel {
 
-    private User requestedUser;
+    private AppUser requestedUser;
 
     @Override
     public void onInit() {
@@ -47,9 +47,9 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         }
     };
 
-    private final FireQuerySingleListener<User> findUserListener = new FireQuerySingleListener<User>(User.class) {
+    private final FireQuerySingleListener<AppUser> findUserListener = new FireQuerySingleListener<AppUser>(AppUser.class) {
         @Override
-        public void onDataChanged(@Nullable User data) {
+        public void onDataChanged(@Nullable AppUser data) {
             if (data == null) {
                 notFound();
             } else {
@@ -72,8 +72,8 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
 
         getFireData()
                 .listener(findUserListener)
-                .root(User.KEY)
-                .search(User.SID)
+                .root(AppUser.KEY)
+                .search(AppUser.SID)
                 .find(sid);
     }
 
@@ -86,29 +86,30 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         popup.hide();
         clearPopup();
 
-        DatabaseReference ref = getFireData() // TODO: 19/08/16 listener
+        AppUser activeUser = getFireFactory().activeUser;
+        activeUser.addBoo(requestedUser);
+
+        BooRequest request = new BooRequest();
+        request.nickname = activeUser.nickname;
+
+        getFireData() // TODO: 19/08/16 listener ?
                 .root(BooRequest.KEY)
-                .get(requestedUser.sid)
-                .push();
+                .root(requestedUser.sid)
+                .get(activeUser.sid)
+                .setValue(request);
 
-        ref.setValue(getUid());
-
-        User activeUser = getFireFactory().activeUser;
-        activeUser.addBoo(requestedUser, ref.getKey());
-
-        getFireData() // TODO: 19/08/16 listener
-                .root(User.KEY)
+        getFireData() // TODO: 19/08/16 listener ?
+                .root(AppUser.KEY)
                 .get(getUid())
-                .child(User.BOO)
+                .child(AppUser.BOO)
                 .setValue(activeUser.boo);
-
 
         BooItemModel item = new BooItemModel();
         item.nickname.set(requestedUser.nickname);
         model.adapter.add(item);
     }
 
-    void userFound(User user) {
+    void userFound(AppUser user) {
 
         requestedUser = user;
 
@@ -116,9 +117,9 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         popup.avatar.set(user.avatar);
         popup.isLoading.set(false);
 
-        User activeUser = getFireFactory().activeUser;
+        AppUser activeUser = getFireFactory().activeUser;
         if (activeUser.boo != null) {
-            for (User.BooUser bu : activeUser.boo) {
+            for (BooUser bu : activeUser.boo) {
                 if (ObjectHelper.equals(bu.sid, requestedUser.sid)) {
                     popup.isFound.set(false);
                     return;
@@ -152,10 +153,10 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
             return;
         }
 
-        User activeUser = getFireFactory().activeUser;
+        AppUser activeUser = getFireFactory().activeUser;
         if (activeUser != null && activeUser.boo != null) {
 
-            for (User.BooUser user : activeUser.boo) {
+            for (BooUser user : activeUser.boo) {
                 BooItemModel item = new BooItemModel();
                 item.nickname.set(user.nickname);
                 model.adapter.add(item);
