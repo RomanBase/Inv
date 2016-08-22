@@ -1,5 +1,6 @@
 package com.ankhrom.wimb;
 
+import android.content.Intent;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,10 @@ import com.ankhrom.base.interfaces.viewmodel.ViewModel;
 import com.ankhrom.base.interfaces.viewmodel.ViewModelObserver;
 import com.ankhrom.base.viewmodel.BaseViewModelObserver;
 import com.ankhrom.fire.FireSignIn;
+import com.ankhrom.gcm.GcmPrefs;
+import com.ankhrom.gcm.GcmRegistration;
+import com.ankhrom.gcm.GcmRegistrationReceiver;
+import com.ankhrom.gcm.PlayService;
 import com.ankhrom.wimb.fire.FireUserStateListener;
 import com.ankhrom.wimb.interfaces.ToolbarToggler;
 import com.ankhrom.wimb.viewmodel.sidemenu.MenuModel;
@@ -81,6 +86,14 @@ public class MainActivity extends BaseActivityDrawer {
         bar.mapColorForTab(2, "#AAFF00FF");
         bar.mapColorForTab(3, "#AA00FF00");
         bar.mapColorForTab(4, "#AA00FFFF");*/
+
+        GcmPrefs prefs = new GcmPrefs(this);
+        if (!prefs.getTokenStatus()) {
+            new GcmRegistrationReceiver().register(this);
+            if (PlayService.isAvailable(this)) {
+                startService(new Intent(this, GcmRegistration.class));
+            }
+        }
     }
 
     @Override

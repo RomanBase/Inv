@@ -1,18 +1,19 @@
 package com.ankhrom.wimb.viewmodel.user;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.ankhrom.base.Base;
-import com.ankhrom.base.common.statics.SHA1;
 import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.base.custom.args.InitArgs;
 import com.ankhrom.base.interfaces.viewmodel.ViewModel;
 import com.ankhrom.fire.FacebookSignIn;
 import com.ankhrom.fire.FireSignIn;
 import com.ankhrom.fire.GoogleSignIn;
+import com.ankhrom.gcm.GcmMessage;
+import com.ankhrom.gcm.GcmPrefs;
 import com.ankhrom.wimb.FireFactory;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.LoginPageBinding;
@@ -195,6 +196,12 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
 
     public void onMagicButtonPressed(View view) {
 
-        Base.logV(SHA1.getCertFingerprint(getContext()));
+        Bundle bundle = new Bundle();
+        bundle.putString("0", "msg");
+
+        new GcmMessage(getContext()).send(
+                "AIzaSyB3cc3hSgwqxuBNNWSU3Ij0niObiyCOpyE",
+                new GcmPrefs(getContext()).getToken()
+        );
     }
 }
