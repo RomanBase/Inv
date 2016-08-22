@@ -15,7 +15,7 @@ import com.ankhrom.fire.FireData;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.UserDetailPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
-import com.ankhrom.wimb.entity.Geo;
+import com.ankhrom.wimb.entity.BooGeo;
 import com.ankhrom.wimb.fire.FireQuerySingleListener;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.model.user.UserDetailModel;
@@ -92,7 +92,7 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
         if (!StringHelper.isEmpty(activeUser.sid)) {
 
             getFireData()
-                    .root(Geo.KEY)
+                    .root(BooGeo.KEY)
                     .get(activeUser.sid)
                     .removeValue();
         }
@@ -100,7 +100,7 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
         activeUser.sid = FireData.uid();
 
         getFireData()
-                .root(Geo.KEY)
+                .root(BooGeo.KEY)
                 .geo()
                 .set(activeUser.sid, new GeoLocation(5, 5));
 

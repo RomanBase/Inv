@@ -16,6 +16,7 @@ import com.ankhrom.gcm.GcmRegistration;
 import com.ankhrom.gcm.GcmRegistrationReceiver;
 import com.ankhrom.gcm.PlayService;
 import com.ankhrom.wimb.fire.FireUserStateListener;
+import com.ankhrom.wimb.fire.TokenChangedListener;
 import com.ankhrom.wimb.interfaces.ToolbarToggler;
 import com.ankhrom.wimb.viewmodel.sidemenu.MenuModel;
 import com.ankhrom.wimb.viewmodel.user.LoginSplashViewModel;
@@ -88,6 +89,8 @@ public class MainActivity extends BaseActivityDrawer {
         bar.mapColorForTab(4, "#AA00FFFF");*/
 
         GcmPrefs prefs = new GcmPrefs(this);
+        prefs.shared.registerOnSharedPreferenceChangeListener(new TokenChangedListener(factory));
+
         if (!prefs.getTokenStatus()) {
             new GcmRegistrationReceiver().register(this);
             if (PlayService.isAvailable(this)) {
@@ -105,12 +108,6 @@ public class MainActivity extends BaseActivityDrawer {
         } else {
             //layoutObserver.setDefaultToolbarState();
         }
-    }
-
-    @Override
-    protected void setToolbarTitle(String title) {
-
-        //layoutObserver.title.set(title);
     }
 
     @Override

@@ -11,9 +11,11 @@ import com.ankhrom.base.model.Model;
 import com.ankhrom.base.observable.EditTextObservable;
 import com.ankhrom.base.viewmodel.BaseViewModelObserver;
 import com.ankhrom.fire.FireData;
+import com.ankhrom.gcm.GcmPrefs;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.LoginCredinalsPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
+import com.ankhrom.wimb.entity.BooToken;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.ankhrom.wimb.viewmodel.dashboard.DashboardViewModel;
@@ -48,6 +50,11 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
                 .root(AppUser.KEY)
                 .get(uid)
                 .setValue(activeUser);
+
+        getFireData()
+                .root(BooToken.KEY)
+                .get(activeUser.sid)
+                .setValue(new GcmPrefs(getContext()).getToken());
     }
 
     private final FireValueListener<AppUser> fireUserListener = new FireValueListener<AppUser>(AppUser.class) {
