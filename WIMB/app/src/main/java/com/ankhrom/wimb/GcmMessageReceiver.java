@@ -8,12 +8,12 @@ import com.ankhrom.base.Base;
 import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.gcm.PlayService;
 import com.ankhrom.wimb.entity.BooGeo;
-import com.ankhrom.wimb.fire.FireUser;
+import com.ankhrom.wimb.fire.FirePosition;
 import com.google.android.gms.gcm.GcmListenerService;
 
 public class GcmMessageReceiver extends GcmListenerService {
 
-    private static final String KEY = "key";
+    public static final String KEY = "key";
 
     @Override
     public void onMessageReceived(String from, Bundle bundle) {
@@ -29,7 +29,7 @@ public class GcmMessageReceiver extends GcmListenerService {
 
         switch (key) {
             case BooGeo.KEY:
-                FireUser.UpdatePosition(this);
+                FirePosition.update(this);
                 break;
         }
     }

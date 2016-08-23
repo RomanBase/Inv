@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.ankhrom.base.Base;
 import com.ankhrom.base.BaseActivityDrawer;
-import com.ankhrom.base.interfaces.viewmodel.ViewModel;
+import com.ankhrom.base.common.BasePermission;
 import com.ankhrom.base.interfaces.viewmodel.ViewModelObserver;
 import com.ankhrom.base.viewmodel.BaseViewModelObserver;
 import com.ankhrom.fire.FireSignIn;
@@ -17,10 +17,8 @@ import com.ankhrom.gcm.GcmRegistrationReceiver;
 import com.ankhrom.gcm.PlayService;
 import com.ankhrom.wimb.fire.FireUserStateListener;
 import com.ankhrom.wimb.fire.TokenChangedListener;
-import com.ankhrom.wimb.interfaces.ToolbarToggler;
 import com.ankhrom.wimb.viewmodel.sidemenu.MenuModel;
 import com.ankhrom.wimb.viewmodel.user.LoginSplashViewModel;
-import com.roughike.bottombar.BottomBar;
 
 public class MainActivity extends BaseActivityDrawer {
 
@@ -49,44 +47,9 @@ public class MainActivity extends BaseActivityDrawer {
                 .build();
     }
 
-    BottomBar bar;
-
     @Override
     protected void onPostInit(Bundle state, ViewDataBinding binding) {
         super.onPostInit(state, binding);
-
-        //ActivityCollapsingToolbarBinding toolbarBinding = DataBindingUtil.findBinding(ViewHelper.findChildView(AppBarLayout.class, binding.getRoot()));
-        //layoutObserver.bind((ActivityMainBinding) binding, toolbarBinding);
-
-        binding.getRoot().post(new Runnable() {
-            @Override
-            public void run() {
-                getViewModelObserver().notifyViewModelChanged();
-            }
-        });
-
-        /*bar = BottomBar.attach((CoordinatorLayout) findViewById(R.id.root_coordinator), state);
-        bar.noTopOffset();
-        bar.noNavBarGoodness();
-
-        bar.setItems(R.menu.menu_bottom);
-        bar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
-            @Override
-            public void onMenuTabSelected(@IdRes int menuItemId) {
-
-            }
-
-            @Override
-            public void onMenuTabReSelected(@IdRes int menuItemId) {
-
-            }
-        });
-
-        bar.mapColorForTab(0, "#AAFF0000");
-        bar.mapColorForTab(1, "#AAFFFF00");
-        bar.mapColorForTab(2, "#AAFF00FF");
-        bar.mapColorForTab(3, "#AA00FF00");
-        bar.mapColorForTab(4, "#AA00FFFF");*/
 
         GcmPrefs prefs = new GcmPrefs(this);
         prefs.shared.registerOnSharedPreferenceChangeListener(new TokenChangedListener(factory));
@@ -97,26 +60,11 @@ public class MainActivity extends BaseActivityDrawer {
                 startService(new Intent(this, GcmRegistration.class));
             }
         }
-    }
 
-    @Override
-    public void onViewModelChanged(ViewModel viewModel) {
-        super.onViewModelChanged(viewModel);
-
-        if (viewModel instanceof ToolbarToggler) {
-            //layoutObserver.toggleToolbar((ToolbarToggler) viewModel);
-        } else {
-            //layoutObserver.setDefaultToolbarState();
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        if (bar != null) {
-            bar.onSaveInstanceState(outState);
-        }
+        BasePermission.with(this)
+                .require(
+                        "android.permission.ACCESS_COARSE_LOCATION"
+                );
     }
 
     @Override

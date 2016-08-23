@@ -20,7 +20,7 @@ public class GcmMessage {
         this.context = context;
     }
 
-    public void send(@NonNull final String apiKey, @NonNull final String id) {
+    public void send(@NonNull final String apiKey, @NonNull final String id, @NonNull final Message message) {
 
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -29,7 +29,7 @@ public class GcmMessage {
                 try {
                     GcmServerSideSender sender = new GcmServerSideSender(apiKey, new LoggingService.Logger(context));
 
-                    sender.sendHttpPlaintextDownstreamMessage(id, new Message.Builder().addData("0", "s msg").build());
+                    sender.sendHttpPlaintextDownstreamMessage(id, message);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

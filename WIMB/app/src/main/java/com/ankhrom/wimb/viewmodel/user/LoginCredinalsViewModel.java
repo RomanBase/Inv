@@ -1,6 +1,7 @@
 package com.ankhrom.wimb.viewmodel.user;
 
 
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.View;
 
@@ -16,6 +17,7 @@ import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.LoginCredinalsPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.BooToken;
+import com.ankhrom.wimb.fire.FirePosition;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.ankhrom.wimb.viewmodel.dashboard.DashboardViewModel;
@@ -45,6 +47,11 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
         activeUser.sid = FireData.uid();
         activeUser.isLocationEnabled = true;
 
+        PreferenceManager.getDefaultSharedPreferences(getContext())
+                .edit()
+                .putString(AppUser.SID, activeUser.sid)
+                .apply();
+
         getFireData()
                 .listener(fireUserListener)
                 .root(AppUser.KEY)
@@ -55,6 +62,8 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
                 .root(BooToken.KEY)
                 .get(activeUser.sid)
                 .setValue(new GcmPrefs(getContext()).getToken());
+
+        FirePosition.update(getContext());
     }
 
     private final FireValueListener<AppUser> fireUserListener = new FireValueListener<AppUser>(AppUser.class) {
