@@ -11,14 +11,10 @@ import com.ankhrom.base.interfaces.viewmodel.ViewModel;
 import com.ankhrom.fire.FacebookSignIn;
 import com.ankhrom.fire.FireSignIn;
 import com.ankhrom.fire.GoogleSignIn;
-import com.ankhrom.gcm.GcmMessage;
-import com.ankhrom.gcm.logic.Message;
 import com.ankhrom.wimb.FireFactory;
-import com.ankhrom.wimb.GcmMessageReceiver;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.LoginPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
-import com.ankhrom.wimb.entity.BooGeo;
 import com.ankhrom.wimb.fire.FireArgCode;
 import com.ankhrom.wimb.fire.FireUser;
 import com.ankhrom.wimb.fire.FireValueListener;
@@ -197,12 +193,12 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
 
     public void onMagicButtonPressed(View view) {
 
-        Message message = new Message.Builder().addData(GcmMessageReceiver.KEY, BooGeo.KEY).build();
+        /*Message message = new Message.Builder().addData(GcmMessageReceiver.KEY, BooGeo.KEY).build();
 
         new GcmMessage(getContext()).send(
                 "AIzaSyB3cc3hSgwqxuBNNWSU3Ij0niObiyCOpyE",
                 "fMTucfDuL3Q:APA91bFYMmVrrm7gnIPZwBZoCvPbzYsYHN25UEAA1NzIidsb4-ArKjrlJX2scZ8i2jo1Arrq5MTxZR1a9E3BbS3aIHEdLrj8pl4RJLxO-CbZxIe7kUdeVH6nTMGIvxCX_jz1WlBek74C",
                 message
-        );
+        );*/
     }
 }

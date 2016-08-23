@@ -149,4 +149,9 @@ public class FireData {
 
         return query;
     }
+
+    public static String asString(Object data) {
+
+        return "\"" + data.toString() + "\"";
+    }
 }

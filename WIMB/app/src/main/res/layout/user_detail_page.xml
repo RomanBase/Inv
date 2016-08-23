@@ -28,5 +28,11 @@
             android:onClick="@{VM.onResetSidPressed}"
             android:text="reset"/>
 
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{VM.onChangePhotoPressed}"
+            android:text="photo"/>
+
     </LinearLayout>
 </layout>

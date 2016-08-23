@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="gplus_client_id">509047145402-uf5c3nvdul97e4a2i58a9baugkagpnbj.apps.googleusercontent.com</string>
-
     <string name="facebook_app_id">277718372610108</string>
 
     <string name="gcm_sender_id">509047145402</string>
+
+    <string name="fire_app_key">AIzaSyB3cc3hSgwqxuBNNWSU3Ij0niObiyCOpyE</string>
+    <string name="fire_storage_bucket">gs://wimb-ba5bd.appspot.com</string>
 </resources>

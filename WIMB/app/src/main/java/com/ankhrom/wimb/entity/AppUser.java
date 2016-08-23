@@ -13,6 +13,7 @@ public class AppUser {
     public static final String KEY = "users";
     public static final String SID = "sid";
     public static final String BOO = "boo";
+    public static final String AVATAR = "avatar";
 
     public String sid;
     public String nickname;

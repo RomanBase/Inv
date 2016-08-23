@@ -9,9 +9,11 @@ import com.ankhrom.base.model.Model;
 import com.ankhrom.base.viewmodel.BaseViewModel;
 import com.ankhrom.base.viewmodel.BaseViewModelObserver;
 import com.ankhrom.fire.FireData;
+import com.ankhrom.fire.FireFile;
 import com.ankhrom.wimb.BR;
 import com.ankhrom.wimb.FireFactory;
 import com.ankhrom.wimb.MainActivity;
+import com.ankhrom.wimb.R;
 
 public abstract class InvViewModel<S extends ViewDataBinding, T extends Model> extends BaseViewModel<S, T> {
 
@@ -35,6 +37,11 @@ public abstract class InvViewModel<S extends ViewDataBinding, T extends Model> e
     protected FireData getFireData() {
 
         return FireData.init();
+    }
+
+    protected FireFile getFireStorage() {
+
+        return FireFile.with(getString(R.string.fire_storage_bucket));
     }
 
     public FireFactory getFireFactory() {
