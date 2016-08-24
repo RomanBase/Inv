@@ -1,13 +1,16 @@
 package com.ankhrom.base.viewmodel;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+
+import com.ankhrom.base.custom.listener.AnimationAdapterListener;
+import com.ankhrom.base.interfaces.PopupModelAdapter;
+import com.ankhrom.base.model.PopupModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.ankhrom.base.interfaces.PopupModelAdapter;
-import com.ankhrom.base.model.PopupModel;
 
 public class BasePopupAdapter implements PopupModelAdapter {
 
@@ -46,9 +49,8 @@ public class BasePopupAdapter implements PopupModelAdapter {
                     return;
                 } else if (c > 0) {
                     for (PopupModel popup : stack) {
-                        popupModel.getParent().removeView(popupModel.getPopup());
+                        removeView(popupModel);
                     }
-
                     stack.clear();
                 }
             }
@@ -62,10 +64,22 @@ public class BasePopupAdapter implements PopupModelAdapter {
     public void hide(PopupModel popupModel) {
 
         stack.remove(popupModel);
-        if (popupModel != null) {
-            ViewGroup parent = popupModel.getParent();
+        removeView(popupModel);
+    }
+
+    private void removeView(PopupModel model) {
+
+        if (model != null) {
+            final ViewGroup parent = model.getParent();
             if (parent != null) {
-                parent.removeView(popupModel.getPopup());
+                final View popupView = model.getPopup();
+                model.animateHide(popupView)
+                        .setAnimationListener(new AnimationAdapterListener() {
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                parent.removeView(popupView);
+                            }
+                        });
             }
         }
     }

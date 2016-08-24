@@ -7,7 +7,9 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 
+import com.ankhrom.base.animators.BaseAnim;
 import com.ankhrom.base.interfaces.PopupModelAdapter;
 import com.ankhrom.base.viewmodel.BasePopupAdapter;
 
@@ -30,6 +32,8 @@ public abstract class PopupModel<T extends ViewDataBinding> extends ItemModel {
         this.popup = popup;
         this.parent = root;
 
+        animateShow(popup);
+
         int variable = getVariableBindingResource();
         if (variable > 0 && binding != null) {
             binding.setVariable(variable, this);
@@ -39,7 +43,7 @@ public abstract class PopupModel<T extends ViewDataBinding> extends ItemModel {
     }
 
     @SuppressWarnings("unchecked")
-    public void initBinding(ViewDataBinding binding) {
+    protected void initBinding(ViewDataBinding binding) {
 
         this.binding = (T) binding;
         onBindingCreated(this.binding);
@@ -47,6 +51,16 @@ public abstract class PopupModel<T extends ViewDataBinding> extends ItemModel {
 
     protected void onBindingCreated(T binding) {
 
+    }
+
+    public Animation animateShow(View popup){
+
+        return BaseAnim.show(popup);
+    }
+
+    public Animation animateHide(View popup){
+
+        return BaseAnim.fade(popup);
     }
 
     public T getBinding() {
