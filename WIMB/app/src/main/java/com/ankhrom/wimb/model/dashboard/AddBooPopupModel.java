@@ -8,6 +8,7 @@ import android.view.View;
 import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.base.observable.EditTextObservable;
 import com.ankhrom.base.observable.ObservableString;
+import com.ankhrom.base.observable.ObservableUri;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.UserBooAddPopupBinding;
 import com.ankhrom.wimb.model.InvPopupModel;
@@ -16,7 +17,7 @@ public abstract class AddBooPopupModel extends InvPopupModel<UserBooAddPopupBind
 
     public final EditTextObservable sid = new EditTextObservable();
     public final ObservableString nickname = new ObservableString();
-    public final ObservableString avatar = new ObservableString();
+    public final ObservableUri avatar = new ObservableUri();
     public final ObservableBoolean isFound = new ObservableBoolean();
     public final ObservableBoolean isLoading = new ObservableBoolean();
 

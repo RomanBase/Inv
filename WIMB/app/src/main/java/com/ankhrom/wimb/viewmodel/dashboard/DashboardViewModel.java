@@ -9,6 +9,7 @@ import com.ankhrom.base.common.statics.ObjectHelper;
 import com.ankhrom.base.interfaces.viewmodel.MenuItemableViewModel;
 import com.ankhrom.base.model.ToolbarItemModel;
 import com.ankhrom.wimb.R;
+import com.ankhrom.wimb.common.ImageHelper;
 import com.ankhrom.wimb.databinding.DashboardPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.AppUserCredentials;
@@ -117,7 +118,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         requestedUser = user;
 
         popup.nickname.set(user.nickname);
-        popup.avatar.set(user.avatar);
+        popup.avatar.set(ImageHelper.getUri(getContext(), user.avatar));
         popup.isLoading.set(false);
 
         AppUser activeUser = getFireFactory().appUser;
@@ -162,6 +163,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
             for (BooUser user : activeUser.boo) {
                 BooItemModel item = new BooItemModel();
                 item.nickname.set(user.nickname);
+                item.avatar.set(ImageHelper.getUri(getContext(), user.avatar));
                 model.adapter.add(item);
             }
         }

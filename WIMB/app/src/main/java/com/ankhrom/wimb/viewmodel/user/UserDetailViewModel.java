@@ -22,6 +22,7 @@ import com.ankhrom.base.model.ToolbarItemModel;
 import com.ankhrom.base.viewmodel.BaseViewModelObserver;
 import com.ankhrom.fire.FireData;
 import com.ankhrom.wimb.R;
+import com.ankhrom.wimb.common.ImageHelper;
 import com.ankhrom.wimb.databinding.UserDetailPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.AppUserCredentials;
@@ -52,7 +53,7 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
 
         AppUserCredentials credentials = getAppUserCredentials();
 
-        model.avatar.set(credentials.getAvatar(getContext()));
+        model.avatar.set(ImageHelper.getUri(getContext(), credentials.avatar));
         model.nickname.set(credentials.nickname);
         model.sid.set(getAppUser().sid);
     }

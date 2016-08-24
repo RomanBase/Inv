@@ -3,6 +3,7 @@ package com.ankhrom.wimb.fire;
 
 import android.support.annotation.Nullable;
 
+import com.ankhrom.base.Base;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -32,6 +33,7 @@ public abstract class FireQuerySingleListener<T> implements ValueEventListener {
             T object = (T) new Gson().fromJson(dataSnapshot.getChildren().iterator().next().getValue().toString(), clazz);
             onDataChanged(object);
         } catch (Exception e) {
+            Base.logE(dataSnapshot.getValue());
             e.printStackTrace();
             onCancelled(DatabaseError.fromException(e));
         }
