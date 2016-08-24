@@ -12,14 +12,22 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="android:buttonStyle">@style/AppTheme.Button</item>
+        <item name="android:editTextStyle">@style/AppTheme.EditText</item>
+
+        <!-- AppCompat Compability -->
+        <item name="editTextStyle">@style/AppTheme.EditText</item>
+
     </style>
 
     <style name="AppTheme.Button" parent="android:Widget.Button">
         <item name="android:minHeight">@dimen/base_item_size</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="AppTheme.EditText" parent="android:Widget.EditText">
         <item name="android:minHeight">@dimen/base_item_size</item>
+        <item name="android:background">@drawable/background_edittext</item>
+        <item name="android:padding">@dimen/base_padding</item>
     </style>
 
 </resources>
