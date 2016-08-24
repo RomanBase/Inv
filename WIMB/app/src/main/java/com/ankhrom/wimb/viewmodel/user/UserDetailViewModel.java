@@ -1,11 +1,17 @@
 package com.ankhrom.wimb.viewmodel.user;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.ankhrom.base.Base;
+import com.ankhrom.base.BaseActivity;
+import com.ankhrom.base.common.BaseCamera;
+import com.ankhrom.base.common.BaseGallery;
+import com.ankhrom.base.common.statics.BitmapHelper;
 import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.base.interfaces.viewmodel.CloseableViewModel;
 import com.ankhrom.base.interfaces.viewmodel.MenuItemableViewModel;
@@ -16,6 +22,7 @@ import com.ankhrom.fire.FireData;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.UserDetailPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
+import com.ankhrom.wimb.entity.AppUserCredentials;
 import com.ankhrom.wimb.entity.BooGeo;
 import com.ankhrom.wimb.model.user.UserDetailModel;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
@@ -27,12 +34,25 @@ import com.google.firebase.storage.UploadTask;
 
 public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, UserDetailModel> implements MenuItemableViewModel, CloseableViewModel {
 
+    private BaseCamera camera;
+    private BaseGallery gallery;
+
     @Override
     public void onInit() {
         super.onInit();
 
         setTitle("AppUser");
         setModel(new UserDetailModel());
+        setModelData();
+    }
+
+    private void setModelData() {
+
+        AppUserCredentials credentials = getAppUserCredentials();
+
+        model.avatar.set(credentials.getAvatar(getContext()));
+        model.nickname.set(credentials.nickname);
+        model.sid.set(getAppUser().sid);
     }
 
     // TODO: 23/08/16
@@ -61,18 +81,17 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
                 .setValue(user.sid);
     }
 
-    public void onChangePhotoPressed(View view) {
+    public void uploadPhoto(byte[] data) {
 
         StorageMetadata metadata = new StorageMetadata.Builder()
                 .setContentType("image/jpg")
-                .setCustomMetadata("time", String.valueOf(System.currentTimeMillis()))
                 .build();
 
         getFireStorage()
                 .folder(AppUser.KEY)
                 .folder(getAppUser().sid)
                 .file(AppUser.AVATAR + ".jpg")
-                .putBytes(new byte[]{0, 0, 0, 0}, metadata)
+                .putBytes(data, metadata)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -92,19 +111,51 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
 
     public void onGalleryPressed(View view) {
 
+        gallery = BaseGallery.with((BaseActivity) getObserver().getContext()).open();
     }
 
     public void onCameraPressed(View view) {
 
+        if (!BaseCamera.isCameraAvailable(getContext())) {
+            return;
+        }
+
+        camera = BaseCamera.with((BaseActivity) getObserver().getContext()).open();
     }
 
     private void onPhotoUploaded(String url) {
 
+        model.avatar.set(Uri.parse(url));
+
         getFireData()
-                .root(AppUser.KEY)
-                .root(getUid())
+                .root(AppUser.CREDENTIALS)
+                .root(getSid())
                 .get(AppUser.AVATAR)
                 .setValue(FireData.asString(url));
+    }
+
+    @Override
+    public boolean onBaseActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (camera != null) {
+            Bitmap bitmap = camera.getOnActivityResult(requestCode, resultCode, data);
+            camera = null;
+            if (bitmap != null) {
+                uploadPhoto(BitmapHelper.getBitmapJPG(bitmap, 100));
+                return true;
+            }
+        }
+
+        if (gallery != null) {
+            Bitmap bitmap = gallery.getOnActivityResult(requestCode, resultCode, data);
+            gallery = null;
+            if (bitmap != null) {
+                uploadPhoto(BitmapHelper.getBitmapJPG(bitmap, 100));
+                return true;
+            }
+        }
+
+        return super.onBaseActivityResult(requestCode, resultCode, data);
     }
 
     @Override

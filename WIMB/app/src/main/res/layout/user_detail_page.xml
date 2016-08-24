@@ -15,17 +15,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/background_color"
-            android:padding="@dimen/extended_padding">
-
-            <com.ankhrom.base.custom.view.ImageGlideView
-                android:layout_width="@dimen/icon_size_extra"
-                android:layout_height="@dimen/icon_size_extra"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/placeholder"/>
+            android:orientation="horizontal"
+            android:padding="@dimen/base_padding">
 
             <android.support.v7.widget.AppCompatImageView
                 android:layout_width="@dimen/icon_size"
@@ -35,6 +30,21 @@
                 android:src="@drawable/placeholder"
                 app:onTouchListener="@{M.onTouchAnim}"/>
 
+            <com.ankhrom.base.custom.view.SquareFrameLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/base_padding">
+
+                <com.ankhrom.base.custom.view.ImageGlideView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="centerCrop"
+                    android:src="@{M.avatar}"/>
+
+            </com.ankhrom.base.custom.view.SquareFrameLayout>
+
             <android.support.v7.widget.AppCompatImageView
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
@@ -43,7 +53,7 @@
                 android:src="@drawable/placeholder"
                 app:onTouchListener="@{M.onTouchAnim}"/>
 
-        </FrameLayout>
+        </LinearLayout>
 
         <android.support.v7.widget.AppCompatEditText
             android:layout_width="match_parent"
@@ -69,12 +79,6 @@
             android:layout_height="wrap_content"
             android:onClick="@{VM.onResetSidPressed}"
             android:text="reset"/>
-
-        <android.support.v7.widget.AppCompatButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{VM.onChangePhotoPressed}"
-            android:text="photo"/>
 
     </LinearLayout>
 </layout>

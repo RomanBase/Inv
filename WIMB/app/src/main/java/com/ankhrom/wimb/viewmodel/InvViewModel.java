@@ -36,6 +36,11 @@ public abstract class InvViewModel<S extends ViewDataBinding, T extends Model> e
         return getFireFactory().user.data.getUid();
     }
 
+    protected String getSid(){
+
+        return getAppUser().sid;
+    }
+
     protected FireData getFireData() {
 
         return FireData.init();
@@ -51,7 +56,7 @@ public abstract class InvViewModel<S extends ViewDataBinding, T extends Model> e
         return getFireFactory().appUser;
     }
 
-    protected AppUserCredentials getUserCredentials() {
+    protected AppUserCredentials getAppUserCredentials() {
 
         return getFireFactory().appUserCredentials;
     }

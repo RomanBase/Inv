@@ -8,10 +8,12 @@ import com.ankhrom.base.animators.BaseAnim;
 import com.ankhrom.base.custom.listener.OnTouchActionListener;
 import com.ankhrom.base.observable.EditTextObservable;
 import com.ankhrom.base.observable.ObservableString;
+import com.ankhrom.base.observable.ObservableUri;
 import com.ankhrom.wimb.model.InvModel;
 
 public class UserDetailModel extends InvModel {
 
+    public final ObservableUri avatar = new ObservableUri();
     public final EditTextObservable nickname = new EditTextObservable();
     public final ObservableString sid = new ObservableString();
     public final ObservableBoolean sidIsLoading = new ObservableBoolean();

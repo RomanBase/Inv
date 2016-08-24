@@ -11,6 +11,7 @@ public final class GlobalCode {
 
     public static final int CAMERA_REQUEST = 9300;
     public static final int CALENDAR_REQUEST = 9301;
+    public static final int GALLERY_REQUEST = 9302;
 
     public static final int GCM_SERVICE_REQUEST = 9310;
 

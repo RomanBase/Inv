@@ -93,7 +93,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         activeUser.addBoo(requestedUser, requestedSid);
 
         BooRequest request = new BooRequest();
-        request.nickname = getUserCredentials().nickname;
+        request.nickname = getAppUserCredentials().nickname;
 
         getFireData() // TODO: 19/08/16 listener ?
                 .root(BooRequest.KEY)
