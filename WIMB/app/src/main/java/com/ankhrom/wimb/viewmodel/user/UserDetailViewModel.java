@@ -9,8 +9,10 @@ import android.view.View;
 
 import com.ankhrom.base.Base;
 import com.ankhrom.base.BaseActivity;
+import com.ankhrom.base.GlobalCode;
 import com.ankhrom.base.common.BaseCamera;
 import com.ankhrom.base.common.BaseGallery;
+import com.ankhrom.base.common.BasePermission;
 import com.ankhrom.base.common.statics.BitmapHelper;
 import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.base.interfaces.viewmodel.CloseableViewModel;
@@ -83,6 +85,8 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
 
     public void uploadPhoto(byte[] data) {
 
+        model.imageIsLoading.set(true);
+
         StorageMetadata metadata = new StorageMetadata.Builder()
                 .setContentType("image/jpg")
                 .build();
@@ -109,7 +113,25 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
                 });
     }
 
+    private void onPhotoUploaded(String url) {
+
+        model.avatar.set(Uri.parse(url));
+
+        getFireData()
+                .root(AppUser.CREDENTIALS)
+                .root(getSid())
+                .get(AppUser.AVATAR)
+                .setValue(FireData.asString(url));
+
+        model.imageIsLoading.set(false);
+    }
+
     public void onGalleryPressed(View view) {
+
+        if (!BasePermission.isAvailable(getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            BasePermission.requestDialog(getContext(), GlobalCode.PERMMISSION_REQUEST, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            return;
+        }
 
         gallery = BaseGallery.with((BaseActivity) getObserver().getContext()).open();
     }
@@ -121,17 +143,6 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
         }
 
         camera = BaseCamera.with((BaseActivity) getObserver().getContext()).open();
-    }
-
-    private void onPhotoUploaded(String url) {
-
-        model.avatar.set(Uri.parse(url));
-
-        getFireData()
-                .root(AppUser.CREDENTIALS)
-                .root(getSid())
-                .get(AppUser.AVATAR)
-                .setValue(FireData.asString(url));
     }
 
     @Override

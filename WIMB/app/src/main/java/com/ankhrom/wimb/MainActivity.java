@@ -63,8 +63,8 @@ public class MainActivity extends BaseActivityDrawer {
 
         BasePermission.with(this)
                 .require(
-                        "android.permission.ACCESS_COARSE_LOCATION",
-                        "android.permission.READ_EXTERNAL_STORAGE"
+                        "android.permission.ACCESS_COARSE_LOCATION"
+                        //"android.permission.READ_EXTERNAL_STORAGE"
                 );
     }
 

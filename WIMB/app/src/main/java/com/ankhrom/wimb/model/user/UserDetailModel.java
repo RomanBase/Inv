@@ -17,6 +17,7 @@ public class UserDetailModel extends InvModel {
     public final EditTextObservable nickname = new EditTextObservable();
     public final ObservableString sid = new ObservableString();
     public final ObservableBoolean sidIsLoading = new ObservableBoolean();
+    public final ObservableBoolean imageIsLoading = new ObservableBoolean();
 
     public final View.OnTouchListener onTouchAnim = new OnTouchActionListener() {
         @Override
