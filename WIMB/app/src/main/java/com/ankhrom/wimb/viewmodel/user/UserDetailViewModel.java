@@ -2,7 +2,6 @@ package com.ankhrom.wimb.viewmodel.user;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -18,19 +17,15 @@ import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.UserDetailPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.BooGeo;
-import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.model.user.UserDetailModel;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.UploadTask;
 
 
 public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, UserDetailModel> implements MenuItemableViewModel, CloseableViewModel {
-
-    private AppUser activeUser;
 
     @Override
     public void onInit() {
@@ -38,41 +33,6 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
 
         setTitle("AppUser");
         setModel(new UserDetailModel());
-        loadUserData();
-    }
-
-    private final FireValueListener<AppUser> userFireListener = new FireValueListener<AppUser>(AppUser.class) {
-        @Override
-        public void onDataChanged(@Nullable AppUser data) {
-
-            activeUser = data;
-
-            // TODO: 23/08/16
-            if (data == null) {
-                return;
-            }
-
-            model.sid.set(data.sid);
-
-            isLoading.set(false);
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-            isLoading.set(false);
-        }
-    };
-
-    private void loadUserData() {
-
-        activeUser = getFireFactory().activeUser;
-
-        isLoading.set(true);
-        getFireData()
-                .listener(userFireListener)
-                .root(AppUser.KEY)
-                .get(getUid());
     }
 
     // TODO: 23/08/16
@@ -82,26 +42,23 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
             return;
         }
 
-        if (activeUser == null) {
-            return;
-        }
+        AppUser user = getAppUser();
 
-        if (!StringHelper.isEmpty(activeUser.sid)) {
+        if (!StringHelper.isEmpty(user.sid)) {
 
             getFireData()
                     .root(BooGeo.KEY)
-                    .get(activeUser.sid)
+                    .get(user.sid)
                     .removeValue();
         }
 
-        activeUser.sid = FireData.uid();
+        user.sid = FireData.uid();
 
         getFireData()
-                .listener(userFireListener)
                 .root(AppUser.KEY)
                 .root(getUid())
                 .get(AppUser.SID)
-                .setValue(activeUser.sid);
+                .setValue(user.sid);
     }
 
     public void onChangePhotoPressed(View view) {
@@ -113,7 +70,7 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
 
         getFireStorage()
                 .folder(AppUser.KEY)
-                .folder(activeUser.sid)
+                .folder(getAppUser().sid)
                 .file(AppUser.AVATAR + ".jpg")
                 .putBytes(new byte[]{0, 0, 0, 0}, metadata)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -131,6 +88,14 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
 
                     }
                 });
+    }
+
+    public void onGalleryPressed(View view) {
+
+    }
+
+    public void onCameraPressed(View view) {
+
     }
 
     private void onPhotoUploaded(String url) {

@@ -32,11 +32,7 @@ public abstract class FireValueListener<T> implements ValueEventListener {
 
         try {
             T object = (T) new Gson().fromJson(value.toString(), clazz);
-            if (object != null) {
-                onDataChanged(object);
-            } else {
-                onCancelled(DatabaseError.fromException(new Throwable("parse error")));
-            }
+            onDataChanged(object);
         } catch (Exception e) {
             e.printStackTrace();
             onCancelled(DatabaseError.fromException(e));

@@ -9,6 +9,7 @@ import com.ankhrom.fire.FireSignIn;
 import com.ankhrom.wimb.FireFactory;
 import com.ankhrom.wimb.MainActivity;
 import com.ankhrom.wimb.entity.AppUser;
+import com.ankhrom.wimb.entity.AppUserCredentials;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
@@ -18,6 +19,7 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
     private final FireFactory factory;
 
     private DatabaseReference userReference;
+    private DatabaseReference credentialsReference;
 
     public FireUserStateListener(MainActivity activity, FireFactory factory) {
         this.activity = activity;
@@ -27,8 +29,27 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
     private final FireValueListener<AppUser> userDataListener = new FireValueListener<AppUser>(AppUser.class) {
         @Override
         public void onDataChanged(@Nullable AppUser data) {
-            factory.activeUser = data;
-            notifyViewModelUser(data);
+
+            if (credentialsReference != null) {
+                credentialsReference.removeEventListener(userCredentialsListener);
+                credentialsReference = null;
+            }
+
+            factory.appUser = data;
+            notifyViewModel(FireArgCode.USER_DATA_CHANGED, data);
+
+            if (data != null) {
+                credentialsReference = FireData.init().root(AppUser.CREDENTIALS).get(data.sid);
+                credentialsReference.addValueEventListener(userCredentialsListener);
+            }
+        }
+    };
+
+    private final FireValueListener<AppUserCredentials> userCredentialsListener = new FireValueListener<AppUserCredentials>(AppUserCredentials.class) {
+        @Override
+        public void onDataChanged(@Nullable AppUserCredentials data) {
+            factory.appUserCredentials = data;
+            notifyViewModel(FireArgCode.USER_CREDENTIALS_CHANGED, data);
         }
     };
 
@@ -47,7 +68,7 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
 
         Base.logV("user log in");
 
-        notifyViewModelFireUser(FireArgCode.USER_SIGNED_IN, factory.user);
+        notifyViewModel(FireArgCode.USER_SIGNED_IN, factory.user);
     }
 
     @Override
@@ -55,7 +76,7 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
 
         FireUser user = factory.user;
         factory.user = null;
-        factory.activeUser = null;
+        factory.appUser = null;
 
         if (userReference != null) {
             userReference.removeEventListener(userDataListener);
@@ -64,7 +85,7 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
 
         Base.logV("user log out");
 
-        notifyViewModelFireUser(FireArgCode.USER_SIGNED_OUT, user);
+        notifyViewModel(FireArgCode.USER_SIGNED_OUT, user);
     }
 
     @Override
@@ -79,21 +100,12 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
         }
     }
 
-    private void notifyViewModelFireUser(int state, FireUser user) {
+    private void notifyViewModel(int state, Object object) {
 
         ViewModelObserver observer = activity.getViewModelObserver();
 
         if (observer != null) {
-            observer.postArgsToViewModel(state, user);
-        }
-    }
-
-    private void notifyViewModelUser(AppUser user) {
-
-        ViewModelObserver observer = activity.getViewModelObserver();
-
-        if (observer != null) {
-            observer.postArgsToViewModel(FireArgCode.USER_DATA_CHANGED, user);
+            observer.postArgsToViewModel(state, object);
         }
     }
 }

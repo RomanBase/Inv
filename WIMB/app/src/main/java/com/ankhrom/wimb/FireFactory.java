@@ -5,6 +5,7 @@ import com.ankhrom.fire.FacebookSignIn;
 import com.ankhrom.fire.FireSignIn;
 import com.ankhrom.fire.GoogleSignIn;
 import com.ankhrom.wimb.entity.AppUser;
+import com.ankhrom.wimb.entity.AppUserCredentials;
 import com.ankhrom.wimb.fire.FireUser;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -17,7 +18,8 @@ public class FireFactory extends BaseFactory {
     public FacebookSignIn facebookSignIn; // TODO: 21/07/16  
 
     public FireUser user;
-    public AppUser activeUser;
+    public AppUser appUser;
+    public AppUserCredentials appUserCredentials;
 
     public FireFactory(FireSignIn signIn) {
         this.signIn = signIn;

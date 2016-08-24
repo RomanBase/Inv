@@ -14,6 +14,8 @@ import com.ankhrom.wimb.BR;
 import com.ankhrom.wimb.FireFactory;
 import com.ankhrom.wimb.MainActivity;
 import com.ankhrom.wimb.R;
+import com.ankhrom.wimb.entity.AppUser;
+import com.ankhrom.wimb.entity.AppUserCredentials;
 
 public abstract class InvViewModel<S extends ViewDataBinding, T extends Model> extends BaseViewModel<S, T> {
 
@@ -44,7 +46,17 @@ public abstract class InvViewModel<S extends ViewDataBinding, T extends Model> e
         return FireFile.with(getString(R.string.fire_storage_bucket));
     }
 
-    public FireFactory getFireFactory() {
+    protected AppUser getAppUser() {
+
+        return getFireFactory().appUser;
+    }
+
+    protected AppUserCredentials getUserCredentials() {
+
+        return getFireFactory().appUserCredentials;
+    }
+
+    protected FireFactory getFireFactory() {
 
         return getFactory();
     }

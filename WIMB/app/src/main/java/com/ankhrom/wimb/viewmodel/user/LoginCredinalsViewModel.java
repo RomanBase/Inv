@@ -16,6 +16,7 @@ import com.ankhrom.gcm.GcmPrefs;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.LoginCredinalsPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
+import com.ankhrom.wimb.entity.AppUserCredentials;
 import com.ankhrom.wimb.entity.BooToken;
 import com.ankhrom.wimb.fire.FirePosition;
 import com.ankhrom.wimb.fire.FireValueListener;
@@ -26,7 +27,6 @@ import com.google.firebase.database.DatabaseError;
 public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBinding, Model> {
 
     public final EditTextObservable nickname = new EditTextObservable();
-    private AppUser activeUser;
 
     public void onSendPressed(View view) {
 
@@ -36,31 +36,42 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
             return;
         }
 
-        createFireUser(AppUser.init(nick), getUid());
+        createFireUser(nick);
     }
 
-    private void createFireUser(AppUser user, String uid) {
+    private void createFireUser(String nick) {
 
         isLoading.set(true);
 
-        activeUser = user;
-        activeUser.sid = FireData.uid();
-        activeUser.isLocationEnabled = true;
+        String uid = getUid();
+        String sid = FireData.uid();
+
+        AppUser user = new AppUser();
+        user.sid = sid;
+
+        AppUserCredentials credentials = new AppUserCredentials();
+        credentials.nickname = nick;
+        credentials.isLocationEnabled = true;
 
         PreferenceManager.getDefaultSharedPreferences(getContext())
                 .edit()
-                .putString(AppUser.SID, activeUser.sid)
+                .putString(AppUser.SID, sid)
                 .apply();
 
         getFireData()
-                .listener(fireUserListener)
                 .root(AppUser.KEY)
                 .get(uid)
-                .setValue(activeUser);
+                .setValue(user);
+
+        getFireData()
+                .listener(fireUserListener)
+                .root(AppUser.CREDENTIALS)
+                .get(sid)
+                .setValue(credentials);
 
         getFireData()
                 .root(BooToken.KEY)
-                .get(activeUser.sid)
+                .get(sid)
                 .setValue(new GcmPrefs(getContext()).getToken());
 
         FirePosition.update(getContext());
@@ -90,7 +101,6 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
         @Override
         public void onCancelled(DatabaseError databaseError) {
 
-            activeUser = null;
             isLoading.set(false);
             Base.logE("user creating error");
         }

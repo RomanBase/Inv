@@ -23,13 +23,13 @@ public class TokenChangedListener implements SharedPreferences.OnSharedPreferenc
 
         if (ObjectHelper.equals(GcmPrefs.NOTIFICATION_TOKEN, s)) {
 
-            if (factory.activeUser != null) {
+            if (factory.appUser != null) {
 
                 String token = sharedPreferences.getString(GcmPrefs.NOTIFICATION_TOKEN, null);
 
                 FireData.init()
                         .root(BooToken.KEY)
-                        .get(factory.activeUser.sid)
+                        .get(factory.appUser.sid)
                         .setValue(token);
             }
         }

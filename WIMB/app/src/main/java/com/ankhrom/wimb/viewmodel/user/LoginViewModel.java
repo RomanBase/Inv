@@ -15,6 +15,7 @@ import com.ankhrom.wimb.FireFactory;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.LoginPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
+import com.ankhrom.wimb.entity.AppUserCredentials;
 import com.ankhrom.wimb.fire.FireArgCode;
 import com.ankhrom.wimb.fire.FireUser;
 import com.ankhrom.wimb.fire.FireValueListener;
@@ -108,8 +109,28 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
                     @Override
                     public void onDataChanged(@Nullable AppUser data) {
 
-                        onUserCredinals(data, fireUser);
-                        isLoading.set(false);
+                        if (data == null) {
+                            return;
+                        }
+
+                        getFireData()
+                                .root(AppUser.CREDENTIALS)
+                                .listener(new FireValueListener<AppUserCredentials>(AppUserCredentials.class) {
+                                    @Override
+                                    public void onDataChanged(@Nullable AppUserCredentials data) {
+
+                                        onUserCredentialsObtained(data, fireUser);
+                                        isLoading.set(false);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                        handleLoginError(FireSignIn.FireSignInVariant.unknown, databaseError.toException());
+                                        isLoading.set(false);
+                                    }
+                                })
+                                .get(data.sid);
                     }
 
                     @Override
@@ -119,7 +140,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
                         isLoading.set(false);
                     }
                 })
-                .get(fireUser.data.getUid());
+                .get(uid);
     }
 
     @Override
@@ -139,7 +160,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
         return false;
     }
 
-    protected void onUserCredinals(@Nullable AppUser data, @NonNull FireUser fireUser) {
+    protected void onUserCredentialsObtained(@Nullable AppUserCredentials data, @NonNull FireUser fireUser) {
 
         if (data == null || StringHelper.isEmpty(data.nickname)) {
             ViewModel vm = getFactory().getViewModel(LoginCredinalsViewModel.class, fireUser);
@@ -158,7 +179,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
 
             FireUser fireUser = argsHelper.getArg(FireUser.class);
             if (fireUser != null) {
-                checkCredinals(fireUser.data.getUid());
+                checkCredinals(getUid());
             }
         }
 

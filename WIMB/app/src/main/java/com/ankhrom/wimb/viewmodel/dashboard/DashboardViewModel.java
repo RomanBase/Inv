@@ -11,10 +11,11 @@ import com.ankhrom.base.model.ToolbarItemModel;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.DashboardPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
+import com.ankhrom.wimb.entity.AppUserCredentials;
 import com.ankhrom.wimb.entity.BooRequest;
 import com.ankhrom.wimb.entity.BooUser;
 import com.ankhrom.wimb.fire.FireArgCode;
-import com.ankhrom.wimb.fire.FireQuerySingleListener;
+import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.model.dashboard.AddBooPopupModel;
 import com.ankhrom.wimb.model.dashboard.DashboardModel;
 import com.ankhrom.wimb.model.user.BooItemModel;
@@ -23,7 +24,8 @@ import com.google.firebase.database.DatabaseError;
 
 public class DashboardViewModel extends InvViewModel<DashboardPageBinding, DashboardModel> implements MenuItemableViewModel {
 
-    private AppUser requestedUser;
+    private AppUserCredentials requestedUser;
+    private String requestedSid;
 
     @Override
     public void onInit() {
@@ -47,23 +49,25 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         }
     };
 
-    private final FireQuerySingleListener<AppUser> findUserListener = new FireQuerySingleListener<AppUser>(AppUser.class) {
+    private final FireValueListener<AppUserCredentials> findUserListener = new FireValueListener<AppUserCredentials>(AppUserCredentials.class) {
         @Override
-        public void onDataChanged(@Nullable AppUser data) {
+        public void onDataChanged(@Nullable AppUserCredentials data) {
             if (data == null) {
-                notFound();
+                onUserNotFound();
             } else {
-                userFound(data);
+                onUserFound(data);
             }
         }
 
         @Override
         public void onCancelled(DatabaseError databaseError) {
-            notFound();
+            onUserNotFound();
         }
     };
 
     void findBoo(String sid) {
+
+        requestedSid = sid;
 
         popup.isFound.set(false);
         popup.isLoading.set(true);
@@ -72,9 +76,8 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
 
         getFireData()
                 .listener(findUserListener)
-                .root(AppUser.KEY)
-                .search(AppUser.SID)
-                .find(sid);
+                .root(AppUser.CREDENTIALS)
+                .get(sid);
     }
 
     void claimBoo() {
@@ -86,15 +89,15 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         popup.hide();
         clearPopup();
 
-        AppUser activeUser = getFireFactory().activeUser;
-        activeUser.addBoo(requestedUser);
+        AppUser activeUser = getAppUser();
+        activeUser.addBoo(requestedUser, requestedSid);
 
         BooRequest request = new BooRequest();
-        request.nickname = activeUser.nickname;
+        request.nickname = getUserCredentials().nickname;
 
         getFireData() // TODO: 19/08/16 listener ?
                 .root(BooRequest.KEY)
-                .root(requestedUser.sid)
+                .root(requestedSid)
                 .get(activeUser.sid)
                 .setValue(request);
 
@@ -109,7 +112,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         model.adapter.add(item);
     }
 
-    void userFound(AppUser user) {
+    void onUserFound(AppUserCredentials user) {
 
         requestedUser = user;
 
@@ -117,10 +120,10 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         popup.avatar.set(user.avatar);
         popup.isLoading.set(false);
 
-        AppUser activeUser = getFireFactory().activeUser;
+        AppUser activeUser = getFireFactory().appUser;
         if (activeUser.boo != null) {
             for (BooUser bu : activeUser.boo) {
-                if (ObjectHelper.equals(bu.sid, requestedUser.sid)) {
+                if (ObjectHelper.equals(bu.sid, requestedSid)) {
                     popup.isFound.set(false);
                     return;
                 }
@@ -130,7 +133,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         popup.isFound.set(true);
     }
 
-    void notFound() {
+    void onUserNotFound() {
 
         requestedUser = null;
         popup.isLoading.set(false);
@@ -153,7 +156,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
             return;
         }
 
-        AppUser activeUser = getFireFactory().activeUser;
+        AppUser activeUser = getFireFactory().appUser;
         if (activeUser != null && activeUser.boo != null) {
 
             for (BooUser user : activeUser.boo) {
