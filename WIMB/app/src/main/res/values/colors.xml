@@ -3,6 +3,7 @@
     <color name="colorPrimaryDark">#F055</color>
     <color name="colorPrimary">#F077</color>
     <color name="colorAccent">#F0A7</color>
+    <color name="colorAccentDisable">#70A7</color>
 
     <color name="textColor">#FFFF</color>
     <color name="textColorDark">#F055</color>

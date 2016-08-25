@@ -16,7 +16,7 @@ public class AppUser {
     public static final String CREDENTIALS = "credentials";
 
     public String sid;
-    public List<BooUser> boo;
+    public List<String> boo;
 
     public void addBoo(AppUserCredentials user, String sid) {
 
@@ -24,12 +24,7 @@ public class AppUser {
             boo = new ArrayList<>();
         }
 
-        BooUser bu = new BooUser();
-        bu.sid = sid;
-        bu.nickname = user.nickname;
-        bu.avatar = user.avatar;
-
-        boo.add(bu);
+        boo.add(sid);
     }
 }
 

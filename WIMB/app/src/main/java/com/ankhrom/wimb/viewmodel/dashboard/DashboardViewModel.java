@@ -8,20 +8,22 @@ import com.ankhrom.base.Base;
 import com.ankhrom.base.common.statics.ObjectHelper;
 import com.ankhrom.base.interfaces.viewmodel.MenuItemableViewModel;
 import com.ankhrom.base.model.ToolbarItemModel;
+import com.ankhrom.fire.FireData;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.common.ImageHelper;
 import com.ankhrom.wimb.databinding.DashboardPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.AppUserCredentials;
 import com.ankhrom.wimb.entity.BooRequest;
-import com.ankhrom.wimb.entity.BooUser;
-import com.ankhrom.wimb.fire.FireArgCode;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.model.dashboard.AddBooPopupModel;
 import com.ankhrom.wimb.model.dashboard.DashboardModel;
 import com.ankhrom.wimb.model.user.BooItemModel;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.google.firebase.database.DatabaseError;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardViewModel extends InvViewModel<DashboardPageBinding, DashboardModel> implements MenuItemableViewModel {
 
@@ -35,7 +37,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         setTitle("dashboard");
 
         setModel(new DashboardModel(getContext()));
-        onUserDataChanged();
+        loadBooItems();
     }
 
     private final AddBooPopupModel popup = new AddBooPopupModel() {
@@ -63,6 +65,22 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         @Override
         public void onCancelled(DatabaseError databaseError) {
             onUserNotFound();
+        }
+    };
+
+    private final FireValueListener<AppUserCredentials> userBooListener = new FireValueListener<AppUserCredentials>(AppUserCredentials.class) {
+        @Override
+        public void onDataChanged(@Nullable AppUserCredentials data) {
+
+            if (data == null) {
+                return;
+            }
+
+            BooItemModel item = new BooItemModel();
+            item.avatar.set(ImageHelper.getUri(getContext(), data.avatar));
+            item.nickname.set(data.nickname);
+
+            model.adapter.add(item);
         }
     };
 
@@ -110,6 +128,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
 
         BooItemModel item = new BooItemModel();
         item.nickname.set(requestedUser.nickname);
+        item.avatar.set(ImageHelper.getUri(getContext(), requestedUser.avatar));
         model.adapter.add(item);
     }
 
@@ -123,8 +142,8 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
 
         AppUser activeUser = getFireFactory().appUser;
         if (activeUser.boo != null) {
-            for (BooUser bu : activeUser.boo) {
-                if (ObjectHelper.equals(bu.sid, requestedSid)) {
+            for (String bSid : activeUser.boo) {
+                if (ObjectHelper.equals(bSid, requestedSid)) {
                     popup.isFound.set(false);
                     return;
                 }
@@ -151,33 +170,30 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         popup.sid.set(null);
     }
 
-    void onUserDataChanged() {
+    void loadBooItems() {
 
         if (model.adapter.getItemCount() > 0) {
             return;
         }
 
-        AppUser activeUser = getFireFactory().appUser;
-        if (activeUser != null && activeUser.boo != null) {
+        FireData dbCredentials = getFireData()
+                .root(AppUser.CREDENTIALS);
 
-            for (BooUser user : activeUser.boo) {
-                BooItemModel item = new BooItemModel();
-                item.nickname.set(user.nickname);
-                item.avatar.set(ImageHelper.getUri(getContext(), user.avatar));
-                model.adapter.add(item);
+        List<String> bTest = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            bTest.add("Ahoy");
+        }
+
+        AppUser activeUser = getAppUser();
+        if (activeUser != null && activeUser.boo != null) {
+            for (String bSid : activeUser.boo) {
+                dbCredentials
+                        .listener(userBooListener)
+                        .get(bSid);
             }
         }
 
         model.adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onReceiveArgs(int requestCode, Object[] args) {
-        super.onReceiveArgs(requestCode, args);
-
-        if (requestCode == FireArgCode.USER_DATA_CHANGED) {
-            onUserDataChanged();
-        }
     }
 
     @Override

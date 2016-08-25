@@ -60,6 +60,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:alpha="@{PM.isFound ? 1.0f : 0.5f}"
                     android:enabled="@{PM.isFound ? true : false}"
                     android:onClick="@{PM::onClaimPressed}"
                     android:text="claim"/>
