@@ -10,7 +10,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFA"
+        android:background="@color/colorPrimaryDark"
         android:clickable="true">
 
         <LinearLayout
@@ -23,29 +23,28 @@
 
             <com.ankhrom.base.custom.view.ImageGlideView
                 android:layout_width="@dimen/icon_size_super"
-                android:layout_height="192dp"
+                android:layout_height="@dimen/icon_size_super"
                 android:scaleType="centerCrop"
                 android:src="@{PM.avatar}"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/base_padding"
                 android:text="@{PM.nickname}"
                 android:textStyle="bold"/>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/base_padding"/>
 
             <android.support.v7.widget.AppCompatEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
                 app:text="@{PM.sid}"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/base_padding">
 
                 <android.support.v7.widget.AppCompatButton
                     android:layout_width="0dp"

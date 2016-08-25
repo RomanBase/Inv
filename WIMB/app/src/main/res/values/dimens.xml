@@ -1,5 +1,9 @@
 <resources>
 
+    <dimen name="text_size_small_sp">12sp</dimen>
+    <dimen name="text_size_sp">16sp</dimen>
+    <dimen name="text_size_big_sp">22sp</dimen>
+
     <dimen name="corner_radius">6dp</dimen>
 
     <dimen name="base_item_size">42dp</dimen>

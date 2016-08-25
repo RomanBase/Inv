@@ -11,8 +11,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <item name="android:windowBackground">@color/background_color</item>
+
         <item name="android:buttonStyle">@style/AppTheme.Button</item>
         <item name="android:editTextStyle">@style/AppTheme.EditText</item>
+        <item name="android:textViewStyle">@style/AppTheme.TextView</item>
 
         <!-- AppCompat Compability -->
         <item name="editTextStyle">@style/AppTheme.EditText</item>
@@ -22,12 +25,22 @@
     <style name="AppTheme.Button" parent="android:Widget.Button">
         <item name="android:minHeight">@dimen/base_item_size</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">@dimen/text_size_sp</item>
+        <item name="android:background">@drawable/button_selector</item>
     </style>
 
     <style name="AppTheme.EditText" parent="android:Widget.EditText">
         <item name="android:minHeight">@dimen/base_item_size</item>
         <item name="android:background">@drawable/background_edittext</item>
         <item name="android:padding">@dimen/base_padding</item>
+        <item name="android:textSize">@dimen/text_size_sp</item>
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="AppTheme.TextView" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">@dimen/text_size_sp</item>
     </style>
 
 </resources>

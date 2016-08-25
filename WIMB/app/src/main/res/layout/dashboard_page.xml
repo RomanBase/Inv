@@ -12,8 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#f077">
+        android:layout_height="match_parent">
 
         <com.ankhrom.base.custom.view.BaseListView
             android:layout_width="match_parent"

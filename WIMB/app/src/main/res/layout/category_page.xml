@@ -24,7 +24,7 @@
                 android:id="@+id/category_background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/category_item_active_background"/>
+                android:background="@drawable/item_active_background"/>
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/category_image"
