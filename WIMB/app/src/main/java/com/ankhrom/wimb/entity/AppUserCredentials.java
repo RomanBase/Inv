@@ -7,5 +7,4 @@ public class AppUserCredentials {
 
     public String nickname;
     public String avatar;
-    public boolean isLocationEnabled;
 }

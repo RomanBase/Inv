@@ -3,6 +3,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
+
         <variable name="M"
                   type="com.ankhrom.wimb.model.dashboard.DashboardModel"/>
 
@@ -10,20 +12,23 @@
                   type="com.ankhrom.wimb.viewmodel.dashboard.DashboardViewModel"/>
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.ankhrom.base.custom.view.BaseListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="@dimen/base_padding"
-            android:paddingRight="@dimen/base_padding"
             app:adapter="@{M.adapter}"
             app:includeEdge="true"
-            app:spacing="@dimen/base_padding">
+            app:spacing="@dimen/base_padding"/>
 
-        </com.ankhrom.base.custom.view.BaseListView>
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="@dimen/icon_size_super"
+            android:layout_height="@dimen/icon_size_super"
+            android:layout_gravity="center"
+            android:src="@drawable/placeholder"
+            android:visibility="@{M.adapter.itemCount &gt; 0 ? View.GONE : View.VISIBLE}"/>
 
-    </LinearLayout>
+    </FrameLayout>
 </layout>

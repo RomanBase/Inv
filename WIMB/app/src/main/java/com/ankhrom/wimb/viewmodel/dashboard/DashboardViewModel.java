@@ -3,9 +3,11 @@ package com.ankhrom.wimb.viewmodel.dashboard;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.ankhrom.base.Base;
 import com.ankhrom.base.common.statics.ObjectHelper;
+import com.ankhrom.base.interfaces.OnItemSelectedListener;
 import com.ankhrom.base.interfaces.viewmodel.MenuItemableViewModel;
 import com.ankhrom.base.model.ToolbarItemModel;
 import com.ankhrom.fire.FireData;
@@ -18,6 +20,7 @@ import com.ankhrom.wimb.entity.BooRequest;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.model.dashboard.AddBooPopupModel;
 import com.ankhrom.wimb.model.dashboard.DashboardModel;
+import com.ankhrom.wimb.model.dashboard.NotifyBooPopupModel;
 import com.ankhrom.wimb.model.user.BooItemModel;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.google.firebase.database.DatabaseError;
@@ -40,7 +43,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         loadBooItems();
     }
 
-    private final AddBooPopupModel popup = new AddBooPopupModel() {
+    private final AddBooPopupModel addBooPopup = new AddBooPopupModel() {
         @Override
         protected void onFindRequested(@NonNull String sid) {
             findBoo(sid);
@@ -51,6 +54,8 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
             claimBoo();
         }
     };
+
+    private final NotifyBooPopupModel notifyBooPopup = new NotifyBooPopupModel();
 
     private final FireValueListener<AppUserCredentials> findUserListener = new FireValueListener<AppUserCredentials>(AppUserCredentials.class) {
         @Override
@@ -68,6 +73,15 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         }
     };
 
+    private final OnItemSelectedListener<BooItemModel> booSelectedListener = new OnItemSelectedListener<BooItemModel>() {
+        @Override
+        public void onItemSelected(View view, BooItemModel model) {
+
+            notifyBooPopup.position.set(72 * 3);
+            getObserver().getPopupAdapter().show(notifyBooPopup);
+        }
+    };
+
     private final FireValueListener<AppUserCredentials> userBooListener = new FireValueListener<AppUserCredentials>(AppUserCredentials.class) {
         @Override
         public void onDataChanged(@Nullable AppUserCredentials data) {
@@ -76,7 +90,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
                 return;
             }
 
-            BooItemModel item = new BooItemModel();
+            BooItemModel item = new BooItemModel(booSelectedListener);
             item.avatar.set(ImageHelper.getUri(getContext(), data.avatar));
             item.nickname.set(data.nickname);
 
@@ -88,10 +102,10 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
 
         requestedSid = sid;
 
-        popup.isFound.set(false);
-        popup.isLoading.set(true);
-        popup.nickname.set(null);
-        popup.avatar.set(null);
+        addBooPopup.isFound.set(false);
+        addBooPopup.isLoading.set(true);
+        addBooPopup.nickname.set(null);
+        addBooPopup.avatar.set(null);
 
         getFireData()
                 .listener(findUserListener)
@@ -105,7 +119,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
             return;
         }
 
-        popup.hide();
+        addBooPopup.hide();
         clearPopup();
 
         AppUser activeUser = getAppUser();
@@ -126,7 +140,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
                 .child(AppUser.BOO)
                 .setValue(activeUser.boo);
 
-        BooItemModel item = new BooItemModel();
+        BooItemModel item = new BooItemModel(booSelectedListener);
         item.nickname.set(requestedUser.nickname);
         item.avatar.set(ImageHelper.getUri(getContext(), requestedUser.avatar));
         model.adapter.add(item);
@@ -136,38 +150,38 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
 
         requestedUser = user;
 
-        popup.nickname.set(user.nickname);
-        popup.avatar.set(ImageHelper.getUri(getContext(), user.avatar));
-        popup.isLoading.set(false);
+        addBooPopup.nickname.set(user.nickname);
+        addBooPopup.avatar.set(ImageHelper.getUri(getContext(), user.avatar));
+        addBooPopup.isLoading.set(false);
 
         AppUser activeUser = getFireFactory().appUser;
         if (activeUser.boo != null) {
             for (String bSid : activeUser.boo) {
                 if (ObjectHelper.equals(bSid, requestedSid)) {
-                    popup.isFound.set(false);
+                    addBooPopup.isFound.set(false);
                     return;
                 }
             }
         }
 
-        popup.isFound.set(true);
+        addBooPopup.isFound.set(true);
     }
 
     void onUserNotFound() {
 
         requestedUser = null;
-        popup.isLoading.set(false);
+        addBooPopup.isLoading.set(false);
 
         Base.logE("user not found");
     }
 
     void clearPopup() {
 
-        popup.isFound.set(false);
-        popup.isLoading.set(false);
-        popup.nickname.set(null);
-        popup.avatar.set(null);
-        popup.sid.set(null);
+        addBooPopup.isFound.set(false);
+        addBooPopup.isLoading.set(false);
+        addBooPopup.nickname.set(null);
+        addBooPopup.avatar.set(null);
+        addBooPopup.sid.set(null);
     }
 
     void loadBooItems() {
@@ -209,7 +223,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
                     @Override
                     public void onClick(MenuItem item) {
                         clearPopup();
-                        getObserver().getPopupAdapter().show(popup);
+                        getObserver().getPopupAdapter().show(addBooPopup);
                     }
                 }.setShowAsAction(true).setImageResourceId(R.drawable.ic_person_add)
         };

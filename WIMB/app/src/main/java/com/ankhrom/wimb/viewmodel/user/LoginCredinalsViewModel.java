@@ -67,7 +67,6 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
 
         AppUserCredentials credentials = new AppUserCredentials();
         credentials.nickname = nick;
-        credentials.isLocationEnabled = true;
 
         PreferenceManager.getDefaultSharedPreferences(getContext())
                 .edit()

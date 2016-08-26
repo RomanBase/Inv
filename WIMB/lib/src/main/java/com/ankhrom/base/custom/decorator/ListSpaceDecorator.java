@@ -7,16 +7,19 @@ import android.view.View;
 public class ListSpaceDecorator extends RecyclerView.ItemDecoration {
 
     private final int divider;
+    private final int sidePadding;
 
     private boolean includeTopEdge;
     private boolean includeBottomEdge;
 
     public ListSpaceDecorator(int spacing) {
         divider = spacing;
+        sidePadding = spacing;
     }
 
     public ListSpaceDecorator(int spacing, boolean includeEdges) {
         divider = spacing;
+        sidePadding = spacing;
         includeTopEdge = includeEdges;
         includeBottomEdge = includeEdges;
     }
@@ -43,6 +46,9 @@ public class ListSpaceDecorator extends RecyclerView.ItemDecoration {
         if (includeTopEdge && index == 0) {
             outRect.top = divider;
         }
+
+        outRect.left = sidePadding;
+        outRect.right = sidePadding;
 
         if (includeBottomEdge) {
             outRect.bottom = divider;

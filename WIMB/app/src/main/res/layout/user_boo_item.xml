@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable name="M"
@@ -10,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/item_selector"
-        android:onClick="@{M.onItemSelected}"
+        android:onClick="@{M::onItemSelected}"
         android:orientation="horizontal"
         android:padding="@dimen/base_padding">
 
@@ -25,18 +26,48 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="@dimen/base_padding">
+            android:paddingLeft="@dimen/base_padding"
+            android:paddingRight="@dimen/base_padding">
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{M.nickname}"
+                android:textSize="@dimen/text_size_big_sp"
                 android:textStyle="bold"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100"/>
+                android:paddingTop="@dimen/base_padding"
+                android:text="@{M.location}"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{M.time}"
+                android:textSize="@dimen/text_size_small_sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:onClick="@{M.onNotifyPressed}"
+                android:padding="@dimen/base_half_pading"
+                app:srcCompat="@drawable/ic_announcement"/>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:onClick="@{M.onGpsLocatePressed}"
+                android:padding="@dimen/base_half_pading"
+                app:srcCompat="@drawable/ic_gps_locate"/>
 
         </LinearLayout>
 
