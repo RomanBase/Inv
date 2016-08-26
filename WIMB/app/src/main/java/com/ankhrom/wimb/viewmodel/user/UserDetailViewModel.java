@@ -193,7 +193,7 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
                             observer.notifyViewModelChanged();
                         }
                     }
-                }.setImageResourceId(R.drawable.placeholder)
+                }.setImageResourceId(R.drawable.ic_remove)
                         .setShowAsAction(true)
         };
     }

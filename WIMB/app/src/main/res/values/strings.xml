@@ -3,6 +3,11 @@
 
     <string name="button_account">account</string>
     <string name="button_getin">get in</string>
+    <string name="label_signin">Don\'t have accound \? SIGN IN !</string>
+    <string name="label_login">Already have accound \? LOG IN</string>
+
+    <string name="hint_email">email</string>
+    <string name="hint_password">password</string>
 
     <string name="facebook">facebook</string>
     <string name="gplus">google plus</string>

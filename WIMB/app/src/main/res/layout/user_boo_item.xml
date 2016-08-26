@@ -14,10 +14,9 @@
         android:orientation="horizontal"
         android:padding="@dimen/base_padding">
 
-        <com.ankhrom.base.custom.view.ImageGlideView
+        <com.ankhrom.base.custom.view.ImageGlideRoundView
             android:layout_width="@dimen/icon_size_big"
             android:layout_height="@dimen/icon_size_big"
-            android:scaleType="centerCrop"
             android:src="@{M.avatar}"/>
 
         <LinearLayout

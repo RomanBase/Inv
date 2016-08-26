@@ -21,10 +21,9 @@
             android:orientation="vertical"
             android:padding="@dimen/base_padding">
 
-            <com.ankhrom.base.custom.view.ImageGlideView
+            <com.ankhrom.base.custom.view.ImageGlideRoundView
                 android:layout_width="@dimen/icon_size_super"
                 android:layout_height="@dimen/icon_size_super"
-                android:scaleType="centerCrop"
                 android:src="@{PM.avatar}"/>
 
             <android.support.v7.widget.AppCompatTextView
@@ -37,7 +36,9 @@
             <android.support.v7.widget.AppCompatEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                app:onEditorActionListener="@{PM.editorActionListener}"
                 app:text="@{PM.sid}"/>
 
             <LinearLayout

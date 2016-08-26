@@ -3,7 +3,10 @@ package com.ankhrom.wimb.model.dashboard;
 
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.base.observable.EditTextObservable;
@@ -20,6 +23,19 @@ public abstract class AddBooPopupModel extends InvPopupModel<UserBooAddPopupBind
     public final ObservableUri avatar = new ObservableUri();
     public final ObservableBoolean isFound = new ObservableBoolean();
     public final ObservableBoolean isLoading = new ObservableBoolean();
+
+    public final TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                onFindPressed(null);
+                return true;
+            }
+
+            return false;
+        }
+    };
 
     protected abstract void onFindRequested(@NonNull String sid);
 

@@ -7,6 +7,7 @@
 
     <color name="textColor">#FFFF</color>
     <color name="textColorDark">#F055</color>
+    <color name="textColorHint">#7055</color>
 
     <color name="item_color">#F0AA</color>
     <color name="item_active_color">#F0A7</color>

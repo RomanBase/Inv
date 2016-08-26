@@ -22,16 +22,14 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="@dimen/extended_padding"
-            android:src="@drawable/placeholder"/>
+            android:layout_width="@dimen/icon_size_super"
+            android:layout_height="@dimen/icon_size_super"
+            android:layout_margin="@dimen/extended_padding"
+            android:src="@{(M.showLoginFields &amp;&amp; M.showRegisterFields) ? @drawable/placeholder_add_outline : @drawable/placeholder}"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
             android:orientation="vertical"
             android:paddingLeft="@dimen/extended_padding"
@@ -54,7 +52,11 @@
                     android:id="@+id/email_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/hint_email"
+                    android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
+                    android:textColor="@color/textColorDark"
+                    android:textColorHint="@color/textColorHint"
                     android:visibility="@{M.showLoginFields ? View.VISIBLE : View.INVISIBLE}"
                     app:text="@{M.email}"/>
 
@@ -63,7 +65,9 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:animateLayoutChanges="true">
+                android:animateLayoutChanges="true"
+                android:paddingBottom="@dimen/base_half_pading"
+                android:paddingTop="@dimen/base_half_pading">
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/fb_button"
@@ -77,8 +81,13 @@
                     android:id="@+id/password_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/hint_password"
+                    android:imeOptions="actionNext"
                     android:inputType="textPassword"
+                    android:textColor="@color/textColorDark"
+                    android:textColorHint="@color/textColorHint"
                     android:visibility="@{M.showLoginFields ? View.VISIBLE : View.INVISIBLE}"
+                    app:onEditorActionListener="@{VM.editorActionListener}"
                     app:text="@{M.password}"/>
 
             </FrameLayout>
@@ -90,21 +99,22 @@
                 android:onClick="@{VM::onAccountPressed}"
                 android:text="@{M.showLoginFields ? @string/button_getin : @string/button_account}"/>
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/close_login_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="@{VM::onCloseFireLoginPressed}"
-                android:text="x"
-                android:visibility="@{M.showLoginFields ? View.VISIBLE : View.GONE}"/>
-
-            <android.support.v7.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="@{VM::onMagicButtonPressed}"
-                android:text="magic"/>
-
         </LinearLayout>
+
+        <Space android:layout_width="wrap_content" android:layout_height="0dp"
+               android:layout_weight="1"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="@{VM::onSignInPressed}"
+            android:padding="@dimen/base_padding"
+            android:text="@{(M.showLoginFields &amp;&amp; !M.showRegisterFields) ? @string/label_signin : @string/label_login}"
+            android:textColor="@color/textColorDark"
+            android:textSize="@dimen/text_size_small_sp"
+            android:visibility="@{M.showLoginFields ? View.VISIBLE : View.INVISIBLE}"
+            app:onTouchListener="@{M.onTouch}"/>
 
     </LinearLayout>
 </layout>

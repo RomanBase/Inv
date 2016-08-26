@@ -30,8 +30,9 @@
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_gravity="center_vertical"
-                    android:onClick="@{VM::onGalleryPressed}"
-                    android:src="@drawable/placeholder"
+                    android:onClick="@{VM::onCameraPressed}"
+                    android:padding="@dimen/base_half_pading"
+                    android:src="@drawable/ic_camera"
                     app:onTouchListener="@{M.onTouchAnim}"/>
 
                 <com.ankhrom.base.custom.view.SquareFrameLayout
@@ -40,11 +41,9 @@
                     android:layout_weight="1"
                     android:padding="@dimen/base_padding">
 
-                    <com.ankhrom.base.custom.view.ImageGlideView
+                    <com.ankhrom.base.custom.view.ImageGlideRoundView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
-                        android:scaleType="centerCrop"
                         android:src="@{M.avatar}"/>
 
                 </com.ankhrom.base.custom.view.SquareFrameLayout>
@@ -53,8 +52,9 @@
                     android:layout_width="@dimen/icon_size"
                     android:layout_height="@dimen/icon_size"
                     android:layout_gravity="center_vertical|end"
-                    android:onClick="@{VM::onCameraPressed}"
-                    android:src="@drawable/placeholder"
+                    android:onClick="@{VM::onGalleryPressed}"
+                    android:padding="@dimen/base_half_pading"
+                    android:src="@drawable/ic_photo"
                     app:onTouchListener="@{M.onTouchAnim}"/>
 
             </LinearLayout>

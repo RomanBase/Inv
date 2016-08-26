@@ -1,9 +1,11 @@
 package com.ankhrom.wimb.viewmodel.user;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.base.custom.args.InitArgs;
@@ -26,12 +28,40 @@ import com.google.firebase.database.DatabaseError;
 
 public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
 
+    public final TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                onAccountPressed(null);
+                return true;
+            }
+
+            return false;
+        }
+    };
+
     @Override
     public void onInit() {
         super.onInit();
 
-        setTitle("login");
         setModel(new LoginModel());
+    }
+
+    @Override
+    public boolean onBackPressed() {
+
+        if (model != null && model.showRegisterFields.get()) {
+            model.showRegisterFields.set(false);
+            return true;
+        }
+
+        if (model != null && model.showLoginFields.get()) {
+            model.showLoginFields.set(false);
+            return true;
+        }
+
+        return super.onBackPressed();
     }
 
     public void onFacebookPressed(View view) {
@@ -56,6 +86,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
     public void onAccountPressed(View view) {
 
         boolean isFireLoginActive = model.showLoginFields.get();
+        boolean isFireSignInActive = model.showRegisterFields.get();
 
         if (isFireLoginActive) {
 
@@ -69,7 +100,11 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
             }
 
             if (isValid) {
-                logInWithFirebase();
+                if (isFireSignInActive) {
+                    registerWithFirebase();
+                } else {
+                    logInWithFirebase();
+                }
             }
 
         } else {
@@ -77,9 +112,9 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
         }
     }
 
-    public void onCloseFireLoginPressed(View view) {
+    public void onSignInPressed(View view) {
 
-        model.showLoginFields.set(false);
+        model.showRegisterFields.set(true);
     }
 
     private void logInWithFirebase() {
@@ -109,7 +144,9 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
                     @Override
                     public void onDataChanged(@Nullable AppUser data) {
 
-                        if (data == null) {
+                        if (data == null || StringHelper.isEmpty(data.sid)) {
+                            onUserCredentialsObtained(null, !StringHelper.isEmpty(getUid()));
+                            isLoading.set(false);
                             return;
                         }
 
@@ -119,7 +156,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
                                     @Override
                                     public void onDataChanged(@Nullable AppUserCredentials data) {
 
-                                        onUserCredentialsObtained(data, fireUser);
+                                        onUserCredentialsObtained(data, !StringHelper.isEmpty(getUid()));
                                         isLoading.set(false);
                                     }
 
@@ -160,10 +197,10 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
         return false;
     }
 
-    protected void onUserCredentialsObtained(@Nullable AppUserCredentials data, @NonNull FireUser fireUser) {
+    protected void onUserCredentialsObtained(@Nullable AppUserCredentials data, boolean isLoged) {
 
         if (data == null || StringHelper.isEmpty(data.nickname)) {
-            ViewModel vm = getFactory().getViewModel(LoginCredinalsViewModel.class, fireUser);
+            ViewModel vm = getFactory().getViewModel(LoginCredinalsViewModel.class);
             getNavigation().setViewModel(vm, false);
         } else {
             setDefaultViewModel(DashboardViewModel.class);
@@ -199,11 +236,6 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
     // TODO: 21/07/16 handle errors
     protected void handleLoginError(FireSignIn.FireSignInVariant variant, Exception ex) {
 
-        switch (variant) {
-            case firebase_login:
-                registerWithFirebase();
-                break;
-        }
     }
 
     @Override

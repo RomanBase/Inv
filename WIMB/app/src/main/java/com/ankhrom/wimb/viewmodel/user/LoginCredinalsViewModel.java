@@ -3,7 +3,10 @@ package com.ankhrom.wimb.viewmodel.user;
 
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.ankhrom.base.Base;
 import com.ankhrom.base.common.statics.StringHelper;
@@ -27,6 +30,19 @@ import com.google.firebase.database.DatabaseError;
 public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBinding, Model> {
 
     public final EditTextObservable nickname = new EditTextObservable();
+
+    public final TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                onSendPressed(null);
+                return true;
+            }
+
+            return false;
+        }
+    };
 
     public void onSendPressed(View view) {
 

@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
+import com.ankhrom.base.R;
+import com.ankhrom.base.animators.BaseAnim;
+import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -13,14 +16,11 @@ import com.bumptech.glide.request.target.Target;
 
 import java.io.File;
 
-import com.ankhrom.base.R;
-import com.ankhrom.base.animators.BaseAnim;
-
 public class ImageGlideView extends AppCompatImageView { // TODO: 27/04/16 transformations, thumbs
 
-    private boolean isCacheEnabled = true;
-    private int placeholder = R.drawable.placeholder;
-    private int errorPlaceholder = placeholder;
+    protected boolean isCacheEnabled = true;
+    protected int placeholder = R.drawable.placeholder;
+    protected int errorPlaceholder = placeholder;
 
     public ImageGlideView(Context context) {
         super(context);
@@ -78,10 +78,14 @@ public class ImageGlideView extends AppCompatImageView { // TODO: 27/04/16 trans
             glide.diskCacheStrategy(DiskCacheStrategy.SOURCE);
         }
 
+        return initDrawableRequest(glide).into(this);
+    }
+
+    protected DrawableRequestBuilder<?> initDrawableRequest(DrawableTypeRequest glide) {
+
         return glide
                 .placeholder(placeholder)
                 .error(errorPlaceholder)
-                .crossFade(BaseAnim.DURATION)
-                .into(this);
+                .crossFade(BaseAnim.DURATION);
     }
 }

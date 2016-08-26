@@ -211,7 +211,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
                         clearPopup();
                         getObserver().getPopupAdapter().show(popup);
                     }
-                }.setShowAsAction(true).setImageResourceId(R.drawable.placeholder)
+                }.setShowAsAction(true).setImageResourceId(R.drawable.ic_person_add)
         };
     }
 }

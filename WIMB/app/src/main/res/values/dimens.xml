@@ -8,6 +8,7 @@
 
     <dimen name="base_item_size">42dp</dimen>
 
+    <dimen name="icon_size_small">24dp</dimen>
     <dimen name="icon_size">48dp</dimen>
     <dimen name="icon_size_big">96dp</dimen>
     <dimen name="icon_size_extra">128dp</dimen>
