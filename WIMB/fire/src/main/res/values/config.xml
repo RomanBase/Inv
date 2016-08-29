@@ -5,6 +5,7 @@
 
     <string name="gcm_sender_id">509047145402</string>
 
+    <string name="maps_api_key">AIzaSyCPF2DVkwDhTSrfl1-krAOqPBr29QswDXA</string>
     <string name="fire_app_key">AIzaSyB3cc3hSgwqxuBNNWSU3Ij0niObiyCOpyE</string>
     <string name="fire_storage_bucket">gs://wimb-ba5bd.appspot.com</string>
 </resources>

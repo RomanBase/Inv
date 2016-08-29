@@ -13,6 +13,8 @@ public abstract class FireValueListener<T> implements ValueEventListener {
 
     private final Class clazz;
 
+    protected DataSnapshot snapshot;
+
     public FireValueListener(Class clazz) {
 
         this.clazz = clazz;
@@ -24,6 +26,7 @@ public abstract class FireValueListener<T> implements ValueEventListener {
     @SuppressWarnings("unchecked")
     public void onDataChange(DataSnapshot dataSnapshot) {
 
+        this.snapshot = dataSnapshot;
         Object value = dataSnapshot.getValue();
 
         if (value == null) {
@@ -32,7 +35,12 @@ public abstract class FireValueListener<T> implements ValueEventListener {
         }
 
         try {
-            T object = (T) new Gson().fromJson(value.toString(), clazz);
+            T object;
+            if (clazz.isPrimitive() || clazz.equals(String.class)) {
+                object = (T) value;
+            } else {
+                object = (T) new Gson().fromJson(value.toString(), clazz);
+            }
             onDataChanged(object);
         } catch (Exception e) {
             Base.logE(dataSnapshot.getValue());

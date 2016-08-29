@@ -39,7 +39,7 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
             notifyViewModel(FireArgCode.USER_DATA_CHANGED, data);
 
             if (data != null) {
-                credentialsReference = FireData.init().root(AppUser.CREDENTIALS).get(data.sid);
+                credentialsReference = FireData.init().root(FireEntity.CREDENTIALS).get(data.sid);
                 credentialsReference.addValueEventListener(userCredentialsListener);
             }
         }
@@ -63,7 +63,7 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
             userReference = null;
         }
 
-        userReference = FireData.init().root(AppUser.KEY).get(user.getUid());
+        userReference = FireData.init().root(FireEntity.USER).get(user.getUid());
         userReference.addValueEventListener(userDataListener);
 
         Base.logV("user log in");

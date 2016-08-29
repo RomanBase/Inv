@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.ankhrom.base.Base;
 import com.ankhrom.base.common.statics.ObjectHelper;
+import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.base.interfaces.OnItemSelectedListener;
 import com.ankhrom.base.interfaces.viewmodel.MenuItemableViewModel;
 import com.ankhrom.base.model.ToolbarItemModel;
@@ -17,16 +18,16 @@ import com.ankhrom.wimb.databinding.DashboardPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.AppUserCredentials;
 import com.ankhrom.wimb.entity.BooRequest;
+import com.ankhrom.wimb.fire.FireEntity;
+import com.ankhrom.wimb.fire.FireTimestamp;
 import com.ankhrom.wimb.fire.FireValueListener;
+import com.ankhrom.wimb.gcm.WimbMessage;
 import com.ankhrom.wimb.model.dashboard.AddBooPopupModel;
 import com.ankhrom.wimb.model.dashboard.DashboardModel;
 import com.ankhrom.wimb.model.dashboard.NotifyBooPopupModel;
 import com.ankhrom.wimb.model.user.BooItemModel;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.google.firebase.database.DatabaseError;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DashboardViewModel extends InvViewModel<DashboardPageBinding, DashboardModel> implements MenuItemableViewModel {
 
@@ -90,13 +91,67 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
                 return;
             }
 
-            BooItemModel item = new BooItemModel(booSelectedListener);
-            item.avatar.set(ImageHelper.getUri(getContext(), data.avatar));
-            item.nickname.set(data.nickname);
-
-            model.adapter.add(item);
+            initBoo(data, snapshot.getKey());
         }
     };
+
+    private final FireValueListener<String> userBooLocalizationTokenListener = new FireValueListener<String>(String.class) {
+        @Override
+        public void onDataChanged(@Nullable String token) {
+
+            if (StringHelper.isEmpty(token)) {
+                return;
+            }
+
+            WimbMessage.with(getContext(), FireEntity.GEO).sendTo(token);
+        }
+    };
+
+    private final FireValueListener<String> userBooMessageTokenListener = new FireValueListener<String>(String.class) {
+        @Override
+        public void onDataChanged(@Nullable String token) {
+
+            if (StringHelper.isEmpty(token)) {
+                return;
+            }
+
+            WimbMessage.with(getContext(), FireEntity.NOTIFY)
+                    .data(FireEntity.CREDENTIALS, "WIMB")
+                    .data(FireEntity.MESSAGE, getAppUserCredentials().nickname)
+                    .sendTo(token);
+        }
+    };
+
+    void initBoo(AppUserCredentials data, String sid) {
+
+        BooItemModel item = new BooItemModel(sid, booSelectedListener) {
+
+            @Override
+            protected void onNotify(String sid, BooItemModel model) {
+
+                getFireData()
+                        .listener(userBooMessageTokenListener)
+                        .root(FireEntity.TOKEN)
+                        .get(sid);
+            }
+
+            @Override
+            protected void onGpsRequest(String sid, BooItemModel model) {
+
+                getFireData()
+                        .listener(userBooLocalizationTokenListener)
+                        .root(FireEntity.TOKEN)
+                        .get(sid);
+            }
+        };
+
+        item.avatar.set(ImageHelper.getUri(getContext(), data.avatar));
+        item.nickname.set(data.nickname);
+        item.location.set(data.location);
+        item.time.set(data.lastUpdate > 0 ? FireTimestamp.getReadable(data.lastUpdate) : null); // TODO: 29/08/16
+
+        model.adapter.add(item);
+    }
 
     void findBoo(String sid) {
 
@@ -109,7 +164,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
 
         getFireData()
                 .listener(findUserListener)
-                .root(AppUser.CREDENTIALS)
+                .root(FireEntity.CREDENTIALS)
                 .get(sid);
     }
 
@@ -129,21 +184,18 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         request.nickname = getAppUserCredentials().nickname;
 
         getFireData() // TODO: 19/08/16 listener ?
-                .root(BooRequest.KEY)
+                .root(FireEntity.REQUEST)
                 .root(requestedSid)
                 .get(activeUser.sid)
                 .setValue(request);
 
         getFireData() // TODO: 19/08/16 listener ?
-                .root(AppUser.KEY)
+                .root(FireEntity.USER)
                 .get(getUid())
-                .child(AppUser.BOO)
+                .child(FireEntity.BOO)
                 .setValue(activeUser.boo);
 
-        BooItemModel item = new BooItemModel(booSelectedListener);
-        item.nickname.set(requestedUser.nickname);
-        item.avatar.set(ImageHelper.getUri(getContext(), requestedUser.avatar));
-        model.adapter.add(item);
+        initBoo(requestedUser, requestedSid);
     }
 
     void onUserFound(AppUserCredentials user) {
@@ -191,12 +243,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         }
 
         FireData dbCredentials = getFireData()
-                .root(AppUser.CREDENTIALS);
-
-        List<String> bTest = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            bTest.add("Ahoy");
-        }
+                .root(FireEntity.CREDENTIALS);
 
         AppUser activeUser = getAppUser();
         if (activeUser != null && activeUser.boo != null) {

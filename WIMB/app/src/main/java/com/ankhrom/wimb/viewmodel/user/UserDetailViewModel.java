@@ -26,7 +26,7 @@ import com.ankhrom.wimb.common.ImageHelper;
 import com.ankhrom.wimb.databinding.UserDetailPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.AppUserCredentials;
-import com.ankhrom.wimb.entity.BooGeo;
+import com.ankhrom.wimb.fire.FireEntity;
 import com.ankhrom.wimb.model.user.UserDetailModel;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -70,7 +70,7 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
         if (!StringHelper.isEmpty(user.sid)) {
 
             getFireData()
-                    .root(BooGeo.KEY)
+                    .root(FireEntity.GEO)
                     .get(user.sid)
                     .removeValue();
         }
@@ -78,9 +78,9 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
         user.sid = FireData.uid();
 
         getFireData()
-                .root(AppUser.KEY)
+                .root(FireEntity.USER)
                 .root(getUid())
-                .get(AppUser.SID)
+                .get(FireEntity.SID)
                 .setValue(user.sid);
     }
 
@@ -93,9 +93,9 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
                 .build();
 
         getFireStorage()
-                .folder(AppUser.KEY)
+                .folder(FireEntity.USER)
                 .folder(getAppUser().sid)
-                .file(AppUser.AVATAR + ".jpg")
+                .file(FireEntity.AVATAR + ".jpg")
                 .putBytes(data, metadata)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -119,9 +119,9 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
         model.avatar.set(Uri.parse(url));
 
         getFireData()
-                .root(AppUser.CREDENTIALS)
+                .root(FireEntity.CREDENTIALS)
                 .root(getSid())
-                .get(AppUser.AVATAR)
+                .get(FireEntity.AVATAR)
                 .setValue(FireData.asString(url));
 
         model.imageIsLoading.set(false);

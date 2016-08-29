@@ -64,7 +64,7 @@ public class FireData {
         return this;
     }
 
-    public FireData root(String key) {
+    public FireData root(@NonNull String key) {
 
         if (root == null) {
             root = database.getReference(key);
@@ -75,7 +75,7 @@ public class FireData {
         return this;
     }
 
-    public DatabaseReference get(String key) {
+    public DatabaseReference get(@NonNull String key) {
 
         DatabaseReference ref;
 

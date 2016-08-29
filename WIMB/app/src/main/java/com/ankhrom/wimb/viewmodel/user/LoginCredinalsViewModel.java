@@ -20,8 +20,8 @@ import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.LoginCredinalsPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.AppUserCredentials;
-import com.ankhrom.wimb.entity.BooToken;
-import com.ankhrom.wimb.fire.FirePosition;
+import com.ankhrom.wimb.fire.FireEntity;
+import com.ankhrom.wimb.fire.FireLocation;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
 import com.ankhrom.wimb.viewmodel.dashboard.DashboardViewModel;
@@ -70,26 +70,26 @@ public class LoginCredinalsViewModel extends InvViewModel<LoginCredinalsPageBind
 
         PreferenceManager.getDefaultSharedPreferences(getContext())
                 .edit()
-                .putString(AppUser.SID, sid)
+                .putString(FireEntity.SID, sid)
                 .apply();
 
         getFireData()
-                .root(AppUser.KEY)
+                .root(FireEntity.USER)
                 .get(uid)
                 .setValue(user);
 
         getFireData()
                 .listener(fireUserListener)
-                .root(AppUser.CREDENTIALS)
+                .root(FireEntity.CREDENTIALS)
                 .get(sid)
                 .setValue(credentials);
 
         getFireData()
-                .root(BooToken.KEY)
+                .root(FireEntity.TOKEN)
                 .get(sid)
                 .setValue(new GcmPrefs(getContext()).getToken());
 
-        FirePosition.update(getContext());
+        FireLocation.update(getContext(), null);
     }
 
     private final FireValueListener<AppUser> fireUserListener = new FireValueListener<AppUser>(AppUser.class) {

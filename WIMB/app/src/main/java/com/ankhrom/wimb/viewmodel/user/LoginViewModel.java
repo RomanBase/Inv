@@ -19,6 +19,7 @@ import com.ankhrom.wimb.databinding.LoginPageBinding;
 import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.AppUserCredentials;
 import com.ankhrom.wimb.fire.FireArgCode;
+import com.ankhrom.wimb.fire.FireEntity;
 import com.ankhrom.wimb.fire.FireUser;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.model.user.LoginModel;
@@ -138,7 +139,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
         isLoading.set(true);
 
         getFireData()
-                .root(AppUser.KEY)
+                .root(FireEntity.USER)
                 .listener(new FireValueListener<AppUser>(AppUser.class) {
 
                     @Override
@@ -151,7 +152,7 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
                         }
 
                         getFireData()
-                                .root(AppUser.CREDENTIALS)
+                                .root(FireEntity.CREDENTIALS)
                                 .listener(new FireValueListener<AppUserCredentials>(AppUserCredentials.class) {
                                     @Override
                                     public void onDataChanged(@Nullable AppUserCredentials data) {
@@ -246,9 +247,9 @@ public class LoginViewModel extends InvViewModel<LoginPageBinding, LoginModel> {
 
     public void onMagicButtonPressed(View view) {
 
-        /*Message message = new Message.Builder().addData(GcmMessageReceiver.KEY, BooGeo.KEY).build();
+        /*Message message = new Message.Builder().addData(GcmMessageReceiver.USER, BooGeo.USER).build();
 
-        new GcmMessage(getContext()).send(
+        new WimbMessage(getContext()).send(
                 "AIzaSyB3cc3hSgwqxuBNNWSU3Ij0niObiyCOpyE",
                 "fMTucfDuL3Q:APA91bFYMmVrrm7gnIPZwBZoCvPbzYsYHN25UEAA1NzIidsb4-ArKjrlJX2scZ8i2jo1Arrq5MTxZR1a9E3BbS3aIHEdLrj8pl4RJLxO-CbZxIe7kUdeVH6nTMGIvxCX_jz1WlBek74C",
                 message

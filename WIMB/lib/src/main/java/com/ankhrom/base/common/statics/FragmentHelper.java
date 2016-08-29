@@ -16,7 +16,7 @@ public final class FragmentHelper {
 
     public static void removePage(Context context, Fragment fragment, boolean popBackStack) {
 
-        FragmentManager manager = getManager(context);
+        FragmentManager manager = getSupportManager(context);
 
         manager.beginTransaction()
                 .remove(fragment)
@@ -31,27 +31,27 @@ public final class FragmentHelper {
 
     public static void clearBackStack(Context context) {
 
-        getManager(context).popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getSupportManager(context).popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     public static void popBackStack(Context context) {
 
-        getManager(context).popBackStack();
+        getSupportManager(context).popBackStack();
     }
 
     public static int getBackStackLength(Context context) {
 
-        return getManager(context).getBackStackEntryCount();
+        return getSupportManager(context).getBackStackEntryCount();
     }
 
     public static List<Fragment> getFragments(Context context) {
 
-        return getManager(context).getFragments();
+        return getSupportManager(context).getFragments();
     }
 
     public static Fragment getBackStackFragment(Context context, int index) {
 
-        FragmentManager manager = getManager(context);
+        FragmentManager manager = getSupportManager(context);
 
         return manager.findFragmentByTag(manager.getBackStackEntryAt(index).getName());
     }
@@ -66,8 +66,13 @@ public final class FragmentHelper {
         return getBackStackFragment(context, getBackStackLength(context) - 1);
     }
 
-    public static FragmentManager getManager(Context context) {
+    public static FragmentManager getSupportManager(Context context) {
 
         return ((FragmentActivity) context).getSupportFragmentManager();
+    }
+
+    public static android.app.FragmentManager getManager(Context context) {
+
+        return ((FragmentActivity) context).getFragmentManager();
     }
 }

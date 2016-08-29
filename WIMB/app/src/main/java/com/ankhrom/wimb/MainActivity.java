@@ -1,5 +1,6 @@
 package com.ankhrom.wimb;
 
+import android.Manifest;
 import android.content.Intent;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -17,12 +18,14 @@ import com.ankhrom.gcm.GcmRegistrationReceiver;
 import com.ankhrom.gcm.PlayService;
 import com.ankhrom.wimb.fire.FireUserStateListener;
 import com.ankhrom.wimb.fire.TokenChangedListener;
+import com.ankhrom.wimb.gcm.GeoBooResultReceiver;
 import com.ankhrom.wimb.viewmodel.sidemenu.MenuModel;
 import com.ankhrom.wimb.viewmodel.user.LoginSplashViewModel;
 
 public class MainActivity extends BaseActivityDrawer {
 
     private final FireFactory factory = new FireFactory(FireSignIn.init());
+    private final GeoBooResultReceiver geoResultReceiver = new GeoBooResultReceiver(this);
     //private final MainLayoutObserver layoutObserver = new MainLayoutObserver(this);
 
     @Override
@@ -63,7 +66,8 @@ public class MainActivity extends BaseActivityDrawer {
 
         BasePermission.with(this)
                 .require(
-                        "android.permission.ACCESS_COARSE_LOCATION"
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
                         //"android.permission.READ_EXTERNAL_STORAGE"
                 );
     }
@@ -83,6 +87,20 @@ public class MainActivity extends BaseActivityDrawer {
         super.onStop();
 
         factory.signIn.unregister();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        geoResultReceiver.register();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        geoResultReceiver.unregister();
     }
 
     @Override

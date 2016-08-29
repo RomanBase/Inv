@@ -7,7 +7,6 @@ import com.ankhrom.base.common.statics.ObjectHelper;
 import com.ankhrom.fire.FireData;
 import com.ankhrom.gcm.GcmPrefs;
 import com.ankhrom.wimb.FireFactory;
-import com.ankhrom.wimb.entity.BooToken;
 
 public class TokenChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -28,7 +27,7 @@ public class TokenChangedListener implements SharedPreferences.OnSharedPreferenc
                 String token = sharedPreferences.getString(GcmPrefs.NOTIFICATION_TOKEN, null);
 
                 FireData.init()
-                        .root(BooToken.KEY)
+                        .root(FireEntity.TOKEN)
                         .get(factory.appUser.sid)
                         .setValue(token);
             }
