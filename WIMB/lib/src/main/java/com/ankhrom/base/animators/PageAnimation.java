@@ -22,7 +22,7 @@ public class PageAnimation extends AnimatorListenerAdapter {
 
     public boolean inProgress;
 
-    final List<Item> items;
+    private final List<Item> items;
 
     private long duration = DURATION;
 

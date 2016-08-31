@@ -8,5 +8,6 @@ public class AppUserCredentials {
     public String nickname;
     public String avatar;
     public String location;
+    public GeoLatLng geo;
     public long lastUpdate;
 }

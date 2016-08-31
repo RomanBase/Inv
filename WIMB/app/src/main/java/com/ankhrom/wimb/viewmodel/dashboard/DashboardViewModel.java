@@ -19,7 +19,6 @@ import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.AppUserCredentials;
 import com.ankhrom.wimb.entity.BooRequest;
 import com.ankhrom.wimb.fire.FireEntity;
-import com.ankhrom.wimb.fire.FireTimestamp;
 import com.ankhrom.wimb.fire.FireValueListener;
 import com.ankhrom.wimb.gcm.WimbMessage;
 import com.ankhrom.wimb.model.dashboard.AddBooPopupModel;
@@ -27,6 +26,7 @@ import com.ankhrom.wimb.model.dashboard.DashboardModel;
 import com.ankhrom.wimb.model.dashboard.NotifyBooPopupModel;
 import com.ankhrom.wimb.model.user.BooItemModel;
 import com.ankhrom.wimb.viewmodel.InvViewModel;
+import com.ankhrom.wimb.viewmodel.user.BooDetailViewModel;
 import com.google.firebase.database.DatabaseError;
 
 public class DashboardViewModel extends InvViewModel<DashboardPageBinding, DashboardModel> implements MenuItemableViewModel {
@@ -78,20 +78,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         @Override
         public void onItemSelected(View view, BooItemModel model) {
 
-            notifyBooPopup.position.set(72 * 3);
-            getObserver().getPopupAdapter().show(notifyBooPopup);
-        }
-    };
-
-    private final FireValueListener<AppUserCredentials> userBooListener = new FireValueListener<AppUserCredentials>(AppUserCredentials.class) {
-        @Override
-        public void onDataChanged(@Nullable AppUserCredentials data) {
-
-            if (data == null) {
-                return;
-            }
-
-            initBoo(data, snapshot.getKey());
+            getNavigation().addViewModel(getFactory().getViewModel(BooDetailViewModel.class, model), true);
         }
     };
 
@@ -122,10 +109,13 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         }
     };
 
-    void initBoo(AppUserCredentials data, String sid) {
 
-        BooItemModel item = new BooItemModel(sid, booSelectedListener) {
+    BooItemModel initBoo(String sid) {
 
+        FireData dbCredentials = getFireData()
+                .root(FireEntity.CREDENTIALS);
+
+        return new BooItemModel(dbCredentials, sid, booSelectedListener) {
             @Override
             protected void onNotify(String sid, BooItemModel model) {
 
@@ -144,13 +134,6 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
                         .get(sid);
             }
         };
-
-        item.avatar.set(ImageHelper.getUri(getContext(), data.avatar));
-        item.nickname.set(data.nickname);
-        item.location.set(data.location);
-        item.time.set(data.lastUpdate > 0 ? FireTimestamp.getReadable(data.lastUpdate) : null); // TODO: 29/08/16
-
-        model.adapter.add(item);
     }
 
     void findBoo(String sid) {
@@ -183,19 +166,21 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         BooRequest request = new BooRequest();
         request.nickname = getAppUserCredentials().nickname;
 
+        //send request
         getFireData() // TODO: 19/08/16 listener ?
                 .root(FireEntity.REQUEST)
                 .root(requestedSid)
                 .get(activeUser.sid)
                 .setValue(request);
 
+        //save to list
         getFireData() // TODO: 19/08/16 listener ?
                 .root(FireEntity.USER)
                 .get(getUid())
                 .child(FireEntity.BOO)
                 .setValue(activeUser.boo);
 
-        initBoo(requestedUser, requestedSid);
+        model.adapter.add(initBoo(requestedSid));
     }
 
     void onUserFound(AppUserCredentials user) {
@@ -242,19 +227,12 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
             return;
         }
 
-        FireData dbCredentials = getFireData()
-                .root(FireEntity.CREDENTIALS);
-
         AppUser activeUser = getAppUser();
         if (activeUser != null && activeUser.boo != null) {
             for (String bSid : activeUser.boo) {
-                dbCredentials
-                        .listener(userBooListener)
-                        .get(bSid);
+                model.adapter.add(initBoo(bSid));
             }
         }
-
-        model.adapter.notifyDataSetChanged();
     }
 
     @Override

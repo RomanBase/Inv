@@ -1,6 +1,7 @@
 package com.ankhrom.wimb.fire;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public final class FireTimestamp {
@@ -18,6 +19,6 @@ public final class FireTimestamp {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timestamp);
 
-        return calendar.getTime().toString();
+        return SimpleDateFormat.getDateTimeInstance().format(calendar.getTime());
     }
 }

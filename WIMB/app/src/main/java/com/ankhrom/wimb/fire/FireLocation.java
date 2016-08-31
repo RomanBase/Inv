@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import com.ankhrom.base.common.statics.StringHelper;
 import com.ankhrom.fire.FireData;
 import com.ankhrom.location.CoarseLocation;
+import com.ankhrom.wimb.entity.GeoLatLng;
 import com.ankhrom.wimb.gcm.WimbMessage;
 import com.firebase.geofire.GeoLocation;
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +26,7 @@ public class FireLocation {
 
         new CoarseLocation(context).setLocationListener(new CoarseLocation.LocationObtainedListener() {
             @Override
-            public void onLocationObtained(double lat, double lon) {
+            public void onLocationObtained(double lat, double lng) {
 
                 final String sid = PreferenceManager.getDefaultSharedPreferences(context).getString(FireEntity.SID, null);
 
@@ -36,29 +37,30 @@ public class FireLocation {
                 FireData.init()
                         .root(FireEntity.GEO)
                         .geo()
-                        .set(sid, new GeoLocation(lat, lon));
+                        .set(sid, new GeoLocation(lat, lng));
 
                 FireData credentials = FireData.init().root(FireEntity.CREDENTIALS).root(sid);
 
                 String address = null;
                 Geocoder geo = new Geocoder(context);
                 try {
-                    List<Address> addresses = geo.getFromLocation(lat, lon, 1);
+                    List<Address> addresses = geo.getFromLocation(lat, lng, 1);
                     if (addresses.isEmpty()) {
 
                     } else {
                         Address location = addresses.get(0);
-                        address = StringHelper.buildStruct(",", location.getAddressLine(0), location.getAddressLine(1));
+                        address = StringHelper.buildStruct(", ", location.getAddressLine(0), location.getAddressLine(1));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
                 if (StringHelper.isEmpty(address)) {
-                    address = lat + " " + lon;
+                    address = lat + " " + lng;
                 }
 
                 credentials.get(FireEntity.LOCATION).setValue(FireData.asString(address));
+                credentials.get(FireEntity.GEO).setValue(GeoLatLng.init(lat, lng));
                 credentials
                         .listener(sidToken == null ? null : new FireValueAdapterListener() {
                             @Override

@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorAccentDisable"
-        android:padding="@dimen/base_padding">
+        android:paddingLeft="@dimen/base_padding"
+        android:paddingRight="@dimen/base_padding">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,7 +20,7 @@
             android:background="@color/colorPrimaryDark"
             android:orientation="horizontal"
             android:padding="@dimen/base_padding"
-            app:y="@{PM.position}">
+            app:translationY="@{PM.position}">
 
             <android.support.v7.widget.AppCompatEditText
                 android:layout_width="0dp"

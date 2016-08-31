@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable name="M"
+                  type="com.ankhrom.wimb.model.user.BooItemModel"/>
+
+        <variable name="VM"
+                  type="com.ankhrom.wimb.viewmodel.user.BooDetailViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:padding="@dimen/base_padding"
+            android:paddingBottom="@dimen/base_half_pading">
+
+            <com.ankhrom.base.custom.view.ImageGlideRoundView
+                android:layout_width="@dimen/icon_size_big"
+                android:layout_height="@dimen/icon_size_big"
+                android:src="@{M.avatar}"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Last seen at:"
+                    android:textAlignment="center"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{M.time}"
+                    android:textAlignment="center"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{M.location}"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:id="@+id/map_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:padding="@dimen/base_padding"
+            android:text="@{String.valueOf(M.lat) + ' ' + String.valueOf(M.lng)}"
+            android:textAlignment="center"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/text_size_small_sp"/>
+
+    </LinearLayout>
+</layout>

@@ -63,6 +63,6 @@ public class CoarseLocation implements GoogleApiClient.ConnectionCallbacks, Goog
 
     public interface LocationObtainedListener {
 
-        void onLocationObtained(double lat, double lon);
+        void onLocationObtained(double lat, double lng);
     }
 }
