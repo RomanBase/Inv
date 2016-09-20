@@ -21,7 +21,7 @@ public class RequestBuilder {
     private Response.Listener listener;
     private Response.ErrorListener errorListener;
 
-    public RequestBuilder() {
+    private RequestBuilder() {
 
         contentType = "application/json; charset=utf-8";
 
@@ -29,25 +29,29 @@ public class RequestBuilder {
         header.put("accept", "*/*");
     }
 
-    public RequestBuilder get(String url) {
+    public static RequestBuilder get(String url) {
 
-        this.url = url;
-        this.method = Request.Method.GET;
-        return this;
+        return request(Request.Method.GET, url);
     }
 
-    public RequestBuilder post(String url) {
+    public static RequestBuilder post(String url) {
 
-        this.url = url;
-        this.method = Request.Method.POST;
-        return this;
+        return request(Request.Method.POST, url);
     }
 
-    public RequestBuilder put(String url) {
+    public static RequestBuilder put(String url) {
 
-        this.url = url;
-        this.method = Request.Method.PUT;
-        return this;
+        return request(Request.Method.PUT, url);
+    }
+
+    public static RequestBuilder request(int method, String url) {
+
+        RequestBuilder builder = new RequestBuilder();
+
+        builder.url = url;
+        builder.method = method;
+
+        return builder;
     }
 
     public RequestBuilder body(byte[] body) {
