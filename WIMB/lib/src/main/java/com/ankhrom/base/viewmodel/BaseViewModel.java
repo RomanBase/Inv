@@ -131,9 +131,7 @@ public abstract class BaseViewModel<S extends ViewDataBinding, T extends Model> 
             }
         };
 
-        BaseVolleyRequest<?> request = networking.createRequest(new RequestBuilder()
-                .listener(listener)
-                .errorListener(listener));
+        BaseVolleyRequest<?> request = networking.createRequest(new VolleyRequest(listener));
 
         if (request != null) {
             queue.add(request);
@@ -335,4 +333,43 @@ public abstract class BaseViewModel<S extends ViewDataBinding, T extends Model> 
             onModelError();
         }
     }
+
+    public class VolleyRequest {
+
+        private final VolleyNetworkingListener listener;
+
+        VolleyRequest(VolleyNetworkingListener listener) {
+            this.listener = listener;
+        }
+
+        public RequestBuilder get(String url) {
+
+            return RequestBuilder.get(url)
+                    .listener(listener)
+                    .errorListener(listener);
+        }
+
+        public RequestBuilder post(String url) {
+
+            return RequestBuilder.post(url)
+                    .listener(listener)
+                    .errorListener(listener);
+        }
+
+        public RequestBuilder put(String url) {
+
+            return RequestBuilder.put(url)
+                    .listener(listener)
+                    .errorListener(listener);
+        }
+
+        public RequestBuilder request(int method, String url) {
+
+            return RequestBuilder.request(method, url)
+                    .listener(listener)
+                    .errorListener(listener);
+        }
+
+    }
+
 }
