@@ -312,7 +312,7 @@ public abstract class BaseViewModel<S extends ViewDataBinding, T extends Model> 
      */
     public abstract class VolleyNetworkingListener implements Response.Listener, Response.ErrorListener {
 
-        public VolleyNetworkingListener() {
+        VolleyNetworkingListener() {
 
         }
 
@@ -334,6 +334,9 @@ public abstract class BaseViewModel<S extends ViewDataBinding, T extends Model> 
         }
     }
 
+    /**
+     * ##################### VOLLEY REQUEST #####################
+     */
     public class VolleyRequest {
 
         private final VolleyNetworkingListener listener;

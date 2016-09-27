@@ -32,8 +32,8 @@
                     android:layout_gravity="center_vertical"
                     android:onClick="@{VM::onCameraPressed}"
                     android:padding="@dimen/base_half_pading"
-                    app:srcCompat="@drawable/ic_camera"
-                    app:onTouchListener="@{M.onTouchAnim}"/>
+                    app:onTouchListener="@{M.onTouchAnim}"
+                    app:srcCompat="@drawable/ic_camera"/>
 
                 <com.ankhrom.base.custom.view.SquareFrameLayout
                     android:layout_width="0dp"
@@ -54,8 +54,8 @@
                     android:layout_gravity="center_vertical|end"
                     android:onClick="@{VM::onGalleryPressed}"
                     android:padding="@dimen/base_half_pading"
-                    app:srcCompat="@drawable/ic_photo"
-                    app:onTouchListener="@{M.onTouchAnim}"/>
+                    app:onTouchListener="@{M.onTouchAnim}"
+                    app:srcCompat="@drawable/ic_photo"/>
 
             </LinearLayout>
 

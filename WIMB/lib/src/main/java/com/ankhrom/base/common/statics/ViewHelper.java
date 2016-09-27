@@ -1,5 +1,6 @@
 package com.ankhrom.base.common.statics;
 
+import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,16 @@ public final class ViewHelper {
         }
 
         return view;
+    }
+
+    public static RectF getRect(View view, float offset) {
+
+        int[] position = new int[2];
+
+        view.getLocationOnScreen(position);
+        position[1] -= offset;
+
+        return new RectF(position[0], position[1], position[0] + view.getWidth(), position[1] + view.getHeight());
     }
 
     public static int[] getPosition(View view) {

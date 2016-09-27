@@ -38,7 +38,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
     public void onInit() {
         super.onInit();
 
-        setTitle("dashboard");
+        setTitle(R.string.app_name);
 
         setModel(new DashboardModel(getContext()));
         loadBooItems();
@@ -78,7 +78,7 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         @Override
         public void onItemSelected(View view, BooItemModel model) {
 
-            getNavigation().addViewModel(getFactory().getViewModel(BooDetailViewModel.class, model), true);
+            getNavigation().addViewModel(getFactory().getViewModel(BooDetailViewModel.class, model, view.findViewById(R.id.image)), true);
         }
     };
 
@@ -230,6 +230,20 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         AppUser activeUser = getAppUser();
         if (activeUser != null && activeUser.boo != null) {
             for (String bSid : activeUser.boo) {
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
+                model.adapter.add(initBoo(bSid));
                 model.adapter.add(initBoo(bSid));
             }
         }

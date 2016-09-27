@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import com.ankhrom.base.common.statics.ColorHelper;
 import com.ankhrom.base.common.statics.MathHelper;
@@ -182,14 +183,16 @@ public class PageAnimation extends AnimatorListenerAdapter {
             toScaleY = 1.0f;
         }
 
-        public void setBackground(int from, int to) {
+        public Item setBackground(int from, int to) {
 
             this.animateBackgroundColor = true;
             this.fromColor = from;
             this.toColor = to;
+
+            return this;
         }
 
-        static RectF getRect(View view) { // TODO: 27/06/16 parent offset
+        static RectF getRect(View view) {
 
             RectF r = new RectF();
 
@@ -197,6 +200,17 @@ public class PageAnimation extends AnimatorListenerAdapter {
             r.top = (float) view.getTop();
             r.right = (float) view.getRight();
             r.bottom = (float) view.getBottom();
+
+            ViewParent parent = view.getParent();
+            if (parent != null && parent instanceof View) {
+                float left = ((View) parent).getPaddingLeft();
+                float top = ((View) parent).getPaddingTop();
+
+                r.left += left;
+                r.top += top;
+                r.right += left;
+                r.bottom += top;
+            }
 
             return r;
         }

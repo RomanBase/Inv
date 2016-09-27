@@ -1,9 +1,26 @@
 package com.ankhrom.wimb.viewmodel.user;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.view.MenuItem;
+import android.view.View;
+
+import com.ankhrom.base.animators.PageAnimation;
 import com.ankhrom.base.common.statics.FragmentHelper;
+import com.ankhrom.base.common.statics.ScreenHelper;
+import com.ankhrom.base.common.statics.ViewHelper;
 import com.ankhrom.base.custom.args.InitArgs;
+import com.ankhrom.base.interfaces.viewmodel.AnimableTransitionViewModel;
 import com.ankhrom.base.interfaces.viewmodel.CloseableViewModel;
+import com.ankhrom.base.interfaces.viewmodel.MenuItemableViewModel;
+import com.ankhrom.base.model.ToolbarItemModel;
 import com.ankhrom.wimb.R;
 import com.ankhrom.wimb.databinding.UserBooDetailPageBinding;
 import com.ankhrom.wimb.model.user.BooItemModel;
@@ -15,11 +32,39 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class BooDetailViewModel extends InvViewModel<UserBooDetailPageBinding, BooItemModel> implements CloseableViewModel, OnMapReadyCallback {
+public class BooDetailViewModel extends InvViewModel<UserBooDetailPageBinding, BooItemModel> implements OnMapReadyCallback, CloseableViewModel, MenuItemableViewModel, AnimableTransitionViewModel {
+
+    private final PageAnimation animation = new PageAnimation();
+    private View parentItemView;
+
+    @Override
+    public boolean onBackPressed() {
+
+        if (parentItemView == null) {
+            return false;
+        }
+
+        if (animation.inProgress) {
+            return true;
+        }
+
+        getNavigation().setPreviousViewModel();
+        animation.startHideAnimation(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                parentItemView = null;
+                FragmentHelper.removePage(getContext(), getFragment());
+            }
+        });
+
+        return true;
+    }
 
     @Override
     public void init(InitArgs args) {
         super.init(args);
+
+        parentItemView = args.getArg(View.class);
 
         initModel(args.getArg(BooItemModel.class));
     }
@@ -34,6 +79,39 @@ public class BooDetailViewModel extends InvViewModel<UserBooDetailPageBinding, B
         setTitle(model.nickname.get());
 
         setModel(model);
+    }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (parentItemView == null) {
+            return;
+        }
+
+        View image = view.findViewById(R.id.image);
+        View background = view.findViewById(R.id.background);
+
+        float padding = getResources().getDimension(R.dimen.base_padding);
+        float size = getResources().getDimension(R.dimen.icon_size_big);
+
+        RectF rect = ViewHelper.getRect(parentItemView, ScreenHelper.getPx(getContext(), 80.0f));
+        Rect hitRec = new Rect();
+        ((View) view.getParent()).getLocalVisibleRect(hitRec);
+
+        image.setX(rect.left);
+        image.setY(rect.top);
+
+        animation.addItem(new PageAnimation.Item(image, rect, new RectF(padding, padding, padding + size, padding + size)));
+        animation.addItem(new PageAnimation.Item(background, rect, new RectF(hitRec))
+                .setBackground(ContextCompat.getColor(getContext(), R.color.transparent), ContextCompat.getColor(getContext(), R.color.colorPrimary)));
+
+        animation.startShowAnimation(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                view.findViewById(R.id.content).setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
@@ -65,6 +143,10 @@ public class BooDetailViewModel extends InvViewModel<UserBooDetailPageBinding, B
                 .title(model.nickname.get()));
     }
 
+    private void removeBoo() {
+
+    }
+
     @Override
     public int getLayoutResource() {
         return R.layout.user_boo_detail_page;
@@ -73,5 +155,23 @@ public class BooDetailViewModel extends InvViewModel<UserBooDetailPageBinding, B
     @Override
     public boolean isCloseable() {
         return true;
+    }
+
+    @Override
+    public ToolbarItemModel[] getMenuItems() {
+
+        return new ToolbarItemModel[]{
+                new ToolbarItemModel("remove") {
+                    @Override
+                    public void onClick(MenuItem item) {
+                        removeBoo();
+                    }
+                }.setImageResourceId(R.drawable.ic_remove).setShowAsAction(true)
+        };
+    }
+
+    @Override
+    public int getTransition() {
+        return FragmentTransaction.TRANSIT_NONE;
     }
 }

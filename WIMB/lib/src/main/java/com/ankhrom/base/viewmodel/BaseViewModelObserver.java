@@ -132,8 +132,7 @@ public class BaseViewModelObserver implements ViewModelObserver, ViewModelNaviga
             fragment.enterAndExit((AnimableViewModel) viewModel)
                     .commit();
         } else if (viewModel instanceof AnimableTransitionViewModel) {
-            AnimableTransitionViewModel avm = (AnimableTransitionViewModel) viewModel;
-            fragment.transition(avm.getTransition())
+            fragment.transition(((AnimableTransitionViewModel) viewModel).getTransition())
                     .commit();
         } else {
             fragment.commit();
