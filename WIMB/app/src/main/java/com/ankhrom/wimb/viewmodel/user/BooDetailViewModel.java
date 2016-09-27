@@ -3,7 +3,6 @@ package com.ankhrom.wimb.viewmodel.user;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +11,8 @@ import android.support.v4.content.ContextCompat;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.ankhrom.base.Base;
+import com.ankhrom.base.animators.LayerEnablingAnimatorListener;
 import com.ankhrom.base.animators.PageAnimation;
 import com.ankhrom.base.common.statics.FragmentHelper;
 import com.ankhrom.base.common.statics.ScreenHelper;
@@ -52,6 +53,7 @@ public class BooDetailViewModel extends InvViewModel<UserBooDetailPageBinding, B
         animation.startHideAnimation(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+                parentItemView.setVisibility(View.VISIBLE);
                 parentItemView = null;
                 FragmentHelper.removePage(getContext(), getFragment());
             }
@@ -82,36 +84,37 @@ public class BooDetailViewModel extends InvViewModel<UserBooDetailPageBinding, B
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         if (parentItemView == null) {
             return;
         }
 
+        parentItemView.setVisibility(View.INVISIBLE);
+
         View image = view.findViewById(R.id.image);
         View background = view.findViewById(R.id.background);
+        final View content = view.findViewById(R.id.content);
+
+        content.setVisibility(View.GONE);
 
         float padding = getResources().getDimension(R.dimen.base_padding);
-        float size = getResources().getDimension(R.dimen.icon_size_big);
+        float size = padding + getResources().getDimension(R.dimen.icon_size_big);
 
         RectF rect = ViewHelper.getRect(parentItemView, ScreenHelper.getPx(getContext(), 80.0f));
-        Rect hitRec = new Rect();
-        ((View) view.getParent()).getLocalVisibleRect(hitRec);
 
-        image.setX(rect.left);
-        image.setY(rect.top);
+        animation.addItem(new PageAnimation.Item(image, rect, new RectF(padding, padding, size, size)));
+        animation.addItem(new PageAnimation.Item(background).setBackground(ContextCompat.getColor(getContext(), R.color.transparent), ContextCompat.getColor(getContext(), R.color.colorPrimary)));
 
-        animation.addItem(new PageAnimation.Item(image, rect, new RectF(padding, padding, padding + size, padding + size)));
-        animation.addItem(new PageAnimation.Item(background, rect, new RectF(hitRec))
-                .setBackground(ContextCompat.getColor(getContext(), R.color.transparent), ContextCompat.getColor(getContext(), R.color.colorPrimary)));
+        animation.startShowAnimation(new LayerEnablingAnimatorListener(parentItemView));
 
-        animation.startShowAnimation(new AnimatorListenerAdapter() {
+        Base.runOnUiThread(new Runnable() {
             @Override
-            public void onAnimationEnd(Animator animation) {
-                view.findViewById(R.id.content).setVisibility(View.VISIBLE);
+            public void run() {
+                content.setVisibility(View.VISIBLE);
             }
-        });
+        }, 75);
     }
 
     @Override

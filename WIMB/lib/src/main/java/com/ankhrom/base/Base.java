@@ -3,6 +3,9 @@ package com.ankhrom.base;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Log;
 
 public class Base {
@@ -24,6 +27,11 @@ public class Base {
         NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
 
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public static boolean runOnUiThread(Runnable action, long millisecDelay) {
+
+        return new Handler(Looper.getMainLooper()).postAtTime(action, SystemClock.uptimeMillis() + millisecDelay);
     }
 
     public static void log(Object... args) {

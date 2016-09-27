@@ -136,7 +136,7 @@ public class PageAnimation extends AnimatorListenerAdapter {
         inProgress = false;
     }
 
-    public static class Item {
+    public static class Item { // TODO: 27/09/16 builder
 
         final View view;
 
@@ -151,6 +151,16 @@ public class PageAnimation extends AnimatorListenerAdapter {
         boolean animateBackgroundColor;
         int fromColor;
         int toColor;
+
+
+        public Item(@NonNull View view) {
+            this.view = view;
+
+            fromRect = toRect = new RectF();
+
+            fromScaleX = toScaleX = 1.0f;
+            fromScaleY = toScaleY = 1.0f;
+        }
 
         public Item(@NonNull View view, @NonNull View from, @NonNull View to) {
             this(view, getRect(from), getRect(to));
