@@ -46,9 +46,9 @@ public class CoarseLocation implements GoogleApiClient.ConnectionCallbacks, Goog
             if (locationListener != null) {
                 locationListener.onLocationObtained(location.getLatitude(), location.getLongitude());
             }
-
-            googleApiClient.disconnect();
         }
+
+        googleApiClient.disconnect();
     }
 
     @Override

@@ -63,6 +63,7 @@
                 android:layout_height="@dimen/icon_size"
                 android:onClick="@{M::onNotifyPressed}"
                 android:padding="@dimen/base_half_pading"
+                app:onTouchListener="@{M.onIconTouch}"
                 app:srcCompat="@drawable/ic_announcement"/>
 
             <android.support.v7.widget.AppCompatImageView
@@ -70,6 +71,7 @@
                 android:layout_height="@dimen/icon_size"
                 android:onClick="@{M::onGpsLocatePressed}"
                 android:padding="@dimen/base_half_pading"
+                app:onTouchListener="@{M.onIconTouch}"
                 app:srcCompat="@drawable/ic_gps_locate"/>
 
         </LinearLayout>

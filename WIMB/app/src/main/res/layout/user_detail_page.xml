@@ -63,6 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/base_padding"
+                android:enabled="false"
                 android:gravity="center_horizontal"
                 android:imeOptions="actionDone"
                 android:inputType="textNoSuggestions"
@@ -92,7 +93,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{VM::onResetSidPressed}"
-                android:text="reset"/>
+                android:text="reset"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

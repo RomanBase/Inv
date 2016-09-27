@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.ankhrom.base.animators.BaseAnim;
 import com.ankhrom.base.common.statics.StringHelper;
+import com.ankhrom.base.custom.listener.OnTouchActionListener;
 import com.ankhrom.base.interfaces.OnItemSelectedListener;
 import com.ankhrom.base.observable.ObservableString;
 import com.ankhrom.base.observable.ObservableUri;
@@ -43,6 +45,20 @@ public abstract class BooItemModel extends InvSelectableItemModel {
                 .subscribe(credentialsListener)
                 .get(sid);
     }
+
+    public final OnTouchActionListener onIconTouch = new OnTouchActionListener() {
+        @Override
+        public void onTouchActionDown(View view) {
+
+            BaseAnim.scale(view, 1.0f, 1.25f);
+        }
+
+        @Override
+        public void onTouchActionUp(View view) {
+
+            BaseAnim.scale(view, 1.25f, 1.0f);
+        }
+    };
 
     private final FireValueListener<AppUserCredentials> credentialsListener = new FireValueListener<AppUserCredentials>(AppUserCredentials.class) {
         @Override

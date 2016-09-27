@@ -231,20 +231,6 @@ public class DashboardViewModel extends InvViewModel<DashboardPageBinding, Dashb
         if (activeUser != null && activeUser.boo != null) {
             for (String bSid : activeUser.boo) {
                 model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
-                model.adapter.add(initBoo(bSid));
             }
         }
     }
