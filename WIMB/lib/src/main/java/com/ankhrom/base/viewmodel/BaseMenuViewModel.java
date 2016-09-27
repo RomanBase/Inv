@@ -66,7 +66,6 @@ public abstract class BaseMenuViewModel<T extends ViewDataBinding> implements Me
         this.navigation = navigation;
     }
 
-
     protected void onBindingCreated(T binding) {
 
     }

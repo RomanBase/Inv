@@ -44,7 +44,7 @@ public class UserDetailViewModel extends InvViewModel<UserDetailPageBinding, Use
     public void onInit() {
         super.onInit();
 
-        setTitle("AppUser");
+        setTitle(R.string.app_name);
         setModel(new UserDetailModel());
         setModelData();
     }

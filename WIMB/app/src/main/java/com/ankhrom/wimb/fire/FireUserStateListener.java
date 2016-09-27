@@ -10,6 +10,7 @@ import com.ankhrom.wimb.FireFactory;
 import com.ankhrom.wimb.MainActivity;
 import com.ankhrom.wimb.entity.AppUser;
 import com.ankhrom.wimb.entity.AppUserCredentials;
+import com.ankhrom.wimb.viewmodel.sidemenu.MenuModel;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
@@ -83,6 +84,11 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
             userReference = null;
         }
 
+        if (credentialsReference != null) {
+            credentialsReference.removeEventListener(userCredentialsListener);
+            credentialsReference = null;
+        }
+
         Base.logV("user log out");
 
         notifyViewModel(FireArgCode.USER_SIGNED_OUT, user);
@@ -106,6 +112,11 @@ public class FireUserStateListener implements FireSignIn.OnUserStateChangedListe
 
         if (observer != null) {
             observer.postArgsToViewModel(state, object);
+
+            MenuModel menu = observer.getMenuViewModel();
+            if (menu != null) {
+                menu.notifyUserData(state, object);
+            }
         }
     }
 }

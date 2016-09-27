@@ -15,14 +15,34 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="192dp"
-            android:background="@color/colorAccent">
+            android:background="@color/colorPrimary">
 
-            <android.support.v7.widget.AppCompatImageView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:onClick="@{Menu::onUserDetailPressed}"
-                android:scaleType="centerCrop"
-                android:src="@drawable/placeholder"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/base_padding">
+
+                <com.ankhrom.base.custom.view.ImageGlideRoundView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:onClick="@{Menu::onUserDetailPressed}"
+                    android:src="@{Menu.icon}"/>
+
+                <Space
+                    android:layout_width="@dimen/base_padding"
+                    android:layout_height="wrap_content"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{Menu.nickname}"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
 
         </FrameLayout>
 
